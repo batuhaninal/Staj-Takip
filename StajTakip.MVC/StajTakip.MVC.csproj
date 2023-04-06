@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\StajTakip.Business\StajTakip.Business.csproj" />
+    <ProjectReference Include="..\StajTakip.DataAccess\StajTakip.DataAccess.csproj" />
+    <ProjectReference Include="..\StajTakip.Entities\StajTakip.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
