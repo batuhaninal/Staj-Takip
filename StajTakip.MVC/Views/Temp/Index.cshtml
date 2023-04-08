@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using StajTakip.Entities.Concrete
+@model Temp
+
+
+@*Veri Ekleme ve silme formu*@
+<form asp-controller="Temp" asp-action="Add" method="post">
+    <div class="mb-3">
+        <input asp-for="Name" type="text" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <input asp-for="Price" type="text" class="form-control" />
+    </div>
+    <button class="btn btn-success" type="submit">Ekle</button>
+    <a class="btn btn-danger" type="button" asp-controller="Temp" asp-action="Delete" asp-route-id="2">Sil</a>
+    <a class="btn btn-primary" type="button" asp-controller="Temp" asp-action="GetById" asp-route-id="3">Verileri Getir</a>
+</form>
+
+
+
+@*Güncelleme ve veri getirme formu*@
+@*<form asp-controller="temp" asp-action="update" method="post">
+    <input type="hidden" asp-for="Id"/>
+    <div class="mb-3">
+        <input asp-for="Name" type="text" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <input asp-for="Price" type="text" class="form-control" />
+    </div>
+    <button class="btn btn-success" type="submit">Guncelle</button>
+    <a class="btn btn-danger" type="button" asp-controller="Temp" asp-action="Delete" asp-route-id="4">Sil</a>
+    <a class="btn btn-danger" type="button" asp-controller="Temp" asp-action="Delete" asp-route-id="5">Sil</a>
+    <a class="btn btn-primary" type="button" asp-controller="Temp" asp-action="GetById" asp-route-id="3">Verileri Getir</a>
+</form>
+*@
+

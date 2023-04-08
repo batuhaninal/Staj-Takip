@@ -1,7 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using StajTakip.Business.Abstract;
+using StajTakip.Business.Concrete;
+using StajTakip.DataAccess.Abstract;
+using StajTakip.DataAccess.Concrete.Contexts;
+using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<StajTakipContext>();
+builder.Services.AddScoped<ITempRepository, TempRepository>();
+builder.Services.AddScoped<ITempRepositoryAsync, TempRepositoryAsync>();
+builder.Services.AddScoped<ITempService, TempService>();
+
 
 var app = builder.Build();
 

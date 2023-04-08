@@ -76,7 +76,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public async Task<IQueryable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public async Task<IQueryable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext())
             {

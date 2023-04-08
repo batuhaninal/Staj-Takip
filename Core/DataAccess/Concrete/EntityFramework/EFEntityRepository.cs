@@ -123,7 +123,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext())
             {

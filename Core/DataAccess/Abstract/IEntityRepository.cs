@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.DataAccess.Abstract
 {
-    internal interface IEntityRepository<T> : IEntityRepositoryBase<T>
+    public interface IEntityRepository<T> : IEntityRepositoryBase<T>
         where T : class, IEntity, new()
     {
         /// <summary>
@@ -33,7 +33,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        IQueryable<T> GetAll(Expression<Func<T, bool>> predicate, IEnumerable<Expression<Func<T, object>>> includes = null);
+        IQueryable<T> GetAll(Expression<Func<T, bool>> predicate = null, IEnumerable<Expression<Func<T, object>>> includes = null);
 
         /// <summary>
         /// Tek veri getirmek için kullanılabilir. Verilen paramatre ve bağıntılı nesnelere göre getirir.
