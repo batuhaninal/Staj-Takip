@@ -33,7 +33,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        Task<IQueryable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, IEnumerable<Expression<Func<T, object>>> includes = null);
+        Task<IQueryable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, IEnumerable<Expression<Func<T, object>>> includes = null);
 
 
         /// <summary>
