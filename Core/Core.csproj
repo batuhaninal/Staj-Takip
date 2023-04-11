@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Entities\Concrete\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 
   <ItemGroup>
