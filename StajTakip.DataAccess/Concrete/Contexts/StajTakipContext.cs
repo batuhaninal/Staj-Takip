@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StajTakip.Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StajTakip.DataAccess.Concrete.Contexts
 {
@@ -17,5 +12,8 @@ namespace StajTakip.DataAccess.Concrete.Contexts
 
 
         public DbSet<Temp> Temps { get; set; }
+        public DbSet<InternshipsBook> InternshipsBooks { get; set; }
+        public DbSet<Signature> Signatures { get; set; }
+        public DbSet<BookImage> BookImages { get; set; }
     }
 }
