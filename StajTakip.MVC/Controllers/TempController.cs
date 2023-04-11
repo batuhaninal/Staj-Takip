@@ -21,8 +21,12 @@ namespace StajTakip.MVC.Controllers
         [HttpPost("add")]
         public IActionResult Add(Temp model)
         {
-            _tempService.Add(model);
-            return RedirectToAction("Index");
+            var result = _tempService.Add(model);
+            if(result.Success)
+            {
+                return RedirectToAction("Index");
+            }
+            return NotFound();
         }
 
 
