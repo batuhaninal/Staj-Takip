@@ -1,6 +1,9 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Concrete;
+using StajTakip.Business.DependencyResolvers.Autofac;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.DataAccess.Concrete.Contexts;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
@@ -10,10 +13,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<StajTakipContext>();
-builder.Services.AddScoped<ITempRepository, TempRepository>();
-builder.Services.AddScoped<ITempRepositoryAsync, TempRepositoryAsync>();
-builder.Services.AddScoped<ITempService, TempService>();
+//builder.Services.AddDbContext<StajTakipContext>();
+//builder.Services.AddScoped<ITempRepository, TempRepository>();
+//builder.Services.AddScoped<ITempRepositoryAsync, TempRepositoryAsync>();
+//builder.Services.AddScoped<ITempService, TempService>();
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule(new AutofacBusinessModule());
+    });
 
 
 var app = builder.Build();
