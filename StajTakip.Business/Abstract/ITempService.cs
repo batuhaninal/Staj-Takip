@@ -1,4 +1,5 @@
-﻿using StajTakip.Entities.Concrete;
+﻿using Core.Utilities.Results;
+using StajTakip.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace StajTakip.Business.Abstract
         Task<IList<Temp>> GetAllAsync();
         Temp GetById(int id);
         Task<Temp> GetByIdAsync(int id);
-        void Add(Temp temp);
+        IResult Add(Temp temp);
         Task AddAsync(Temp temp);
         void Update(Temp temp);
         Task UpdateAsync(Temp temp);

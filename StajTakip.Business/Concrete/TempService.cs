@@ -1,4 +1,6 @@
-﻿using StajTakip.Business.Abstract;
+﻿using Core.Utilities.Business;
+using Core.Utilities.Results;
+using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.Entities.Concrete;
 using System;
@@ -20,9 +22,15 @@ namespace StajTakip.Business.Concrete
             _tempRepositoryAsync = tempRepositoryAsync;
         }
 
-        public void Add(Temp temp)
+        public IResult Add(Temp temp)
         {
+            var result = BusinessRules.Run(CheckDemo1(temp), CheckDem2(temp));
+            if (result != null)
+            {
+                return new ErrorResult(result.Message);
+            }
             _tempRepository.Add(temp);
+            return new SuccessResult();
         }
 
         public async Task AddAsync(Temp temp)
@@ -71,6 +79,24 @@ namespace StajTakip.Business.Concrete
         public async Task UpdateAsync(Temp temp)
         {
             await _tempRepositoryAsync.UpdateAsync(temp);
+        }
+
+        private IResult CheckDemo1(Temp temp)
+        {
+            if(temp == null)
+            {
+                return new ErrorResult("Alanlar bos!");
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckDem2(Temp temp)
+        {
+            if(temp.Price < 15)
+            {
+                return new ErrorResult("Fiyat 15den kucuk olamaz");
+            }
+            return new SuccessResult();
         }
     }
 }
