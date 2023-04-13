@@ -1,0 +1,113 @@
+﻿using Core.Utilities.Business;
+using Core.Utilities.Results;
+using StajTakip.Business.Abstract;
+using StajTakip.Business.Constants;
+using StajTakip.DataAccess.Abstract;
+using StajTakip.Entities.Concrete;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace StajTakip.Business.Concrete
+{
+    public class InternshipsBookManager : IInternshipsBookService
+    {
+        private readonly IInternshipsBookRepository _repository;
+
+        public InternshipsBookManager(IInternshipsBookRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public IResult Add(InternshipsBook entity)
+        {
+            _repository.Add(entity);
+            return new SuccessResult();
+        }
+
+        public IDataResult<InternshipsBook> Get(int id)
+        {
+            var result = BusinessRules.Run(IsBookExist(id));
+            if(result == null)
+            {
+                var data = _repository.Get(x => x.Id == id);
+                return new SuccessDataResult<InternshipsBook>(data);
+            }
+
+            return new ErrorDataResult<InternshipsBook>(result.Message);            
+        }
+
+        public IDataResult<List<InternshipsBook>> GetAll()
+        {
+            var data = _repository.GetAll().ToList();
+            return new SuccessDataResult<List<InternshipsBook>>(data);
+        }
+
+        public IDataResult<List<InternshipsBook>> GetAllPages(int userId)
+        {
+            // InternshipsBook tablosuna alan eklenmeli
+            throw new NotImplementedException();
+        }
+
+        // Degistirilmeli
+        public IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId)
+        {
+            // InternshipsBook tablosuna alan eklenmeli
+            List<Expression<Func<InternshipsBook, object>>> includes = new();
+            includes.Add(x => x.Signatures);
+            includes.Add(x => x.BookImages);
+            var data = _repository.GetAll(x=>x.Id == userId, includes);
+            throw new NotImplementedException();
+        }
+
+        public IResult HardDelete(InternshipsBook entity)
+        {
+            var result = BusinessRules.Run(IsBookExist(entity.Id));
+            if(result == null)
+            {
+                _repository.Delete(entity);
+                return new SuccessResult();
+            }
+            return result;
+        }
+
+        public IResult HardDelete(int id)
+        {
+            var result = BusinessRules.Run(IsBookExist(id));
+            if(result == null)
+            {
+                var data = _repository.Get(x=>x.Id == id);
+                _repository.Delete(data);
+                return new SuccessResult();
+            }
+
+            return result;
+        }
+
+        public IDataResult<InternshipsBook> Update(InternshipsBook entity)
+        {
+            var result = BusinessRules.Run(IsBookExist(entity.Id));
+            if( result == null)
+            {
+                var updatedData = _repository.Update(entity);
+                return new SuccessDataResult<InternshipsBook>(updatedData);
+            }
+
+            return new ErrorDataResult<InternshipsBook>(result.Message);
+        }
+
+        private IResult IsBookExist(int id)
+        {
+            var result = _repository.Any(x=>x.Id ==id);
+            if (result)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult(Messages.IsExist);
+        }
+    }
+}
