@@ -52,7 +52,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public async Task<IQueryable<TEntity>> GetAllAsync(IEnumerable<Expression<Func<TEntity, bool>>> predicates, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public async Task<IList<TEntity>> GetAllAsync(IList<Expression<Func<TEntity, bool>>> predicates, IList<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext())
             {
@@ -72,11 +72,11 @@ namespace Core.DataAccess.Concrete.EntityFramework
                     }
                 }
                 // AsNoTracking(), Entity Framework'te kullanılan bir fonksiyondur ve sorgulama sonucunda elde edilen nesnelerin takibinin yapılmamasını sağlar. Bu fonksiyonun kullanımı, performansı artırabilir ve hafızada daha az yer kaplamasına yardımcı olabilir.
-                return await Task.Factory.StartNew(() => query.AsNoTracking());
+                return await query.AsNoTracking().ToListAsync();
             }
         }
 
-        public async Task<IQueryable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, IList<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext())
             {
@@ -94,15 +94,12 @@ namespace Core.DataAccess.Concrete.EntityFramework
                     }
                 }
 
-                return await Task.Factory.StartNew(() =>
-                {
-                     return query.AsNoTracking();
-                });
+                return await query.AsNoTracking().ToListAsync();
             }
         }
 
 
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, IList<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext())
             {
@@ -123,7 +120,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public async Task<TEntity> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> predicates, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public async Task<TEntity> GetAsync(IList<Expression<Func<TEntity, bool>>> predicates, IList<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext()) 
             {
@@ -148,7 +145,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public Task<IEnumerable<TEntity>> SearchAsync(IEnumerable<Expression<Func<TEntity, bool>>> predicates, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public Task<IList<TEntity>> SearchAsync(IList<Expression<Func<TEntity, bool>>> predicates, IList<Expression<Func<TEntity, object>>> includes = null)
         {
             throw new NotImplementedException();
         }
