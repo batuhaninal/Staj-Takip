@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddDbContext<StajTakipContext>();
+
 //builder.Services.AddScoped<ITempRepository, TempRepository>();
 //builder.Services.AddScoped<ITempRepositoryAsync, TempRepositoryAsync>();
 //builder.Services.AddScoped<ITempService, TempService>();

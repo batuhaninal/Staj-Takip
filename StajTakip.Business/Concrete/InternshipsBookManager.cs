@@ -57,10 +57,10 @@ namespace StajTakip.Business.Concrete
         public IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId)
         {
             // InternshipsBook tablosuna alan eklenmeli
-            List<Expression<Func<InternshipsBook, object>>> includes = new();
-            includes.Add(x => x.Signatures);
-            includes.Add(x => x.BookImages);
-            var data = _repository.GetAll(x=>x.Id == userId, includes);
+            //List<Expression<Func<InternshipsBook, object>>> includes = new();
+            //includes.Add(x => x.Signatures);
+            //includes.Add(x => x.BookImages);
+            var data = _repository.GetAll(x=>x.Id == userId, i=> i.Signatures, i=> i.BookImages);
             throw new NotImplementedException();
         }
 

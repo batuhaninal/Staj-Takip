@@ -21,7 +21,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        Task<IQueryable<T>> GetAllAsync(IEnumerable<Expression<Func<T, bool>>> predicates, IEnumerable<Expression<Func<T, object>>> includes = null);
+        Task<IList<T>> GetAllAsync(IList<Expression<Func<T, bool>>> predicates, IList<Expression<Func<T, object>>> includes = null);
 
         /// <summary>
         /// Tüm verileri paramatreye ve bağıntılı nesnelere göre asenkron şekilde getirir.
@@ -33,7 +33,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        Task<IQueryable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, IEnumerable<Expression<Func<T, object>>> includes = null);
+        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includes);
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        Task<T> GetAsync(Expression<Func<T, bool>> predicate, IEnumerable<Expression<Func<T, object>>> includes = null);
+        Task<T> GetAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
         /// <summary>
         /// Tek veri getirmek için kullanılabilir. Verilen paramatrelere ve bağıntılı nesnelere göre getirir.
@@ -58,12 +58,12 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        Task<T> GetAsync(IEnumerable<Expression<Func<T, bool>>> predicates, IEnumerable<Expression<Func<T, object>>> includes = null);
+        Task<T> GetAsync(IList<Expression<Func<T, bool>>> predicates, IList<Expression<Func<T, object>>> includes = null);
         Task<T> AddAsync(T entity);
         Task DeleteAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync(Expression<Func<T, bool>> predicate = null);
-        Task<IEnumerable<T>> SearchAsync(IEnumerable<Expression<Func<T, bool>>> predicates, IEnumerable<Expression<Func<T, object>>> includes = null);
+        Task<IList<T>> SearchAsync(IList<Expression<Func<T, bool>>> predicates, IList<Expression<Func<T, object>>> includes = null);
     }
 }

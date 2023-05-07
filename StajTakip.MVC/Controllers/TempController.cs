@@ -65,5 +65,13 @@ namespace StajTakip.MVC.Controllers
             var model = _tempService.GetById(id);
             return View("Index",model);
         }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var temps = _tempService.GetAll();
+
+            return View(temps);
+        }
     }
 }

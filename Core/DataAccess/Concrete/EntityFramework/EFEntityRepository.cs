@@ -51,7 +51,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public TEntity Get(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
             using (var context = new TContext())
             {
@@ -73,7 +73,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public TEntity Get(IEnumerable<Expression<Func<TEntity, bool>>> predicates, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public TEntity Get(IList<Expression<Func<TEntity, bool>>> predicates, IList<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext())
             {
@@ -98,7 +98,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public IQueryable<TEntity> GetAll(IEnumerable<Expression<Func<TEntity, bool>>> predicates, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public IList<TEntity> GetAll(IList<Expression<Func<TEntity, bool>>> predicates, IList<Expression<Func<TEntity, object>>> includes = null)
         {
             using (var context = new TContext())
             {
@@ -119,11 +119,11 @@ namespace Core.DataAccess.Concrete.EntityFramework
                     }
                 }
 
-                return query.AsNoTracking();
+                return query.AsNoTracking().ToList();
             }
         }
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
+        public IList<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, params Expression<Func<TEntity, object>>[] includes)
         {
             using (var context = new TContext())
             {
@@ -141,7 +141,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
                     }
                 }
 
-                return query.AsNoTracking();
+                return query.AsNoTracking().ToList();
             }
         }
 
