@@ -33,7 +33,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        IList<T> GetAll(Expression<Func<T, bool>> predicate = null, IList<Expression<Func<T, object>>> includes = null);
+        IList<T> GetAll(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includes);
 
         /// <summary>
         /// Tek veri getirmek için kullanılabilir. Verilen paramatre ve bağıntılı nesnelere göre getirir.
@@ -45,7 +45,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        T Get(Expression<Func<T, bool>> predicate, IList<Expression<Func<T, object>>> includes = null);
+        T Get(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
 
         /// <summary>

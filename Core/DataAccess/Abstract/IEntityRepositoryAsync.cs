@@ -33,7 +33,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, IList<Expression<Func<T, object>>> includes = null);
+        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includes);
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Core.DataAccess.Abstract
         /// Bağıntılı nesneler paramatre olarak verilebilir.
         /// </param>
         /// <returns></returns>
-        Task<T> GetAsync(Expression<Func<T, bool>> predicate, IList<Expression<Func<T, object>>> includes = null);
+        Task<T> GetAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
         /// <summary>
         /// Tek veri getirmek için kullanılabilir. Verilen paramatrelere ve bağıntılı nesnelere göre getirir.

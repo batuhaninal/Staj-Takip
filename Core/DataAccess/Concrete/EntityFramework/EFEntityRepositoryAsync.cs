@@ -76,7 +76,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, IList<Expression<Func<TEntity, object>>> includes = null)
+        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, params Expression<Func<TEntity, object>>[] includes)
         {
             using (var context = new TContext())
             {
@@ -99,7 +99,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
         }
 
 
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, IList<Expression<Func<TEntity, object>>> includes = null)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
             using (var context = new TContext())
             {

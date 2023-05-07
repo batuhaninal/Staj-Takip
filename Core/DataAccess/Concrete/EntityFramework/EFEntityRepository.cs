@@ -51,7 +51,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> predicate, IList<Expression<Func<TEntity, object>>> includes = null)
+        public TEntity Get(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
             using (var context = new TContext())
             {
@@ -123,7 +123,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
             }
         }
 
-        public IList<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, IList<Expression<Func<TEntity, object>>> includes = null)
+        public IList<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, params Expression<Func<TEntity, object>>[] includes)
         {
             using (var context = new TContext())
             {
