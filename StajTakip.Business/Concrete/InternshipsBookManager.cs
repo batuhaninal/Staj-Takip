@@ -1,14 +1,17 @@
-﻿using Core.Utilities.Business;
+﻿using AutoMapper;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Constants;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.Entities.Concrete;
+using StajTakip.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -18,10 +21,12 @@ namespace StajTakip.Business.Concrete
     public class InternshipsBookManager : IInternshipsBookService
     {
         private readonly IInternshipsBookRepository _repository;
+        private IMapper _mapper;
 
-        public InternshipsBookManager(IInternshipsBookRepository repository)
+        public InternshipsBookManager(IInternshipsBookRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public IResult Add(InternshipsBook entity)
@@ -68,6 +73,17 @@ namespace StajTakip.Business.Concrete
             //includes.Add(x => x.BookImages);
             var data = _repository.GetAll(x=>x.Id == userId, i=> i.Signatures, i=> i.BookImages);
             throw new NotImplementedException();
+        }
+
+        public IDataResult<List<InternshipsBookPageListDto>> GetPages()
+        {
+            var pages = _repository.GetAll();
+            if (pages.Count < 1)
+                return new ErrorDataResult<List<InternshipsBookPageListDto>>("Henuz veri girilmemis!");
+            var mappedPages = _mapper.Map<List<InternshipsBookPageListDto>>(pages);
+
+            return new SuccessDataResult<List<InternshipsBookPageListDto>>(mappedPages);
+
         }
 
         public IResult HardDelete(InternshipsBook entity)

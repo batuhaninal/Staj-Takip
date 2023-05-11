@@ -16,7 +16,7 @@ namespace StajTakip.MVC.ViewComponents.Student
 
         public IViewComponentResult Invoke()
         {
-            var bookPages = _service.GetAll();
+            var bookPages = _service.GetPages();
 
             return View(bookPages);
         }

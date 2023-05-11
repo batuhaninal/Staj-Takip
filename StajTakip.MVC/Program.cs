@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Concrete;
 using StajTakip.Business.DependencyResolvers.Autofac;
+using StajTakip.Business.Utilities.Profiles;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.DataAccess.Concrete.Contexts;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
@@ -21,6 +22,8 @@ builder.Services.AddControllersWithViews();
 //builder.Services.AddScoped<ITempService, TempService>();
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+
+builder.Services.AddAutoMapper(typeof(InternshipsBookProfile));
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
