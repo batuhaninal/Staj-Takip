@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -42,8 +43,13 @@ namespace StajTakip.Business.Concrete
         }
 
         public IDataResult<List<InternshipsBook>> GetAll()
+        
         {
             var data = _repository.GetAll().ToList();
+            if(data.Count < 1)
+            {
+                return new ErrorDataResult<List<InternshipsBook>>("Henuz veri girilmemis!");
+            }
             return new SuccessDataResult<List<InternshipsBook>>(data);
         }
 

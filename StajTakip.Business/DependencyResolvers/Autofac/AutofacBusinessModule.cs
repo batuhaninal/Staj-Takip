@@ -2,6 +2,7 @@
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Concrete;
 using StajTakip.DataAccess.Abstract;
+using StajTakip.DataAccess.Concrete;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,11 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<TempService>().As<ITempService>().InstancePerLifetimeScope();
             builder.RegisterType<TempRepository>().As<ITempRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TempRepositoryAsync>().As<ITempRepositoryAsync>().InstancePerLifetimeScope();
+
+            builder.RegisterType<InternshipsBookManager>().As<IInternshipsBookService>().InstancePerLifetimeScope();
+            builder.RegisterType<EFInternshipsBookRepository>().As<IInternshipsBookRepository>().InstancePerLifetimeScope();
+
+            //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerDependency();
 
 
             builder.RegisterType<MailManager>().As<IMailService>().InstancePerLifetimeScope();

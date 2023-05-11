@@ -8,6 +8,7 @@ using StajTakip.DataAccess.Abstract;
 using StajTakip.DataAccess.Concrete.Contexts;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
 using StajTakip.Entities.Concrete;
+using StajTakip.MVC.ViewComponents.Student;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     {
         builder.RegisterModule(new AutofacBusinessModule());
     });
-
 
 var app = builder.Build();
 
