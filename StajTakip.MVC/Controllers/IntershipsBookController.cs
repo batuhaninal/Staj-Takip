@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
 using StajTakip.Entities.DTOs;
@@ -8,10 +9,12 @@ namespace StajTakip.MVC.Controllers
     public class InternshipsBookController : Controller
     {
         private readonly IInternshipsBookService _bookRepository;
+        private readonly INotyfService _notyfService;
 
-        public InternshipsBookController(IInternshipsBookService bookRepository)
+        public InternshipsBookController(IInternshipsBookService bookRepository, INotyfService notifyService)
         {
             _bookRepository = bookRepository;
+            _notyfService = notifyService;
         }
 
         [HttpGet]
@@ -20,26 +23,31 @@ namespace StajTakip.MVC.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Add(InternshipsBookPageAddDto model)
-        {
-            if (ModelState.IsValid)
-            {
-                _bookRepository.Add(model);
-            }
-            return RedirectToAction("Index");
-        }
-
         [HttpGet]
         public IActionResult Page(int id)
         {
             var page = _bookRepository.Get(id);
             if (page.Success)
             {
+                _notyfService.Success("Sayfa basariyla yuklendi!");
                 return View(page.Data);
+            }
+            _notyfService.Error(page.Message);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Add(InternshipsBookPageAddDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _bookRepository.Add(model);
+                if (!result.Success)
+                    _notyfService.Error(result.Message);
             }
             return RedirectToAction("Index");
         }
+
 
         [HttpPost]
         public IActionResult Update(InternshipsBookPageUpdateDto model)
@@ -47,12 +55,13 @@ namespace StajTakip.MVC.Controllers
             if(ModelState.IsValid)
             {
                 var result = _bookRepository.Update(model);
-                if (result.Success)
+                if (!result.Success)
                 {
-                    return RedirectToAction("Page",model.Id);
+                    _notyfService.Error(result.Message);
+                    return RedirectToAction("Page", model.Id);
                 }
             }
-            return View();
+            return RedirectToAction("Page", model.Id);
         }
     }
 }
