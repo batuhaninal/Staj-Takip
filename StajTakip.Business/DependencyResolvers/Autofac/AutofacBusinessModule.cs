@@ -18,6 +18,9 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<TempService>().As<ITempService>().InstancePerLifetimeScope();
             builder.RegisterType<TempRepository>().As<ITempRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TempRepositoryAsync>().As<ITempRepositoryAsync>().InstancePerLifetimeScope();
+
+
+            builder.RegisterType<MailManager>().As<IMailService>().InstancePerLifetimeScope();
         }
     }
 }

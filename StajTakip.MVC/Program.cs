@@ -7,6 +7,7 @@ using StajTakip.Business.DependencyResolvers.Autofac;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.DataAccess.Concrete.Contexts;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
+using StajTakip.Entities.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddControllersWithViews();
 //builder.Services.AddScoped<ITempRepository, TempRepository>();
 //builder.Services.AddScoped<ITempRepositoryAsync, TempRepositoryAsync>();
 //builder.Services.AddScoped<ITempService, TempService>();
+
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
