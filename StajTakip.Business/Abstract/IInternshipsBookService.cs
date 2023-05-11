@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using StajTakip.Entities.Concrete;
+using StajTakip.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,12 @@ namespace StajTakip.Business.Abstract
 {
     public interface IInternshipsBookService
     {
-        IResult Add(InternshipsBook entity);
+        IResult Add(InternshipsBookPageAddDto entity);
         IResult HardDelete(InternshipsBook entity);
         IResult HardDelete(int id);
-        IDataResult<InternshipsBook> Update(InternshipsBook entity);
+        IDataResult<InternshipsBook> Update(InternshipsBookPageUpdateDto entity);
         IDataResult<List<InternshipsBook>> GetAllPages(int userId);
+        IDataResult<List<InternshipsBookPageListDto>> GetPages();
         IDataResult<InternshipsBook> Get(int id);
         IDataResult<List<InternshipsBook>> GetAll();
         IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId);

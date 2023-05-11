@@ -1,13 +1,17 @@
-﻿using Core.Utilities.Business;
+﻿using AutoMapper;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Constants;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.Entities.Concrete;
+using StajTakip.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -17,15 +21,18 @@ namespace StajTakip.Business.Concrete
     public class InternshipsBookManager : IInternshipsBookService
     {
         private readonly IInternshipsBookRepository _repository;
+        private IMapper _mapper;
 
-        public InternshipsBookManager(IInternshipsBookRepository repository)
+        public InternshipsBookManager(IInternshipsBookRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
-        public IResult Add(InternshipsBook entity)
+        public IResult Add(InternshipsBookPageAddDto entity)
         {
-            _repository.Add(entity);
+            var mappedModel = _mapper.Map<InternshipsBook>(entity);
+            _repository.Add(mappedModel);
             return new SuccessResult();
         }
 
@@ -42,8 +49,13 @@ namespace StajTakip.Business.Concrete
         }
 
         public IDataResult<List<InternshipsBook>> GetAll()
+        
         {
             var data = _repository.GetAll().ToList();
+            if(data.Count < 1)
+            {
+                return new ErrorDataResult<List<InternshipsBook>>("Henuz veri girilmemis!");
+            }
             return new SuccessDataResult<List<InternshipsBook>>(data);
         }
 
@@ -62,6 +74,17 @@ namespace StajTakip.Business.Concrete
             //includes.Add(x => x.BookImages);
             var data = _repository.GetAll(x=>x.Id == userId, i=> i.Signatures, i=> i.BookImages);
             throw new NotImplementedException();
+        }
+
+        public IDataResult<List<InternshipsBookPageListDto>> GetPages()
+        {
+            var pages = _repository.GetAll().OrderBy(x=>x.Date).ToList();
+            if (pages.Count < 1)
+                return new ErrorDataResult<List<InternshipsBookPageListDto>>("Henuz veri girilmemis!");
+            var mappedPages = _mapper.Map<List<InternshipsBookPageListDto>>(pages);
+
+            return new SuccessDataResult<List<InternshipsBookPageListDto>>(mappedPages);
+
         }
 
         public IResult HardDelete(InternshipsBook entity)
@@ -87,13 +110,13 @@ namespace StajTakip.Business.Concrete
 
             return result;
         }
-
-        public IDataResult<InternshipsBook> Update(InternshipsBook entity)
+        public IDataResult<InternshipsBook> Update(InternshipsBookPageUpdateDto entity)
         {
             var result = BusinessRules.Run(IsBookExist(entity.Id));
             if( result == null)
             {
-                var updatedData = _repository.Update(entity);
+                var mappedData = _mapper.Map<InternshipsBook>(entity);
+                var updatedData = _repository.Update(mappedData);
                 return new SuccessDataResult<InternshipsBook>(updatedData);
             }
 

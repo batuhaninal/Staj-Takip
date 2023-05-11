@@ -1,0 +1,60 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model InternshipsBook
+
+
+<div class="row">
+    <div class="col-lg-3 col-md-12">
+        @await Component.InvokeAsync("InternshipsBookPagesList")
+    </div>
+    <div class="col-lg-9 col-md-12">
+        <div class="container">
+            <form asp-controller="InternshipsBook" asp-action="Add" method="post">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="workD">Çalışma Günleri</label>
+                            <input type="text" class="form-control"
+                                   id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
+                            <span asp-validation-for="WorkDays"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="dte">Tarih</label>
+                            <input type="datetime-local" class="form-control"
+                                   id="dte" asp-for="Date" placeholder="Lütgen tarih giriniz!">
+                            <span asp-validation-for="Date"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="titl">Başlık</label>
+                    <input type="text" class="form-control"
+                           id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
+                    <span asp-validation-for="Title"></span>
+                </div>
+                <div class="form-group">
+                    <label for="cont">İçerik</label>
+                    <textarea class="form-control" asp-for="Content"></textarea>
+                    <span asp-validation-for="Content"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="summa">Özet</label>
+                    <textarea class="form-control" id="summa" asp-for="Summary"></textarea>
+                    <span asp-validation-for="Summary"></span>
+                </div>
+
+
+                <button type="submit" class="btn btn-success">Yeni Sayfa Ekle</button>
+            </form>
+        </div>
+    </div>
+</div>
+
