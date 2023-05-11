@@ -29,9 +29,10 @@ namespace StajTakip.Business.Concrete
             _mapper = mapper;
         }
 
-        public IResult Add(InternshipsBook entity)
+        public IResult Add(InternshipsBookPageAddDto entity)
         {
-            _repository.Add(entity);
+            var mappedModel = _mapper.Map<InternshipsBook>(entity);
+            _repository.Add(mappedModel);
             return new SuccessResult();
         }
 
@@ -77,7 +78,7 @@ namespace StajTakip.Business.Concrete
 
         public IDataResult<List<InternshipsBookPageListDto>> GetPages()
         {
-            var pages = _repository.GetAll();
+            var pages = _repository.GetAll().OrderBy(x=>x.Date).ToList();
             if (pages.Count < 1)
                 return new ErrorDataResult<List<InternshipsBookPageListDto>>("Henuz veri girilmemis!");
             var mappedPages = _mapper.Map<List<InternshipsBookPageListDto>>(pages);
@@ -109,13 +110,13 @@ namespace StajTakip.Business.Concrete
 
             return result;
         }
-
-        public IDataResult<InternshipsBook> Update(InternshipsBook entity)
+        public IDataResult<InternshipsBook> Update(InternshipsBookPageUpdateDto entity)
         {
             var result = BusinessRules.Run(IsBookExist(entity.Id));
             if( result == null)
             {
-                var updatedData = _repository.Update(entity);
+                var mappedData = _mapper.Map<InternshipsBook>(entity);
+                var updatedData = _repository.Update(mappedData);
                 return new SuccessDataResult<InternshipsBook>(updatedData);
             }
 

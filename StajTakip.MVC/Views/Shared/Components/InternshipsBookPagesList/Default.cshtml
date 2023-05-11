@@ -20,7 +20,7 @@
                             @foreach (var bookPages in Model.Data)
                             {
                                 <li>
-                                    <a asp-controller="InternshipsBook" asp-action="Page" asp-route-id="@bookPages.Id">@bookPages.Date</a>
+                                    <a asp-area="" asp-controller="InternshipsBook" asp-action="Page" asp-route-id="@bookPages.Id">@bookPages.Date</a>
                                 </li>
                             }
                             

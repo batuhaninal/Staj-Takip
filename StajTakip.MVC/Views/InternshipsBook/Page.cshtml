@@ -3,8 +3,8 @@
 *@
 @{
 }
-@model InternshipsBook
 
+@model InternshipsBook
 
 <div class="row">
     <div class="col-lg-3 col-md-12">
@@ -12,7 +12,8 @@
     </div>
     <div class="col-lg-9 col-md-12">
         <div class="container">
-            <form asp-controller="InternshipsBook" asp-action="Add" method="post">
+            <form asp-controller="InternshipsBook" asp-action="Update" method="post">
+                <input type="hidden" asp-for="Id" />
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
                         <div class="form-group">
@@ -52,7 +53,7 @@
                 </div>
 
 
-                <button type="submit" class="btn btn-success">Yeni Sayfa Ekle</button>
+                <button type="submit" class="btn btn-success">Kaydet</button>
             </form>
         </div>
     </div>

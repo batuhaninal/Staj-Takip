@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Concrete;
 using StajTakip.Business.DependencyResolvers.Autofac;
-using StajTakip.Business.Utilities.Profiles;
+using StajTakip.Business.Utilities.AutoMapper.Profiles;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.DataAccess.Concrete.Contexts;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
