@@ -2,14 +2,12 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    Layout = "_StudentLayout";
 }
 
 @model InternshipsBook
 
 <div class="row">
-    <div class="col-lg-3 col-md-12">
-        @await Component.InvokeAsync("InternshipsBookPagesList")
-    </div>
     <div class="col-lg-9 col-md-12">
         <div class="container">
             <form asp-controller="InternshipsBook" asp-action="Update" method="post">
@@ -56,6 +54,9 @@
                 <button type="submit" class="btn btn-success">Kaydet</button>
             </form>
         </div>
+    </div>
+    <div class="col-lg-3 col-md-12">
+        @await Component.InvokeAsync("InternshipsBookPagesList")
     </div>
 </div>
 

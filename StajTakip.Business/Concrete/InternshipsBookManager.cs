@@ -79,7 +79,7 @@ namespace StajTakip.Business.Concrete
         public IDataResult<List<InternshipsBookPageListDto>> GetPages()
         {
             var pages = _repository.GetAll().OrderBy(x=>x.Date).ToList();
-            if (pages.Count < 1)
+            if (pages.Count() < 1)
                 return new ErrorDataResult<List<InternshipsBookPageListDto>>("Henuz veri girilmemis!");
             var mappedPages = _mapper.Map<List<InternshipsBookPageListDto>>(pages);
 

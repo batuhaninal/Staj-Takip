@@ -63,5 +63,10 @@ namespace StajTakip.MVC.Controllers
             }
             return RedirectToAction("Page", model.Id);
         }
+
+        public IActionResult BookPagePagination(int? currentPage)
+        {
+            return ViewComponent("InternshipsBookPagesList", currentPage);
+        }
     }
 }

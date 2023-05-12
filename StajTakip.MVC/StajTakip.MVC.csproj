@@ -16,6 +16,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="X.PagedList" Version="8.4.7" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +25,10 @@
     <ProjectReference Include="..\StajTakip.Business\StajTakip.Business.csproj" />
     <ProjectReference Include="..\StajTakip.DataAccess\StajTakip.DataAccess.csproj" />
     <ProjectReference Include="..\StajTakip.Entities\StajTakip.Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Shared\Student\" />
   </ItemGroup>
 
 </Project>

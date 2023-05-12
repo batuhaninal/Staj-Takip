@@ -3,6 +3,8 @@
 *@
 @{
 }
+@*@using X.PagedList
+@using X.PagedList.Mvc.Core*@
 
 @model IDataResult<List<InternshipsBookPageListDto>>
 
@@ -12,28 +14,32 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group">
-                    <h4>Sayfalar</h4>
                     <label for="pages"></label>
-                    <ul>
-                        @if (Model.Success)
-                        {
+                    @if (!Model.Data.Any())
+                    {
+
+                        <h5>Henuz veri girilmemis!</h5>
+                    }
+                    else
+                    {
+                        <ol>
                             @foreach (var bookPages in Model.Data)
                             {
                                 <li>
                                     <a asp-area="" asp-controller="InternshipsBook" asp-action="Page" asp-route-id="@bookPages.Id">@bookPages.Date</a>
                                 </li>
                             }
-                            
-                        }
-                        else
-                        {
-                            <h5>@Model.Message</h5>
-                        }
 
-                    </ul>
+                        </ol>
+                        @*<div id="pageInfo">
+                            @Html.PagedListPager((IPagedList)Model, currentPage=> Url.Action("BookPagePagination", new {currentPage}))
+                        </div>*@
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
