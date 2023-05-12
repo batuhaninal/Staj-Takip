@@ -17,6 +17,10 @@ using StajTakip.MVC.ViewComponents.Student;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Razor Runtime
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

@@ -33,7 +33,7 @@ namespace StajTakip.Business.Concrete
         {
             var mappedModel = _mapper.Map<InternshipsBook>(entity);
             _repository.Add(mappedModel);
-            return new SuccessResult();
+            return new SuccessResult("Ekleme işlemi başarılı!");
         }
 
         public IDataResult<InternshipsBook> Get(int id)
@@ -117,7 +117,7 @@ namespace StajTakip.Business.Concrete
             {
                 var mappedData = _mapper.Map<InternshipsBook>(entity);
                 var updatedData = _repository.Update(mappedData);
-                return new SuccessDataResult<InternshipsBook>(updatedData);
+                return new SuccessDataResult<InternshipsBook>(updatedData, "Güncelleme işlemi başarılı!");
             }
 
             return new ErrorDataResult<InternshipsBook>(result.Message);
