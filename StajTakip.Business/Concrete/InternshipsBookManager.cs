@@ -33,7 +33,7 @@ namespace StajTakip.Business.Concrete
         {
             var mappedModel = _mapper.Map<InternshipsBook>(entity);
             _repository.Add(mappedModel);
-            return new SuccessResult();
+            return new SuccessResult("Ekleme işlemi başarılı!");
         }
 
         public IDataResult<InternshipsBook> Get(int id)
@@ -79,7 +79,7 @@ namespace StajTakip.Business.Concrete
         public IDataResult<List<InternshipsBookPageListDto>> GetPages()
         {
             var pages = _repository.GetAll().OrderBy(x=>x.Date).ToList();
-            if (pages.Count < 1)
+            if (pages.Count() < 1)
                 return new ErrorDataResult<List<InternshipsBookPageListDto>>("Henuz veri girilmemis!");
             var mappedPages = _mapper.Map<List<InternshipsBookPageListDto>>(pages);
 
@@ -117,7 +117,7 @@ namespace StajTakip.Business.Concrete
             {
                 var mappedData = _mapper.Map<InternshipsBook>(entity);
                 var updatedData = _repository.Update(mappedData);
-                return new SuccessDataResult<InternshipsBook>(updatedData);
+                return new SuccessDataResult<InternshipsBook>(updatedData, "Güncelleme işlemi başarılı!");
             }
 
             return new ErrorDataResult<InternshipsBook>(result.Message);

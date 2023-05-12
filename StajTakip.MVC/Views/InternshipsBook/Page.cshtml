@@ -2,14 +2,12 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    Layout = "_StudentLayout";
 }
 
 @model InternshipsBook
 
-<div class="row">
-    <div class="col-lg-3 col-md-12">
-        @await Component.InvokeAsync("InternshipsBookPagesList")
-    </div>
+@*<div class="row">
     <div class="col-lg-9 col-md-12">
         <div class="container">
             <form asp-controller="InternshipsBook" asp-action="Update" method="post">
@@ -55,6 +53,74 @@
 
                 <button type="submit" class="btn btn-success">Kaydet</button>
             </form>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-12">
+        @await Component.InvokeAsync("InternshipsBookPagesList")
+    </div>
+</div>
+
+*@
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-lg-3">
+            @await Component.InvokeAsync("InternshipsBookPagesList")
+        </div>
+        <div class="col-sm-12 col-lg-9">
+            <div class="bg-light rounded h-100 p-4">
+                <form asp-controller="InternshipsBook" asp-action="Page" method="post">
+                    <input type="hidden" asp-for="Id"/>
+                    <div class="form-floating mb-3">
+                        <div class="row g-4">
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">                                 
+                                    <label for="dte">Tarih</label>
+                                    <input type="date" class="form-control"
+                                           id="dte" asp-for="Date" placeholder="Lütgen tarih giriniz!">
+                                    <span class="text-danger" asp-validation-for="Date"></span>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="workD">Çalışma Günleri</label>
+                                    <input type="text" class="form-control"
+                                           id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
+                                    <span class="text-danger" asp-validation-for="WorkDays"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            <label for="titl">Başlık</label>
+                            <input type="text" class="form-control"
+                                   id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
+                            <span class="text-danger" asp-validation-for="Title"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            <label for="cont">İçerik</label>
+                            <textarea rows="25" class="form-control" asp-for="Content"></textarea>
+                            <span class="text-danger" asp-validation-for="Content"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            <label for="summa">Özet</label>
+                            <input type="text" class="form-control" id="summa" asp-for="Summary" />
+                            <span class="text-danger" asp-validation-for="Summary"></span>
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

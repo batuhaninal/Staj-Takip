@@ -20,7 +20,7 @@ namespace StajTakip.Entities.DTOs
         [MinLength(2, ErrorMessage = "{0} alanı {1} karakterden küçük olmamalıdır")]
         public string Content { get; set; }
         [DisplayName("Tarih")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date,ErrorMessage ="Lütfen '29-12-2020' formatında giriş yapınız!")]
         [Required(ErrorMessage = "{0} alanı boş geçilmemelidir.")]
         public DateTime Date { get; set; }
         [DisplayName("Çalışma Günleri")]

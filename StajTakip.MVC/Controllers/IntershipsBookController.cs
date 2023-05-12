@@ -24,12 +24,12 @@ namespace StajTakip.MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Page(int id)
+        public IActionResult Page(int pageId)
         {
-            var page = _bookRepository.Get(id);
+            var page = _bookRepository.Get(pageId);
             if (page.Success)
             {
-                _notyfService.Success("Sayfa basariyla yuklendi!");
+                _notyfService.Information("Sayfa başarıyla yüklendi!");
                 return View(page.Data);
             }
             _notyfService.Error(page.Message);
@@ -37,20 +37,24 @@ namespace StajTakip.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(InternshipsBookPageAddDto model)
+        public IActionResult Index(InternshipsBookPageAddDto model)
         {
             if (ModelState.IsValid)
             {
                 var result = _bookRepository.Add(model);
                 if (!result.Success)
+                {
                     _notyfService.Error(result.Message);
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            _notyfService.Error("Lütfen alanları kontrol ediniz!");
+            return View();
         }
 
 
         [HttpPost]
-        public IActionResult Update(InternshipsBookPageUpdateDto model)
+        public IActionResult Page(InternshipsBookPageUpdateDto model)
         {
             if(ModelState.IsValid)
             {
@@ -58,10 +62,18 @@ namespace StajTakip.MVC.Controllers
                 if (!result.Success)
                 {
                     _notyfService.Error(result.Message);
-                    return RedirectToAction("Page", model.Id);
+                    return RedirectToAction("Page", new { pageId = model.Id });
                 }
+                _notyfService.Success($"{model.Date.ToShortDateString()} tarihli sayfa başarıyla güncellendi!");
+                return RedirectToAction("Page", new { pageId = model.Id });
             }
-            return RedirectToAction("Page", model.Id);
+            _notyfService.Error("Lütfen alanları yeniden kontrol ediniz!");
+            return View();
+        }
+
+        public IActionResult BookPagePagination(int? currentPage)
+        {
+            return ViewComponent("InternshipsBookPagesList", currentPage);
         }
     }
 }
