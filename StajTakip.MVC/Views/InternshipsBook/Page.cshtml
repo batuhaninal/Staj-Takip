@@ -7,59 +7,69 @@
 
 @model InternshipsBook
 
-@*<div class="row">
-    <div class="col-lg-9 col-md-12">
-        <div class="container">
-            <form asp-controller="InternshipsBook" asp-action="Update" method="post">
-                <input type="hidden" asp-for="Id"  value="77"/>
-                <div class="row">
-                    <div class="col-lg-6 col-md-12">
+@*
+    <div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-lg-3">
+            @await Component.InvokeAsync("InternshipsBookPagesList")
+        </div>
+        <div class="col-sm-12 col-lg-9">
+            <div class="bg-light rounded h-100 p-4">
+                <form asp-controller="InternshipsBook" asp-action="Page" method="post">
+                    <input type="hidden" asp-for="Id"/>
+                    <div class="form-floating mb-3">
+                        <div class="row g-4">
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="dte">Tarih</label>
+                                    <input type="date" class="form-control"
+                                           id="dte" asp-for="Date" placeholder="Lütgen tarih giriniz!">
+                                    <span class="text-danger" asp-validation-for="Date"></span>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="workD">Çalışma Günleri</label>
+                                    <input type="text" class="form-control"
+                                           id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
+                                    <span class="text-danger" asp-validation-for="WorkDays"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
                         <div class="form-group">
-                            <label for="workD">Çalışma Günleri</label>
+                            <label for="titl">Başlık</label>
                             <input type="text" class="form-control"
-                                   id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
-                            <span asp-validation-for="WorkDays"></span>
+                                   id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
+                            <span class="text-danger" asp-validation-for="Title"></span>
                         </div>
+
                     </div>
-                    <div class="col-lg-6 col-md-12">
+                    <div class="form-floating mb-3">
                         <div class="form-group">
-                            <label for="dte">Tarih</label>
-                            <input type="datetime-local" class="form-control"
-                                   id="dte" asp-for="Date" placeholder="Lütgen tarih giriniz!">
-                            <span asp-validation-for="Date"></span>
+                            <label for="cont">İçerik</label>
+                            <textarea rows="25" class="form-group" asp-for="Content"></textarea>
+                            <span class="text-danger" asp-validation-for="Content"></span>
                         </div>
+
                     </div>
-                </div>
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            <label for="summa">Özet</label>
+                            <input type="text" class="form-control" id="summa" asp-for="Summary" />
+                            <span class="text-danger" asp-validation-for="Summary"></span>
+                        </div>
 
-
-                <div class="form-group">
-                    <label for="titl">Başlık</label>
-                    <input type="text" class="form-control"
-                           id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
-                    <span asp-validation-for="Title"></span>
-                </div>
-                <div class="form-group">
-                    <label for="cont">İçerik</label>
-                    <textarea class="form-control" asp-for="Content"></textarea>
-                    <span asp-validation-for="Content"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="summa">Özet</label>
-                    <textarea class="form-control" id="summa" asp-for="Summary"></textarea>
-                    <span asp-validation-for="Summary"></span>
-                </div>
-
-
-                <button type="submit" class="btn btn-success">Kaydet</button>
-            </form>
+                    </div>
+                    <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-12">
-        @await Component.InvokeAsync("InternshipsBookPagesList")
-    </div>
 </div>
-
 *@
 
 <div class="container-fluid pt-4 px-4">
@@ -105,7 +115,8 @@
                     <div class="form-floating mb-3">
                         <div class="form-group">
                             <label for="cont">İçerik</label>
-                            <textarea rows="25" class="form-control" asp-for="Content"></textarea>
+                            <textarea rows="25" class="ckeditor" asp-for="Content">
+                            </textarea>
                             <span class="text-danger" asp-validation-for="Content"></span>
                         </div>
 
@@ -125,3 +136,56 @@
     </div>
 </div>
 
+
+@section Scripts{
+    <script src="~/js/ckeditor/ckeditor.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            CKEDITOR.replace(‘#Content’, {
+                language: 'tr'
+            });
+
+                #('.editor').ckeditor().on('getData.ckeditor', function (event, editor, data) {
+                let qw = `
+                    <table align="center" cellspacing="0" class="Table" style="border-collapse:collapse; border:none; height:780px; width:750px">
+                        <tbody>
+                            <tr>
+                                <td colspan="4" style="border-bottom:1px solid black; border-left:1px solid black; border-right:1px solid black; border-top:1px solid black; height:39px; width:659px">
+                                    <p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong>2.3. &Uuml;&ccedil;&uuml;nc&uuml; Hafta Değerlendirilmesi</strong></span></span></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom:1px solid black; border-left:1px solid black; border-right:1px solid black; border-top:none; height:39px; width:216px">
+                                    <p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong>Tarih&nbsp;&nbsp; : &hellip;&hellip;../&hellip;&hellip;../&hellip;&hellip;&hellip;</strong></span></span></p>
+                                </td>
+                                <td style="border-bottom:1px solid black; border-left:none; border-right:1px solid black; border-top:none; height:39px; width:126px">
+                                    <p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong>...-... İş G&uuml;n&uuml;</strong></span></span></p>
+                                </td>
+                                <td colspan="2" style="border-bottom:1px solid black; border-left:none; border-right:1px solid black; border-top:none; height:39px; width:318px">
+                                    <p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong>İş veya İşlerin Tanımı:</strong></span></span></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="border-bottom:1px solid black; border-left:1px solid black; border-right:1px solid black; border-top:none; vertical-align:top; width:659px">
+                                    <p style="text-align:justify">&nbsp;</p>
+
+                                    <p style="text-align:justify"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong>Yapılan İşin &Ouml;zeti&nbsp; :</strong></span></span></p>
+
+                                    <p style="text-align:justify">&nbsp;</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>`;
+                data.dataValue = qw;
+            });
+        });
+
+        
+        });
+
+                
+    </script>
+    
+}
