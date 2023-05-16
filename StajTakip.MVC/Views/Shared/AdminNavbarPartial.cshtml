@@ -1,18 +1,19 @@
-﻿@{
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
 }
 
-<nav class="navbar navbar-expand bg-warning navbar-light sticky-top px-4 py-0">
+<nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
     <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
         <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
     </a>
-    <a asp-area="" asp-controller="InternshipsBook" asp-action="Index" class="m-3">
-        <i class="fa fa-file me-lg-2"></i>
-        <span class="d-none d-lg-inline-flex">Staj Belgeleri Sayfası</span>
+    <a href="#" class="sidebar-toggler flex-shrink-0">
+        <i class="fa fa-bars"></i>
     </a>
-    <a asp-area="" asp-controller="InternshipsBook" asp-action="Index" class="m-3">
-        <i class="fa fa-book me-lg-2"></i>
-        <span class="d-none d-lg-inline-flex">Staj Defteri Sayfası</span>
-    </a>
+    <form class="d-none d-md-flex ms-4">
+        <input class="form-control border-0" type="search" placeholder="Search">
+    </form>
     <div class="navbar-nav align-items-center ms-auto">
         <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
