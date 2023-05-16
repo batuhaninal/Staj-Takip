@@ -23,6 +23,9 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<InternshipsBookManager>().As<IInternshipsBookService>().InstancePerLifetimeScope();
             builder.RegisterType<EFInternshipsBookRepository>().As<IInternshipsBookRepository>().InstancePerLifetimeScope();
 
+            builder.RegisterType<BookTemplateManager>().As<IBookTemplateService>().InstancePerLifetimeScope();
+            builder.RegisterType<EFBookTemplate>().As<IBookTemplateRepository>().InstancePerLifetimeScope();
+
             //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerDependency();
 
 

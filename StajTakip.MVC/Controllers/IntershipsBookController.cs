@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using StajTakip.Business.Abstract;
 using StajTakip.Entities.DTOs;
 
@@ -9,17 +10,24 @@ namespace StajTakip.MVC.Controllers
     public class InternshipsBookController : Controller
     {
         private readonly IInternshipsBookService _bookRepository;
+        private readonly IBookTemplateService _bookTemplateService;
         private readonly INotyfService _notyfService;
 
-        public InternshipsBookController(IInternshipsBookService bookRepository, INotyfService notifyService)
+        public InternshipsBookController(IInternshipsBookService bookRepository, INotyfService notifyService, IBookTemplateService bookTemplateService)
         {
             _bookRepository = bookRepository;
             _notyfService = notifyService;
+            _bookTemplateService = bookTemplateService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
+            var template =_bookTemplateService.Get(1);
+            if (!template.Success)
+                ViewBag.Template = "";
+            else
+                ViewBag.Template = template.Data.Template;
             return View();
         }
 
