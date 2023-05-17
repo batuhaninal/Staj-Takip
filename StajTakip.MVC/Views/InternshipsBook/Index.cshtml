@@ -166,7 +166,7 @@
                     <div class="form-floating mb-3">
                         <div class="form-group">
                             <label for="cont">İçerik</label>
-                            <textarea id="Content" name="Content">
+                            <textarea class="ckStudent" id="Content" name="Content">
                             @Html.Raw(ViewBag.Template)
                             </textarea>
                             <span class="text-danger" asp-validation-for="Content"></span>
@@ -191,15 +191,6 @@
 
 @section Scripts{
     <script src="~/js/ckeditor/ckeditor.js"></script>
-
-    <script>
-
-        $(document).ready(function () {
-
-            CKEDITOR.replace('Content');
-
-        });
-
-    </script>
+    <script src="~/StudentTemplate/js/StudentCK.js"></script>
 }
 

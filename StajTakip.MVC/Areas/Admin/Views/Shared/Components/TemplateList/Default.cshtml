@@ -1,14 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
 }
-@*@using X.PagedList
-@using X.PagedList.Mvc.Core*@
 
-@model IDataResult<List<InternshipsBookPageListDto>>
-
-
+@model IDataResult<List<BookTemplate>>
 
 
 <div class="bg-light rounded p-4">
@@ -30,10 +23,10 @@
                             else
                             {
                                 <ol>
-                                    @foreach (var bookPages in Model.Data)
+                                    @foreach (var bookTemplates in Model.Data)
                                     {
                                         <li>
-                                            <a style="text-decoration:none;" asp-area="" asp-controller="InternshipsBook" asp-action="Page" asp-route-pageId="@bookPages.Id">@bookPages.Date.ToShortDateString()</a>
+                                            <a style="text-decoration:none;" asp-area="Admin" asp-controller="InternshipsBook" asp-action="TemplatePage" asp-route-templateId="@bookTemplates.Id">@bookTemplates.Title</a>
                                         </li>
                                     }
 
@@ -46,10 +39,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
-
-
-
