@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model BookTemplate
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+    
+        <div class="col-sm-12 col-lg-9">
+            <div class="bg-light rounded h-100 p-4">
+                <form asp-area="Admin" asp-controller="InternshipsBook" asp-action="Template" method="post">
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            <label for="titl">Başlık</label>
+                            <input type="text" class="form-control"
+                                   id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
+                            <span class="text-danger" asp-validation-for="Title"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            <label for="cont">İçerik</label>
+                            <textarea id="Template" name="Template">
+                            </textarea>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Yeni Sayfa Ekle</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-3">
+            @await Component.InvokeAsync("TemplateList")
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/ckeditor/ckeditor.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            CKEDITOR.replace('Template');
+
+        });
+
+    </script>
+}
+
+
