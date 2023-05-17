@@ -15,6 +15,7 @@ namespace StajTakip.Business.Abstract
         IResult HardDelete(int id);
         IDataResult<BookTemplate> Update(BookTemplate entity);
         IDataResult<BookTemplate> Get(int id);
+        IDataResult<BookTemplate> GetCurrent();
         IDataResult<List<BookTemplate>> GetAll();
     }
 }
