@@ -9,7 +9,7 @@ namespace StajTakip.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Title",
+                name: "Name",
                 table: "BookTemplates",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -19,7 +19,7 @@ namespace StajTakip.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Title",
+                name: "Name",
                 table: "BookTemplates");
         }
     }

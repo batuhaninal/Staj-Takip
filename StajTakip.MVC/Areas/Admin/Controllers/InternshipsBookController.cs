@@ -36,7 +36,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                 var result = _bookTemplateService.Add(model);
                 if (result.Success)
                 {
-                    _notyfService.Information("Template başarıyla eklendi!");
+                    _notyfService.Success("Template başarıyla eklendi!");
                     return RedirectToAction("Template");
                 }
                 _notyfService.Error("Bir hatayla karşılaşıldı. Lütfen daha sonra tekrar deneyiniz!");

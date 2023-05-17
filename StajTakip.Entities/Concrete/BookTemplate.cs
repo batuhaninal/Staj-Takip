@@ -11,5 +11,6 @@ namespace StajTakip.Entities.Concrete
     {
         public string Template { get; set; }
         public string Title { get; set; }
+        public bool IsCurrent { get; set; }
     }
 }
