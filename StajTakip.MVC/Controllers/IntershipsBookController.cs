@@ -23,7 +23,7 @@ namespace StajTakip.MVC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var template =_bookTemplateService.Get(1);
+            var template =_bookTemplateService.GetCurrent();
             if (!template.Success)
                 ViewBag.Template = "";
             else

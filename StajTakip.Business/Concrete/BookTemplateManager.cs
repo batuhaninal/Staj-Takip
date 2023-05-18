@@ -22,7 +22,7 @@ namespace StajTakip.Business.Concrete
 
         public IResult Add(BookTemplate entity)
         {
-            var result = BusinessRules.Run(CheckEntity(entity));
+            var result = BusinessRules.Run(CheckEntity(entity),CheckIsCurrent(entity));
             if (result != null)
                 return result;
 
@@ -37,6 +37,12 @@ namespace StajTakip.Business.Concrete
                 return new ErrorDataResult<BookTemplate>(result.Message);
 
             var bookTemplate = _bookTemplateRepo.Get(x=>x.Id ==  id);
+            return new SuccessDataResult<BookTemplate>(bookTemplate);
+        }
+
+        public IDataResult<BookTemplate> GetCurrent()
+        {
+            var bookTemplate = _bookTemplateRepo.Get(x => x.IsCurrent == true);
             return new SuccessDataResult<BookTemplate>(bookTemplate);
         }
 
@@ -62,7 +68,7 @@ namespace StajTakip.Business.Concrete
 
         public IDataResult<BookTemplate> Update(BookTemplate entity)
         {
-            var result = BusinessRules.Run(CheckById(entity.Id));
+            var result = BusinessRules.Run(CheckById(entity.Id), CheckIsCurrent(entity));
             if (result != null)
                 return new ErrorDataResult<BookTemplate>(result.Message);
 
@@ -84,6 +90,19 @@ namespace StajTakip.Business.Concrete
             if (result is null)
                 return new ErrorResult("Bu paramatreye ait bir veri bulunamadi!");
 
+            return new SuccessResult();
+        }
+
+        private IResult CheckIsCurrent(BookTemplate entity)
+        {
+            if (entity.IsCurrent)
+            {
+                var lastTemplate = _bookTemplateRepo.Get(x => x.IsCurrent == true);
+                lastTemplate.IsCurrent = false;
+                var result = _bookTemplateRepo.Update(lastTemplate);
+                if (result == null)
+                    return new ErrorResult("Geçerli template işlemi yapılamadı!");
+            }
             return new SuccessResult();
         }
     }

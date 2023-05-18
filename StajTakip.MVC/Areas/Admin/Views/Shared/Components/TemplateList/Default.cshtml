@@ -1,0 +1,45 @@
+﻿@{
+}
+
+@model IDataResult<List<BookTemplate>>
+
+
+<div class="bg-light rounded p-4">
+    <div class="card">
+        <div class="card-header text-center">
+            Sayfalar
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="pages"></label>
+                            @if (!Model.Success)
+                            {
+
+                                <h5>Henuz veri girilmemis!</h5>
+                            }
+                            else
+                            {
+                                <ol>
+                                    @foreach (var bookTemplates in Model.Data)
+                                    {
+                                        <li>
+                                            <a style="text-decoration:none;" asp-area="Admin" asp-controller="InternshipsBook" asp-action="TemplatePage" asp-route-templateId="@bookTemplates.Id">@bookTemplates.Title</a>
+                                        </li>
+                                    }
+
+                                </ol>
+                                @*<div id="pageInfo">
+                            @Html.PagedListPager((IPagedList)Model, currentPage=> Url.Action("BookPagePagination", new {currentPage}))
+                            </div>*@
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
