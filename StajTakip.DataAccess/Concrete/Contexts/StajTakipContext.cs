@@ -16,5 +16,6 @@ namespace StajTakip.DataAccess.Concrete.Contexts
         public DbSet<Signature> Signatures { get; set; }
         public DbSet<BookImage> BookImages { get; set; }
         public DbSet<BookTemplate> BookTemplates { get; set; }
+        public DbSet<InternshipDocument> InternshipDocuments { get; set; }
     }
 }
