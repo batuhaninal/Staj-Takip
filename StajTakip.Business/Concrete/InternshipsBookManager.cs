@@ -59,12 +59,6 @@ namespace StajTakip.Business.Concrete
             return new SuccessDataResult<List<InternshipsBook>>(data);
         }
 
-        public IDataResult<List<InternshipsBook>> GetAllPages(int userId)
-        {
-            // InternshipsBook tablosuna alan eklenmeli
-            throw new NotImplementedException();
-        }
-
         // Degistirilmeli
         public IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId)
         {
@@ -72,13 +66,12 @@ namespace StajTakip.Business.Concrete
             //List<Expression<Func<InternshipsBook, object>>> includes = new();
             //includes.Add(x => x.Signatures);
             //includes.Add(x => x.BookImages);
-            var data = _repository.GetAll(x=>x.Id == userId, i=> i.Signatures, i=> i.BookImages);
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<InternshipsBookPageListDto>> GetPages()
+        public IDataResult<List<InternshipsBookPageListDto>> GetPagesByStudentId(int studentUserId)
         {
-            var pages = _repository.GetAll().OrderBy(x=>x.Date).ToList();
+            var pages = _repository.GetAll(x=>x.StudentUserId == studentUserId).OrderBy(x=>x.Date).ToList();
             if (pages.Count() < 1)
                 return new ErrorDataResult<List<InternshipsBookPageListDto>>("Henuz veri girilmemis!");
             var mappedPages = _mapper.Map<List<InternshipsBookPageListDto>>(pages);

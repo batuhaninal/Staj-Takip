@@ -15,8 +15,7 @@ namespace StajTakip.Business.Abstract
         IResult HardDelete(InternshipsBook entity);
         IResult HardDelete(int id);
         IDataResult<InternshipsBook> Update(InternshipsBookPageUpdateDto entity);
-        IDataResult<List<InternshipsBook>> GetAllPages(int userId);
-        IDataResult<List<InternshipsBookPageListDto>> GetPages();
+        IDataResult<List<InternshipsBookPageListDto>> GetPagesByStudentId(int studentUserId);
         IDataResult<InternshipsBook> Get(int id);
         IDataResult<List<InternshipsBook>> GetAll();
         IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId);

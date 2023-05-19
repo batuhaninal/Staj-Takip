@@ -8,7 +8,7 @@ namespace StajTakip.Entities.Concrete
         public DateTime Date { get; set; }
         public bool IsCompanyChecked { get; set; } = false;
         public bool IsTeacherChecked { get; set; } = false;
-        public int StudentId { get; set; }
+        public int StudentUserId { get; set; }
         public virtual StudentUser? StudentUser { get; set; }
         public virtual ICollection<Signature>? Signatures { get; set; }
     }

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Utilities.Results;
+using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Concrete;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
+using StajTakip.Entities.DTOs;
 using X.PagedList;
 
 namespace StajTakip.MVC.ViewComponents.Student
@@ -24,9 +26,15 @@ namespace StajTakip.MVC.ViewComponents.Student
 
         public IViewComponentResult Invoke()
         {
-            var bookPages = _service.GetPages();
+            if(!User.Identity.IsAuthenticated)
+            {
+                return View(new ErrorDataResult<List<InternshipsBookPageListDto>>());
+            }
+            var userId = User.Identity.Name;
+            var bookPages = _service.GetPagesByStudentId(int.Parse(userId));
 
             return View(bookPages);
+
         }
     }
 }
