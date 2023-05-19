@@ -37,18 +37,19 @@
                             </div>*@
                         </div>
                     </div>
-                   @* <div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="titl">Başlık</label>
-                            <input type="text" class="form-control"
-                                   id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
-                            <span class="text-danger" asp-validation-for="Title"></span>
-                        </div>
+                    @* <div class="form-floating mb-3">
+                    <div class="form-group">
+                    <label for="titl">Başlık</label>
+                    <input type="text" class="form-control"
+                    id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
+                    <span class="text-danger" asp-validation-for="Title"></span>
+                    </div>
 
                     </div>*@
                     <div class="form-floating mb-3">
                         <div class="form-group">
                             <label for="cont">İçerik</label>
+
                             <textarea class="ckStudent" id="Content" name="Content">
                             @Html.Raw(ViewBag.Template)
                             </textarea>
@@ -57,11 +58,11 @@
 
                     </div>
                     @*<div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="summa">Özet</label>
-                            <input type="text" class="form-control" id="summa" asp-for="Summary" />
-                            <span class="text-danger" asp-validation-for="Summary"></span>
-                        </div>
+                    <div class="form-group">
+                    <label for="summa">Özet</label>
+                    <input type="text" class="form-control" id="summa" asp-for="Summary" />
+                    <span class="text-danger" asp-validation-for="Summary"></span>
+                    </div>
 
                     </div>*@
                     <button type="submit" class="btn btn-success">Yeni Sayfa Ekle</button>
