@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model StudentUserForRegisterDto
+
+
+<form asp-area="" asp-controller="Auth" asp-action="Register" method="post">
+    <input type="text" asp-for="Email" placeholder="Kullanici Adi"/>
+    <input type="password" asp-for="Password" placeholder="Sifre"/>
+    <input type="text" asp-for="FirstName" placeholder="Ad"/>
+    <input type="text" asp-for="LastName" placeholder="Soyad"/>
+    <button type="submit">Uye Ol</button>
+    <a asp-area="" asp-controller="Auth" asp-action="Login">Giris Yap</a>
+</form>

@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using StajTakip.Business.Abstract;
@@ -7,6 +8,7 @@ using StajTakip.Entities.DTOs;
 
 namespace StajTakip.MVC.Controllers
 {
+    [Authorize(Roles ="admin, student")]
     public class InternshipsBookController : Controller
     {
         private readonly IInternshipsBookService _bookRepository;
@@ -31,19 +33,6 @@ namespace StajTakip.MVC.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Page(int pageId)
-        {
-            var page = _bookRepository.Get(pageId);
-            if (page.Success)
-            {
-                _notyfService.Information("Sayfa başarıyla yüklendi!");
-                return View(page.Data);
-            }
-            _notyfService.Error(page.Message);
-            return RedirectToAction("Index");
-        }
-
         [HttpPost]
         public IActionResult Index(InternshipsBookPageAddDto model)
         {
@@ -60,6 +49,18 @@ namespace StajTakip.MVC.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Page(int pageId)
+        {
+            var page = _bookRepository.Get(pageId);
+            if (page.Success)
+            {
+                _notyfService.Information("Sayfa başarıyla yüklendi!");
+                return View(page.Data);
+            }
+            _notyfService.Error(page.Message);
+            return RedirectToAction("Index");
+        }
 
         [HttpPost]
         public IActionResult Page(InternshipsBookPageUpdateDto model)
