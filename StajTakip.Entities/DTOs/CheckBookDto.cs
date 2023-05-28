@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace StajTakip.Entities.DTOs
 {
-    public class InternshipsBookPageListDto
+    public class CheckBookDto
     {
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public bool TeacherIsChecked { get; set; }
-        public bool CompanyIsChecked { get; set; }
+        public bool? IsTeacherChecked { get; set; }
+        public bool? IsCompanyChecked { get; set; }
     }
 }

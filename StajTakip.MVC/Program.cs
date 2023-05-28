@@ -41,6 +41,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
         options.ExpireTimeSpan = TimeSpan.FromDays(2);
         options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
+        options.Events.OnRedirectToLogin = async context =>
+        {
+            if (context.Request.Path.StartsWithSegments(new PathString("/Admin")))
+            {
+                context.Response.Redirect("/Admin/Auth/Login");
+            }
+            else
+            {
+                context.Response.Redirect(context.RedirectUri);
+            }
+        };
     });
 
 

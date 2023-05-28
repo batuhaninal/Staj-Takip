@@ -31,7 +31,7 @@ namespace StajTakip.MVC.ViewComponents.Student
                 return View(new ErrorDataResult<List<InternshipsBookPageListDto>>());
             }
             var userId = User.Identity.Name;
-            var bookPages = _service.GetPagesByStudentId(int.Parse(userId));
+            var bookPages = _service.GetPageListDtoByStudentId(int.Parse(userId));
 
             return View(bookPages);
 
