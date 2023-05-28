@@ -24,5 +24,15 @@ namespace StajTakip.Business.Concrete
             _studentRepo.Add(studentUser);
             return new SuccessResult();
         }
+
+        public IDataResult<List<StudentUser>> GetAll()
+        {
+            var data = _studentRepo.GetAll().ToList();
+            if(data.Count > 0)
+            {
+                return new SuccessDataResult<List<StudentUser>>(data);
+            }
+            return new ErrorDataResult<List<StudentUser>>("Henüz kullanıcı yok!");
+        }
     }
 }

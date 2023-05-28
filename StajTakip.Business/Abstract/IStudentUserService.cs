@@ -11,5 +11,6 @@ namespace StajTakip.Business.Abstract
     public interface IStudentUserService
     {
         IResult Add(StudentUser studentUser);
+        IDataResult<List<StudentUser>> GetAll();
     }
 }

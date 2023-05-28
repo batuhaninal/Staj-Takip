@@ -6,7 +6,32 @@
 }
 
 @model InternshipsBook
-
+<div class="text-center">
+    @if (Model.IsTeacherChecked)
+    {
+        <div class="alert alert-success">
+            Eğitmen Kontrolü Yapıldı!
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Henüz Eğitmen Kontrolü Yapılmadı!
+        </div>
+    }
+    @if (Model.IsCompanyChecked)
+    {
+        <div class="alert alert-success">
+            Şirket Kontrolü Yapıldı!
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Henüz Şirket Kontrolü Yapılmadı!
+        </div>
+    }
+</div>
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-12 col-lg-3">

@@ -36,6 +36,23 @@ namespace StajTakip.Business.Concrete
             return new SuccessResult("Ekleme işlemi başarılı!");
         }
 
+        public IResult CheckBook(CheckBookDto entity)
+        {
+            var result = BusinessRules.Run(IsBookExist(entity.Id));
+            if(result == null)
+            {
+                var data = _repository.Get(x => x.Id == entity.Id);
+                data.IsTeacherChecked = entity.IsTeacherChecked ?? false;
+                data.IsCompanyChecked = entity.IsCompanyChecked ?? false;
+                var book = _repository.Update(data);
+                if(book == null)
+                    return new ErrorResult("Bir hata olustu");
+
+                return new SuccessResult();
+            }
+            return new ErrorResult(result.Message);
+        }
+
         public IDataResult<InternshipsBook> Get(int id)
         {
             var result = BusinessRules.Run(IsBookExist(id));
@@ -69,7 +86,12 @@ namespace StajTakip.Business.Concrete
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<InternshipsBookPageListDto>> GetPagesByStudentId(int studentUserId)
+        public IDataResult<InternshipsBook> GetFirstByUserId(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataResult<List<InternshipsBookPageListDto>> GetPageListDtoByStudentId(int studentUserId)
         {
             var pages = _repository.GetAll(x=>x.StudentUserId == studentUserId).OrderBy(x=>x.Date).ToList();
             if (pages.Count() < 1)

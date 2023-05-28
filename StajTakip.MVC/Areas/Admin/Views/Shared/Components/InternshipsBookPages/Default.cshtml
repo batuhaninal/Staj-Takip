@@ -1,13 +1,15 @@
-﻿@{
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
 }
 
-@model IDataResult<List<BookTemplate>>
-
+@model IDataResult<List<InternshipsBookPageListDto>>
 
 <div class="bg-light rounded p-4">
     <div class="card">
         <div class="card-header text-center">
-            Templateler
+            Staj Sayfaları
         </div>
         <div class="card-body">
             <div class="container">
@@ -23,10 +25,10 @@
                             else
                             {
                                 <ol>
-                                    @foreach (var bookTemplates in Model.Data)
+                                    @foreach (var bookPages in Model.Data)
                                     {
                                         <li>
-                                            <a style="text-decoration:none;" asp-area="Admin" asp-controller="BookTemplate" asp-action="TemplatePage" asp-route-templateId="@bookTemplates.Id">@bookTemplates.Title</a>
+                                            <a style="text-decoration:none;" asp-area="Admin" asp-controller="InternshipsBook" asp-action="BookPage" asp-route-bookId="@bookPages.Id">@bookPages.Date.ToShortDateString()</a>
                                         </li>
                                     }
 
