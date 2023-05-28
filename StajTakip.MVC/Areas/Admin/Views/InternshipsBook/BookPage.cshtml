@@ -5,7 +5,7 @@
     //var studentUserId = Context.Request.RouteValues["studentId"];
 }
 
-@model IDataResult<InternshipsBook>
+@model InternshipsBook
 
 
 <div class="container-fluid pt-4 px-4">
@@ -15,27 +15,45 @@
         </div>
         <div class="col-sm-12 col-lg-9">
             <div class="bg-light rounded h-100 p-4">
-                @if (Model.Success)
+                @if (Model != null)
                 {
                     <div class="text-center">
-                    @if (Model.Data.IsTeacherChecked)
-                    {
-                        <div class="alert alert-success">
-                            Kontrol Edildi!
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-danger">
-                            Henüz Eğitmen Kontrolü Yapılmadı!
-                        </div>
-                    }
+                        @if (User.IsInRole("admin.teacher"))
+                        {
+                            @if (Model.IsTeacherChecked)
+                            {
+                                <div class="alert alert-success">
+                                    Kontrol Edildi!
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger">
+                                    Henüz Eğitmen Kontrolü Yapılmadı!
+                                </div>
+                            }
+                        } else if (User.IsInRole("admin.company"))
+                        {
+                            @if (Model.IsCompanyChecked)
+                            {
+                                <div class="alert alert-success">
+                                    Kontrol Edildi!
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger">
+                                    Henüz Şirket Kontrolü Yapılmadı!
+                                </div>
+                            }
+                        }
+
                     </div>
 
                     <div class="form-floating mb-3">
                         <div class="form-group">
                             <label for="dte">Tarih</label>
-                            <label for="dte">@Model.Data.Date.ToShortDateString()</label>
+                            <label for="dte">@Model.Date.ToShortDateString()</label>
                         </div>
 
                     </div>
@@ -43,22 +61,39 @@
                     <div class="form-floating mb-3">
                         <div class="form-group">
                             <label for="cont">İçerik</label>
-                            <label for="cont">@Html.Raw(Model.Data.Content)</label>
+                            <label for="cont">@Html.Raw(Model.Content)</label>
                         </div>
 
                     </div>
                     <form asp-area="Admin" asp-controller="InternshipsBook" asp-action="CheckBook" method="post">
-                        <input type="hidden" name="Id" value="@Model.Data.Id"/>
-                        <input type="hidden" name="IsTeacherChecked" value="true" />
-                        <input type="hidden" name="IsCompanyChecked" value="@Model.Data.IsCompanyChecked" />
-                        
-                        @if (!Model.Data.IsTeacherChecked)
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="IsTeacherChecked" />
+                        <input type="hidden" asp-for="IsCompanyChecked" />
+
+                        @if (User.IsInRole("admin.teacher"))
                         {
-                            <button type="submit" class="btn btn-success">Kontrol Edildi Olarak İşaretle</button>
-                        }else
-                        {
-                            <button type="submit" disabled class="btn btn-success">Kontrol Edildi Olarak İşaretle</button>
+                            @if (!Model.IsTeacherChecked)
+                            {
+                                <button type="submit" class="btn btn-success">Kontrol Edildi Olarak İşaretle</button>
+                            }
+                            else
+                            {
+                                <button type="button" disabled class="btn btn-success">Kontrol Edildi Olarak İşaretle</button>
+                            }
                         }
+                        else if (User.IsInRole("admin.company"))
+                        {
+                            @if (!Model.IsCompanyChecked)
+                            {
+                                <button type="submit" class="btn btn-success">Kontrol Edildi Olarak İşaretle</button>
+                            }
+                            else
+                            {
+                                <button type="button" disabled class="btn btn-success">Kontrol Edildi Olarak İşaretle</button>
+                            }
+                        }
+
+                       
                     </form>
                 }
                 else

@@ -42,8 +42,8 @@ namespace StajTakip.Business.Concrete
             if(result == null)
             {
                 var data = _repository.Get(x => x.Id == entity.Id);
-                data.IsTeacherChecked = entity.IsTeacherChecked ?? false;
-                data.IsCompanyChecked = entity.IsCompanyChecked ?? false;
+                data.IsTeacherChecked = entity.IsTeacherChecked;
+                data.IsCompanyChecked = entity.IsCompanyChecked;
                 var book = _repository.Update(data);
                 if(book == null)
                     return new ErrorResult("Bir hata olustu");
