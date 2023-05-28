@@ -7,7 +7,7 @@ using StajTakip.Entities.Concrete;
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles ="admin,admin.teacher")]
+    [Authorize(Roles ="admin,admin.teacher, admin.company")]
     public class BookTemplateController : Controller
     {
         private readonly IBookTemplateService _bookTemplateService;

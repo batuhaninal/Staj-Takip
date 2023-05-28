@@ -9,7 +9,7 @@ using StajTakip.Entities.DTOs;
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "admin,admin.teacher")]
+    [Authorize(Roles = "admin,admin.teacher, admin.company")]
     public class InternshipsBookController : Controller
     {
         private readonly IInternshipsBookService _internshipsBookService;
@@ -32,10 +32,16 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             var data = _internshipsBookService.Get(bookId);
             
             if (!data.Success)
+            {
                 ViewBag.studentId = studentId;
+                return View();
+            }
             else
+            {
                 ViewBag.studentId = data.Data.StudentUserId;
-            return View(data);
+                return View(data.Data);
+            }
+                
         }
 
         [HttpPost]
@@ -43,6 +49,8 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.IsTeacherChecked = User.IsInRole("admin.teacher") ? true : model.IsTeacherChecked;
+                model.IsCompanyChecked = User.IsInRole("admin.company") ? true : model.IsCompanyChecked;
                 var result = _internshipsBookService.CheckBook(model);
                 if (result.Success)
                 {

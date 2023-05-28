@@ -9,7 +9,7 @@ namespace StajTakip.Entities.DTOs
     public class CheckBookDto
     {
         public int Id { get; set; }
-        public bool? IsTeacherChecked { get; set; }
-        public bool? IsCompanyChecked { get; set; }
+        public bool IsTeacherChecked { get; set; }
+        public bool IsCompanyChecked { get; set; }
     }
 }

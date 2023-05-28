@@ -7,7 +7,7 @@ using System.Data;
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "admin,admin.teacher")]
+    [Authorize(Roles = "admin,admin.teacher,admin.company")]
     public class StudentController : Controller
     {
         private readonly IStudentUserService _studentUserService;
