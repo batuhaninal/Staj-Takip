@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_StudentLayout";
+}
+@model InternshipDocument
+
+<div>
+    @*<form asp-controller="InternshipDocument" asp-action="ShowPdf" method="get" enctype="multipart/form-data">
+
+       
+
+    </form>*@
+    <div class="form-group">
+        <br />
+        <label>Yüklenilen Dosyalar</label>
+
+    </div>
+    <br />
+    <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@Model.Id">
+        <button class="btn btn-primary">@Model.CreatedDate.ToShortDateString() </button>
+    </a>
+<form asp-controller="InternshipDocument" asp-action="Index" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <br/>
+        <label>Dosya Yükleyiniz</label>
+        <br/>
+        <input type="file" name="pdfFile" class="form-control-file" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Dosya Ekle</button>
+</form>
+</div>

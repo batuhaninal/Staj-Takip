@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StajTakip.Entities", "StajTakip.Entities\StajTakip.Entities.csproj", "{AB88C21F-C4BA-461D-A6A5-E80359B53F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StajTakip.Entities", "StajTakip.Entities\StajTakip.Entities.csproj", "{AB88C21F-C4BA-461D-A6A5-E80359B53F25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StajTakip.DataAccess", "StajTakip.DataAccess\StajTakip.DataAccess.csproj", "{94671EEB-F039-4BBE-86A8-E8742CCAF441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StajTakip.DataAccess", "StajTakip.DataAccess\StajTakip.DataAccess.csproj", "{94671EEB-F039-4BBE-86A8-E8742CCAF441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5F4D97EE-144E-4AC7-B54F-1FC3D2D19167}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{5F4D97EE-144E-4AC7-B54F-1FC3D2D19167}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StajTakip.Business", "StajTakip.Business\StajTakip.Business.csproj", "{B90AF29B-1EFB-449C-A233-95AB98CAE563}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StajTakip.Business", "StajTakip.Business\StajTakip.Business.csproj", "{B90AF29B-1EFB-449C-A233-95AB98CAE563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StajTakip.MVC", "StajTakip.MVC\StajTakip.MVC.csproj", "{1CA67ED8-D9EA-4462-B81B-A3AA4567E767}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StajTakip.MVC", "StajTakip.MVC\StajTakip.MVC.csproj", "{1CA67ED8-D9EA-4462-B81B-A3AA4567E767}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
