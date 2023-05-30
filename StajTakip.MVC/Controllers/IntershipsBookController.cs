@@ -1,7 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using StajTakip.Business.Abstract;
 using StajTakip.Entities.DTOs;
 
@@ -23,8 +21,8 @@ namespace StajTakip.MVC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var template =_bookTemplateService.GetCurrent();
-            if (!template.Success)
+            var template = _bookTemplateService.GetCurrent();
+            if (!template.Success || template.Data == null)
                 ViewBag.Template = "";
             else
                 ViewBag.Template = template.Data.Template;
@@ -64,7 +62,7 @@ namespace StajTakip.MVC.Controllers
         [HttpPost]
         public IActionResult Page(InternshipsBookPageUpdateDto model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = _bookRepository.Update(model);
                 if (!result.Success)

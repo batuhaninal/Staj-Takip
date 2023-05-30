@@ -2,13 +2,7 @@
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Concrete;
 using StajTakip.DataAccess.Abstract;
-using StajTakip.DataAccess.Concrete;
 using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StajTakip.Business.DependencyResolvers.Autofac
 {
@@ -25,6 +19,9 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<BookTemplateManager>().As<IBookTemplateService>().InstancePerLifetimeScope();
             builder.RegisterType<EFBookTemplate>().As<IBookTemplateRepository>().InstancePerLifetimeScope();
+
+            builder.RegisterType<InternshipDocumentManager>().As<IInternshipDocumentService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfInternshipDocumentRepository>().As<IInternshipDocumentRepository>().InstancePerLifetimeScope();
 
             //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerDependency();
 

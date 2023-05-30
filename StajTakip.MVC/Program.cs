@@ -1,18 +1,10 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using Autofac;
-using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using StajTakip.Business.Abstract;
-using StajTakip.Business.Concrete;
 using StajTakip.Business.DependencyResolvers.Autofac;
 using StajTakip.Business.Utilities.AutoMapper.Profiles;
-using StajTakip.DataAccess.Abstract;
-using StajTakip.DataAccess.Concrete.Contexts;
-using StajTakip.DataAccess.Concrete.EntityFramework.Repositories;
 using StajTakip.Entities.Concrete;
-using StajTakip.MVC.ViewComponents.Student;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,6 +67,15 @@ app.UseEndpoints(endpoints =>
     app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=InternshipDocument}/{action=Index}/{id?}");
+
+    endpoints.MapControllerRoute(
+        name: "pdfRoute",
+        pattern: "InternshipDocument/ShowPdf/{id}",
+        defaults: new { controller = "InternshipDocument", action = "ShowPdf" });
 
 });
 

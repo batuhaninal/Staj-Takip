@@ -3,11 +3,6 @@ using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StajTakip.Business.Concrete
 {
@@ -22,7 +17,7 @@ namespace StajTakip.Business.Concrete
 
         public IResult Add(BookTemplate entity)
         {
-            var result = BusinessRules.Run(CheckEntity(entity),CheckIsCurrent(entity));
+            var result = BusinessRules.Run(CheckEntity(entity), CheckIsCurrent(entity));
             if (result != null)
                 return result;
 
@@ -36,7 +31,7 @@ namespace StajTakip.Business.Concrete
             if (result != null)
                 return new ErrorDataResult<BookTemplate>(result.Message);
 
-            var bookTemplate = _bookTemplateRepo.Get(x=>x.Id ==  id);
+            var bookTemplate = _bookTemplateRepo.Get(x => x.Id == id);
             return new SuccessDataResult<BookTemplate>(bookTemplate);
         }
 
@@ -61,7 +56,7 @@ namespace StajTakip.Business.Concrete
             if (result != null)
                 return result;
 
-            var template = _bookTemplateRepo.Get(x=>x.Id==id);
+            var template = _bookTemplateRepo.Get(x => x.Id == id);
             _bookTemplateRepo.Delete(template);
             return new SuccessResult();
         }
@@ -84,9 +79,9 @@ namespace StajTakip.Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckById(int id) 
+        private IResult CheckById(int id)
         {
-            var result = _bookTemplateRepo.Get(x=>x.Id == id);
+            var result = _bookTemplateRepo.Get(x => x.Id == id);
             if (result is null)
                 return new ErrorResult("Bu paramatreye ait bir veri bulunamadi!");
 
@@ -98,10 +93,14 @@ namespace StajTakip.Business.Concrete
             if (entity.IsCurrent)
             {
                 var lastTemplate = _bookTemplateRepo.Get(x => x.IsCurrent == true);
-                lastTemplate.IsCurrent = false;
-                var result = _bookTemplateRepo.Update(lastTemplate);
-                if (result == null)
-                    return new ErrorResult("Geçerli template işlemi yapılamadı!");
+                if (lastTemplate != null)
+                {
+                    lastTemplate.IsCurrent = false;
+                    var result = _bookTemplateRepo.Update(lastTemplate);
+                    if (result == null)
+                        return new ErrorResult("Geçerli template işlemi yapılamadı!");
+                }
+
             }
             return new SuccessResult();
         }
