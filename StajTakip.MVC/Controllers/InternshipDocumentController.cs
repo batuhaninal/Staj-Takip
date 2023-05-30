@@ -17,30 +17,6 @@ namespace StajTakip.MVC.Controllers
         }
 
 
-
-        //[HttpPost]
-        //public IActionResult Index(InternshipDocument internshipDocument, IFormFile pdfFile)
-        //{
-        //    if (pdfFile != null && pdfFile.Length > 0)
-        //    {
-        //        using (var memoryStream = new MemoryStream())
-        //        {
-        //            pdfFile.CopyTo(memoryStream);
-        //            internshipDocument.Data = memoryStream.ToArray();
-        //            var result = _internshipDocumentService.Add(internshipDocument);
-        //            if (!result.Success)
-        //            {
-        //                _notyfService.Error(result.Message);
-        //            }
-        //            _notyfService.Success(result.Message);
-        //            return RedirectToAction("Index");
-
-
-        //        }
-        //    }
-        //    return View();
-        //}
-
         public IActionResult Index()
         {
             var documents = _internshipDocumentService.GetAll().Data.FirstOrDefault();
@@ -65,11 +41,11 @@ namespace StajTakip.MVC.Controllers
         {
             if (pdfFile != null && pdfFile.Length > 0)
             {
-                // Validate if the uploaded file is a PDF
+
                 if (Path.GetExtension(pdfFile.FileName).ToLower() != ".pdf")
                 {
-                    ModelState.AddModelError("pdfFile", "Please upload a PDF file.");
-                    return View();
+                    ModelState.AddModelError("pdfFile", "Lütfen pdf belgesi yükleyiniz.");
+                    return RedirectToAction("Index");
                 }
 
                 using (var memoryStream = new MemoryStream())
@@ -86,7 +62,7 @@ namespace StajTakip.MVC.Controllers
                 }
             }
 
-            return View();
+            return RedirectToAction("Index");
         }
 
 

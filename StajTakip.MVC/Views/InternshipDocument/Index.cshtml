@@ -21,7 +21,7 @@
     <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@Model.Id">
         <button class="btn btn-primary">@Model.CreatedDate.ToShortDateString() </button>
     </a>
-<form asp-controller="InternshipDocument" asp-action="Index" method="post" enctype="multipart/form-data">
+    <form asp-controller="InternshipDocument" asp-action="UploadPdf" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <br/>
@@ -32,4 +32,17 @@
     <br />
     <button type="submit" class="btn btn-primary">Dosya Ekle</button>
 </form>
+
+
+    <h1>İmza Oluşturma</h1>
+    <canvas style="flood-color" id="signatureCanvas" width="400" height="200"></canvas>
+    <br>
+    <button id="clearButton">Temizle</button>
+    <button id="saveButton">İmzayı Kaydet</button>
+
+
 </div>
+
+@section Scripts{
+    <script src="~/StudentTemplate/js/signatureCanvas.js"> </script>
+    }
