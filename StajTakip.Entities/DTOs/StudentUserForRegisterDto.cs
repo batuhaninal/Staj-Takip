@@ -10,9 +10,14 @@ namespace StajTakip.Entities.DTOs
 {
     public class StudentUserForRegisterDto
     {
+        [DisplayName("Email")]
+        [Required(ErrorMessage = "{0} alanı zorunludur.")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
         [DisplayName("Kullanıcı Adı")]
         [Required(ErrorMessage = "{0} alanı zorunludur.")]
-        public string Email { get; set; }
+        public string Username { get; set; }
 
         [DisplayName("Şifre")]
         [Required(ErrorMessage = "{0} alanı zorunludur.")]

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StajTakip.DataAccess.Concrete.Contexts;
 
@@ -11,9 +12,10 @@ using StajTakip.DataAccess.Concrete.Contexts;
 namespace StajTakip.DataAccess.Migrations
 {
     [DbContext(typeof(StajTakipContext))]
-    partial class StajTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20230529160115_user_update_message_add")]
+    partial class user_update_message_add
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

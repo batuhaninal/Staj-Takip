@@ -12,7 +12,7 @@ namespace StajTakip.Entities.DTOs
     {
         [DisplayName("Kullanıcı Adı")]
         [Required(ErrorMessage = "{0} alanı zorunludur.")]
-        public string Email { get; set; }
+        public string Username { get; set; }
 
         [DisplayName("Şifre")]
         [Required(ErrorMessage = "{0} alanı zorunludur.")]

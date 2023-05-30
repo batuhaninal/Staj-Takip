@@ -14,7 +14,7 @@ namespace StajTakip.Business.Abstract
         IDataResult<User> RegisterAdmin(AdminUserForRegisterDto userForRegisterDto);
         IDataResult<User> RegisterStudent(StudentUserForRegisterDto userForRegisterDto);
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
-        IResult UserExists(string email);
+        IResult UserExists(string username);
         IDataResult<List<OperationClaim>> GetClaims(int userId);
     }
 }

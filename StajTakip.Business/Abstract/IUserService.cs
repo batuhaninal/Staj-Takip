@@ -12,6 +12,7 @@ namespace StajTakip.Business.Abstract
     {
         IDataResult<List<OperationClaim>> GetClaims(int userId);
         IDataResult<User> Add(User user);
-        IDataResult<User> GetByMail(string email);
+        IDataResult<User> GetByUsername(string username);
+        IDataResult<User> GetById(int userId);
     }
 }
