@@ -40,7 +40,7 @@ namespace StajTakip.Business.Concrete
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
-            var userToCheck = _userService.GetByMail(userForLoginDto.Email).Data;
+            var userToCheck = _userService.GetByUsername(userForLoginDto.Username).Data;
             if (userToCheck == null)
                 return new ErrorDataResult<User>("Kullanici bulunamadi!");
 
@@ -58,6 +58,7 @@ namespace StajTakip.Business.Concrete
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out passwordHash, out passwordSalt);
             var user = new User
             {
+                Username = userForRegisterDto.Username,
                 Email = userForRegisterDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt
@@ -94,6 +95,7 @@ namespace StajTakip.Business.Concrete
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out passwordHash, out passwordSalt);
             var user = new User
             {
+                Username = userForRegisterDto.Username,
                 Email = userForRegisterDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt
@@ -124,9 +126,9 @@ namespace StajTakip.Business.Concrete
             return new SuccessDataResult<User>(user);
         }
 
-        public IResult UserExists(string email)
+        public IResult UserExists(string username)
         {
-            if (_userService.GetByMail(email) != null)
+            if (_userService.GetByUsername(username) != null)
             {
                 return new ErrorResult("Bu mail ile kayitli bir kullanici bulunmaktadir!");
             }

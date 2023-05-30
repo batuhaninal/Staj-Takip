@@ -24,6 +24,7 @@ namespace StajTakip.DataAccess.Concrete.Contexts
         public DbSet<StudentUser> StudentUsers { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
     }
 }

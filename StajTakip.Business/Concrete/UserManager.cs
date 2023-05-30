@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Concrete;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Abstract;
@@ -28,11 +29,20 @@ namespace StajTakip.Business.Concrete
             return new ErrorDataResult<User>("Kullanici eklenemedi!");
         }
 
-        public IDataResult<User> GetByMail(string email)
+        public IDataResult<User> GetById(int userId)
         {
-            var result = _userRepository.Get(x=>x.Email == email);
+            var result = BusinessRules.Run(CheckUser(userId));
+            if (result != null)
+                return new ErrorDataResult<User>(result.Message);
+            var user = _userRepository.Get(x=>x.Id == userId);
+            return new SuccessDataResult<User>(user);
+        }
+
+        public IDataResult<User> GetByUsername(string username)
+        {
+            var result = _userRepository.Get(x=>x.Username == username);
             if (result is null)
-                return new ErrorDataResult<User>("Bu mailde bir kullanici bulunamadi!");
+                return new ErrorDataResult<User>("Bu kullanıcı adına sahip bir kullanici bulunamadi!");
             return new SuccessDataResult<User>(result);
         }
 
@@ -42,6 +52,14 @@ namespace StajTakip.Business.Concrete
             if(claims.Count > 0)
                 return new SuccessDataResult<List<OperationClaim>>(claims);
             return new ErrorDataResult<List<OperationClaim>>("Kullanici bulunamadi!");
+        }
+
+        private IResult CheckUser(int userId)
+        {
+            var user = _userRepository.Get(x=>x.Id ==  userId);
+            if (user is null)
+                return new ErrorResult("Kullanıcı bulunamadı!");
+            return new SuccessResult();
         }
     }
 }

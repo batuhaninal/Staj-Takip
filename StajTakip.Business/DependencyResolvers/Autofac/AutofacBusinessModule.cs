@@ -38,6 +38,9 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().InstancePerLifetimeScope();
             builder.RegisterType<EFUserOperationClaimRepository>().As<IUserOperationClaimRepository>().InstancePerLifetimeScope();
 
+            builder.RegisterType<MessageManager>().As<IMessageService>().InstancePerLifetimeScope();
+            builder.RegisterType<EFMessageRepository>().As<IMessageRepository>().InstancePerLifetimeScope();
+
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
 
             //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerDependency();
