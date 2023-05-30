@@ -22,6 +22,118 @@ namespace StajTakip.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Core.Entities.Concrete.OperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OperationClaims");
+                });
+
+            modelBuilder.Entity("Core.Entities.Concrete.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CreatedByName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedByName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Core.Entities.Concrete.UserOperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserOperationClaims");
+                });
+
+            modelBuilder.Entity("StajTakip.Entities.Concrete.AdminUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AdminUsers");
+                });
+
             modelBuilder.Entity("StajTakip.Entities.Concrete.BookImage", b =>
                 {
                     b.Property<int>("Id")
@@ -182,7 +294,13 @@ namespace StajTakip.DataAccess.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsCompanyChecked")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTeacherChecked")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedByName")
@@ -195,21 +313,77 @@ namespace StajTakip.DataAccess.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Summary")
+                    b.Property<int>("StudentUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentUserId");
+
+                    b.ToTable("InternshipsBooks");
+                });
+
+            modelBuilder.Entity("StajTakip.Entities.Concrete.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CreatedByName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("MessageDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MessageDetail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("WorkDays")
+                    b.Property<string>("ModifiedByName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReceiverUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SenderUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("InternshipsBooks");
+                    b.HasIndex("ReceiverUserId");
+
+                    b.HasIndex("SenderUserId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.Signature", b =>
@@ -266,6 +440,30 @@ namespace StajTakip.DataAccess.Migrations
                     b.ToTable("Signatures");
                 });
 
+            modelBuilder.Entity("StajTakip.Entities.Concrete.StudentUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("StudentUsers");
+                });
+
             modelBuilder.Entity("StajTakip.Entities.Concrete.Temp", b =>
                 {
                     b.Property<int>("Id")
@@ -309,13 +507,50 @@ namespace StajTakip.DataAccess.Migrations
                     b.ToTable("Temps");
                 });
 
+            modelBuilder.Entity("StajTakip.Entities.Concrete.AdminUser", b =>
+                {
+                    b.HasOne("Core.Entities.Concrete.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("StajTakip.Entities.Concrete.BookImage", b =>
                 {
                     b.HasOne("StajTakip.Entities.Concrete.InternshipsBook", "InternshipsBook")
-                        .WithMany("BookImages")
+                        .WithMany()
                         .HasForeignKey("InternshipsBookId");
 
                     b.Navigation("InternshipsBook");
+                });
+
+            modelBuilder.Entity("StajTakip.Entities.Concrete.InternshipsBook", b =>
+                {
+                    b.HasOne("StajTakip.Entities.Concrete.StudentUser", "StudentUser")
+                        .WithMany("InternshipsBooks")
+                        .HasForeignKey("StudentUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudentUser");
+                });
+
+            modelBuilder.Entity("StajTakip.Entities.Concrete.Message", b =>
+                {
+                    b.HasOne("Core.Entities.Concrete.User", "ReceiverUser")
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserId");
+
+                    b.HasOne("Core.Entities.Concrete.User", "SenderUser")
+                        .WithMany()
+                        .HasForeignKey("SenderUserId");
+
+                    b.Navigation("ReceiverUser");
+
+                    b.Navigation("SenderUser");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.Signature", b =>
@@ -327,11 +562,25 @@ namespace StajTakip.DataAccess.Migrations
                     b.Navigation("InternshipsBook");
                 });
 
+            modelBuilder.Entity("StajTakip.Entities.Concrete.StudentUser", b =>
+                {
+                    b.HasOne("Core.Entities.Concrete.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("StajTakip.Entities.Concrete.InternshipsBook", b =>
                 {
-                    b.Navigation("BookImages");
-
                     b.Navigation("Signatures");
+                });
+
+            modelBuilder.Entity("StajTakip.Entities.Concrete.StudentUser", b =>
+                {
+                    b.Navigation("InternshipsBooks");
                 });
 #pragma warning restore 612, 618
         }

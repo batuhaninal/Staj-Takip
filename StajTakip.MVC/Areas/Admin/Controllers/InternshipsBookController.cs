@@ -1,19 +1,23 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Core.Utilities.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
 using StajTakip.Entities.Concrete;
+using StajTakip.Entities.DTOs;
 
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "admin,admin.teacher, admin.company")]
     public class InternshipsBookController : Controller
     {
-        private readonly IBookTemplateService _bookTemplateService;
+        private readonly IInternshipsBookService _internshipsBookService;
         private readonly INotyfService _notyfService;
 
-        public InternshipsBookController(IBookTemplateService bookTemplateService, INotyfService notyfService)
+        public InternshipsBookController(IInternshipsBookService internshipsBookService, INotyfService notyfService)
         {
-            _bookTemplateService = bookTemplateService;
+            _internshipsBookService = internshipsBookService;
             _notyfService = notyfService;
         }
 
@@ -23,56 +27,39 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Template()
+        public IActionResult BookPage(int studentId,int bookId)
         {
-            return View();
+            var data = _internshipsBookService.Get(bookId);
+            
+            if (!data.Success)
+            {
+                ViewBag.studentId = studentId;
+                return View();
+            }
+            else
+            {
+                ViewBag.studentId = data.Data.StudentUserId;
+                return View(data.Data);
+            }
+                
         }
 
         [HttpPost]
-        public IActionResult Template(BookTemplate model)
+        public IActionResult CheckBook(CheckBookDto model)
         {
             if (ModelState.IsValid)
             {
-                var result = _bookTemplateService.Add(model);
+                model.IsTeacherChecked = User.IsInRole("admin.teacher") ? true : model.IsTeacherChecked;
+                model.IsCompanyChecked = User.IsInRole("admin.company") ? true : model.IsCompanyChecked;
+                var result = _internshipsBookService.CheckBook(model);
                 if (result.Success)
                 {
-                    _notyfService.Success("Template başarıyla eklendi!");
-                    return RedirectToAction("Template");
+                    _notyfService.Success("Defter Kontrolu Basarili");
+                    return RedirectToAction("BookPage", new { bookId = model.Id });
                 }
-                _notyfService.Error("Bir hatayla karşılaşıldı. Lütfen daha sonra tekrar deneyiniz!");
-                return RedirectToAction("Template");
             }
-            _notyfService.Error("Lütfen alanları kontrol ediniz!");
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult TemplatePage(int templateId)
-        {
-            var template = _bookTemplateService.Get(templateId);
-            if (template.Success)
-            {
-                _notyfService.Information("Sayfa başarıyla yüklendi");
-                return View(template.Data);
-            }
-            _notyfService.Error("Verilen parametrede bir template bulunamadı!");
-            return RedirectToAction("Template");
-        }
-
-        [HttpPost]
-        public IActionResult TemplatePage(BookTemplate model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = _bookTemplateService.Update(model);
-                if(result.Success)
-                {
-                    _notyfService.Success("Güncelleme işlemi başarılı!");
-                }
-                return RedirectToAction("TemplatePage", new { templateId = model.Id });
-            }
-            _notyfService.Error("Lütfen alanları yeniden kontrol ediniz!");
-            return View();
+            _notyfService.Error("Lütfen daha sonra tekrar deneyiniz!");
+            return RedirectToAction("BookPage", new { bookId = model.Id });
         }
     }
 }

@@ -7,80 +7,45 @@
 
 @model InternshipsBook
 
-@*
-    <div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
-        <div class="col-sm-12 col-lg-3">
-            @await Component.InvokeAsync("InternshipsBookPagesList")
-        </div>
-        <div class="col-sm-12 col-lg-9">
-            <div class="bg-light rounded h-100 p-4">
-                <form asp-controller="InternshipsBook" asp-action="Page" method="post">
-                    <input type="hidden" asp-for="Id"/>
-                    <div class="form-floating mb-3">
-                        <div class="row g-4">
-                            <div class="col-lg-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="dte">Tarih</label>
-                                    <input type="date" class="form-control"
-                                           id="dte" asp-for="Date" placeholder="Lütgen tarih giriniz!">
-                                    <span class="text-danger" asp-validation-for="Date"></span>
-                                </div>
-
-                            </div>
-                            <div class="col-lg-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="workD">Çalışma Günleri</label>
-                                    <input type="text" class="form-control"
-                                           id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
-                                    <span class="text-danger" asp-validation-for="WorkDays"></span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="titl">Başlık</label>
-                            <input type="text" class="form-control"
-                                   id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
-                            <span class="text-danger" asp-validation-for="Title"></span>
-                        </div>
-
-                    </div>
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="cont">İçerik</label>
-                            <textarea rows="25" class="form-group" asp-for="Content"></textarea>
-                            <span class="text-danger" asp-validation-for="Content"></span>
-                        </div>
-
-                    </div>
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="summa">Özet</label>
-                            <input type="text" class="form-control" id="summa" asp-for="Summary" />
-                            <span class="text-danger" asp-validation-for="Summary"></span>
-                        </div>
-
-                    </div>
-                    <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-*@
-
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
-        <div class="col-sm-12 col-lg-3">
-            @await Component.InvokeAsync("InternshipsBookPagesList")
+        <div class="text-center">
+            <div class="row">
+                <div class="col-6">
+                    @if (Model.IsTeacherChecked)
+                    {
+                        <div class="alert alert-success">
+                            Eğitmen Kontrolü Yapıldı!
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            Henüz Eğitmen Kontrolü Yapılmadı!
+                        </div>
+                    }
+                </div>
+                <div class="col-6">
+                    @if (Model.IsCompanyChecked)
+                    {
+                        <div class="alert alert-success">
+                            Şirket Kontrolü Yapıldı!
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            Henüz Şirket Kontrolü Yapılmadı!
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
         <div class="col-sm-12 col-lg-9">
             <div class="bg-light rounded h-100 p-4">
                 <form asp-controller="InternshipsBook" asp-action="Page" method="post">
                     <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="StudentUserId" value="@User.Identity.Name" />
                     <div class="form-floating mb-3">
                         <div class="row g-4">
                             <div class="col-lg-6 col-sm-12">
@@ -92,26 +57,26 @@
                                 </div>
 
                             </div>
-                            <div class="col-lg-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="workD">Çalışma Günleri</label>
-                                    <input type="text" class="form-control"
-                                           id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
-                                    <span class="text-danger" asp-validation-for="WorkDays"></span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="titl">Başlık</label>
+                            @*<div class="col-lg-6 col-sm-12">
+                            <div class="form-group">
+                            <label for="workD">Çalışma Günleri</label>
                             <input type="text" class="form-control"
-                                   id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
-                            <span class="text-danger" asp-validation-for="Title"></span>
-                        </div>
+                            id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
+                            <span class="text-danger" asp-validation-for="WorkDays"></span>
+                            </div>
 
+                            </div>*@
+                        </div>
                     </div>
+                    @*<div class="form-floating mb-3">
+                    <div class="form-group">
+                    <label for="titl">Başlık</label>
+                    <input type="text" class="form-control"
+                    id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
+                    <span class="text-danger" asp-validation-for="Title"></span>
+                    </div>
+
+                    </div>*@
                     <div class="form-floating mb-3">
                         <div class="form-group">
                             <label for="cont">İçerik</label>
@@ -121,17 +86,20 @@
                         </div>
 
                     </div>
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="summa">Özet</label>
-                            <input type="text" class="form-control" id="summa" asp-for="Summary" />
-                            <span class="text-danger" asp-validation-for="Summary"></span>
-                        </div>
-
+                    @*<div class="form-floating mb-3">
+                    <div class="form-group">
+                    <label for="summa">Özet</label>
+                    <input type="text" class="form-control" id="summa" asp-for="Summary" />
+                    <span class="text-danger" asp-validation-for="Summary"></span>
                     </div>
+
+                    </div>*@
                     <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
                 </form>
             </div>
+        </div>
+        <div class="col-sm-12 col-lg-3">
+            @await Component.InvokeAsync("InternshipsBookPagesList")
         </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
 using StajTakip.Entities.Concrete;
 
 namespace StajTakip.DataAccess.Concrete.Contexts
@@ -17,5 +18,13 @@ namespace StajTakip.DataAccess.Concrete.Contexts
         public DbSet<BookImage> BookImages { get; set; }
         public DbSet<BookTemplate> BookTemplates { get; set; }
         public DbSet<InternshipDocument> InternshipDocuments { get; set; }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<AdminUser> AdminUsers { get; set; }
+        public DbSet<StudentUser> StudentUsers { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
     }
 }

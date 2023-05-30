@@ -2,6 +2,12 @@ using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using StajTakip.Business.Abstract;
+using StajTakip.Business.Concrete;
+
 using StajTakip.Business.DependencyResolvers.Autofac;
 using StajTakip.Business.Utilities.AutoMapper.Profiles;
 using StajTakip.Entities.Concrete;
@@ -15,6 +21,35 @@ builder.Services.AddRazorPages()
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = new PathString("/Auth/Login");
+        options.LogoutPath = new PathString("/Auth/Logout");
+        options.Cookie = new CookieBuilder
+        {
+            Name = "StajTakip",
+            HttpOnly = true,
+            SameSite = SameSiteMode.Strict,
+            SecurePolicy = CookieSecurePolicy.SameAsRequest
+        };
+        options.SlidingExpiration = true;
+        options.ExpireTimeSpan = TimeSpan.FromDays(2);
+        options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
+        options.Events.OnRedirectToLogin = async context =>
+        {
+            if (context.Request.Path.StartsWithSegments(new PathString("/Admin")))
+            {
+                context.Response.Redirect("/Admin/Auth/Login");
+            }
+            else
+            {
+                context.Response.Redirect(context.RedirectUri);
+            }
+        };
+    });
 
 
 //builder.Services.AddScoped<ITempRepository, TempRepository>();
@@ -48,10 +83,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

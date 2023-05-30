@@ -13,6 +13,14 @@
         <i class="fa fa-book me-lg-2"></i>
         <span class="d-none d-lg-inline-flex">Staj Defteri Sayfası</span>
     </a>
+    <a asp-area="Admin" asp-controller="InternshipsBook" asp-action="Index" class="m-3">
+        <i class="fa fa-book me-lg-2"></i>
+        <span class="d-none d-lg-inline-flex">Admin</span>
+    </a>
+    <a asp-area="Admin" asp-controller="InternshipsBook" asp-action="Template" class="m-3">
+        <i class="fa fa-book me-lg-2"></i>
+        <span class="d-none d-lg-inline-flex">Admin Template</span>
+    </a>
     <div class="navbar-nav align-items-center ms-auto">
         <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -85,7 +93,7 @@
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                 <a href="#" class="dropdown-item">My Profile</a>
                 <a href="#" class="dropdown-item">Settings</a>
-                <a href="#" class="dropdown-item">Log Out</a>
+                <a asp-area="" asp-controller="Auth" asp-action="Logout" class="dropdown-item">Cikis Yap</a>
             </div>
         </div>
     </div>

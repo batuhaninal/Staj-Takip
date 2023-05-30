@@ -36,6 +36,23 @@ namespace StajTakip.Business.Concrete
             return new SuccessResult("Ekleme işlemi başarılı!");
         }
 
+        public IResult CheckBook(CheckBookDto entity)
+        {
+            var result = BusinessRules.Run(IsBookExist(entity.Id));
+            if(result == null)
+            {
+                var data = _repository.Get(x => x.Id == entity.Id);
+                data.IsTeacherChecked = entity.IsTeacherChecked;
+                data.IsCompanyChecked = entity.IsCompanyChecked;
+                var book = _repository.Update(data);
+                if(book == null)
+                    return new ErrorResult("Bir hata olustu");
+
+                return new SuccessResult();
+            }
+            return new ErrorResult(result.Message);
+        }
+
         public IDataResult<InternshipsBook> Get(int id)
         {
             var result = BusinessRules.Run(IsBookExist(id));
@@ -59,12 +76,6 @@ namespace StajTakip.Business.Concrete
             return new SuccessDataResult<List<InternshipsBook>>(data);
         }
 
-        public IDataResult<List<InternshipsBook>> GetAllPages(int userId)
-        {
-            // InternshipsBook tablosuna alan eklenmeli
-            throw new NotImplementedException();
-        }
-
         // Degistirilmeli
         public IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId)
         {
@@ -72,13 +83,17 @@ namespace StajTakip.Business.Concrete
             //List<Expression<Func<InternshipsBook, object>>> includes = new();
             //includes.Add(x => x.Signatures);
             //includes.Add(x => x.BookImages);
-            var data = _repository.GetAll(x=>x.Id == userId, i=> i.Signatures, i=> i.BookImages);
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<InternshipsBookPageListDto>> GetPages()
+        public IDataResult<InternshipsBook> GetFirstByUserId(int userId)
         {
-            var pages = _repository.GetAll().OrderBy(x=>x.Date).ToList();
+            throw new NotImplementedException();
+        }
+
+        public IDataResult<List<InternshipsBookPageListDto>> GetPageListDtoByStudentId(int studentUserId)
+        {
+            var pages = _repository.GetAll(x=>x.StudentUserId == studentUserId).OrderBy(x=>x.Date).ToList();
             if (pages.Count() < 1)
                 return new ErrorDataResult<List<InternshipsBookPageListDto>>("Henuz veri girilmemis!");
             var mappedPages = _mapper.Map<List<InternshipsBookPageListDto>>(pages);

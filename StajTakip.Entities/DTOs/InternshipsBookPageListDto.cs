@@ -10,5 +10,7 @@ namespace StajTakip.Entities.DTOs
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        public bool TeacherIsChecked { get; set; }
+        public bool CompanyIsChecked { get; set; }
     }
 }
