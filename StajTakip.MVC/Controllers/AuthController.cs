@@ -11,10 +11,12 @@ namespace StajTakip.MVC.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IStudentUserService _studentUserService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IStudentUserService studentUserService)
         {
             _authService = authService;
+            _studentUserService = studentUserService;
         }
 
         [HttpGet]
@@ -32,10 +34,13 @@ namespace StajTakip.MVC.Controllers
                     return View();
 
                 var operationClaims = _authService.GetClaims(user.Data.Id);
+                var studentId = _studentUserService.GetByUserId(user.Data.Id);
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Data.Id.ToString()),
+                    new Claim(ClaimTypes.Name, studentId.Data.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Data.Email),
+
+                    new Claim("userId", user.Data.Id.ToString())
 
                 };
                 foreach (var role in operationClaims.Data)

@@ -11,5 +11,6 @@ namespace StajTakip.Business.Abstract
     public interface IAdminUserService
     {
         IResult Add(AdminUser adminUser);
+        IDataResult<AdminUser> GetByUserId(int userId);
     }
 }
