@@ -22,6 +22,12 @@
     z-index: 99999;
 }
 
+#signatureCanvas {
+    border: 1px solid #000;
+    cursor: crosshair;
+}
+
+
 #spinner.show {
     transition: opacity .5s ease-out, visibility 0s linear 0s;
     visibility: visible;
