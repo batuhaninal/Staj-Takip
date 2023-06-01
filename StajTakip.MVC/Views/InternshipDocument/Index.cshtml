@@ -5,31 +5,87 @@
     Layout = "_StudentLayout";
 }
 @model InternshipDocument
-
+<link href="~/studenttemplate/css/style.css" rel="stylesheet" />
 <div>
-    @*<form asp-controller="InternshipDocument" asp-action="ShowPdf" method="get" enctype="multipart/form-data">
+    <form asp-controller="InternshipDocument" asp-action="UploadPdf" method="post" enctype="multipart/form-data">
+
+        <div class="container-fluid">
+           <div class="row g-4">
+
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <br />
+                            <h3>Dosya Yükleyiniz</h3>
+                            <br />
+                            <input type="file" name="pdfFile" class="form-control-file" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Dosya Ekle</button>
+              
+
+                        </div>
+                </div>
+           </div>
+    </form>
+    <br />
+    <div class="container-fluid">
+        <div class="row g-4">
+     
+                <div class="card">
+                    <div class="card-header text-center">
+                        <div class="form-group">
+                            <br />
+                            <h3>Yüklenilen Dosyalar</h3>
+
+                        </div>
+                        <br />
+                        @if (Model == null)
+                        {
+                            <h6>Henüz Pdf Yüklenmemiş.</h6>
+                        }
+                        else
+                        {
+                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="11">
+                                <button class="btn btn-primary">@Model.CreatedDate.ToShortDateString() </button>
+                            </a>
+                        }
+
+   
+            </div>
+        </div>
+    </div>
+
+
+    <br />
+   
+    <div style="text-align:center">
+            <h1>İmza Oluşturma</h1>
+
+            <canvas id="signatureCanvas" width="400" height="200"></canvas>
+            <br>
+            <button id="clearButton">Temizle</button>
+            <button id="saveButton">İmzayı Kaydet</button>
+            <br />
+            <br />
+
+            @if (Model == null)
+            {
+                <h6>Henüz Pdf Yüklenmemiş.</h6>
+            }
+            else
+            {
+                <form asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@Model.Id" method="post" enctype="multipart/form-data">
+
+
+                    <button type="submit" class="btn btn-primary">imza Ekle</button>
+                </form>
+            }
+
+        </div>
+   
 
        
-
-    </form>*@
-    <div class="form-group">
-        <br />
-        <label>Yüklenilen Dosyalar</label>
-
-    </div>
-    <br />
-    <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@Model.Id">
-        <button class="btn btn-primary">@Model.CreatedDate.ToShortDateString() </button>
-    </a>
-<form asp-controller="InternshipDocument" asp-action="Index" method="post" enctype="multipart/form-data">
-
-    <div class="form-group">
-        <br/>
-        <label>Dosya Yükleyiniz</label>
-        <br/>
-        <input type="file" name="pdfFile" class="form-control-file" />
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Dosya Ekle</button>
-</form>
 </div>
+
+@section Scripts{
+    <script src="~/StudentTemplate/js/signatureCanvas.js"> </script>
+    }
