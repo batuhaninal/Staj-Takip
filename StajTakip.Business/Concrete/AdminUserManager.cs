@@ -1,4 +1,5 @@
-﻿using Core.Utilities.Results;
+﻿using Core.Utilities.Business;
+using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Abstract;
 using StajTakip.Entities.Concrete;
@@ -22,6 +23,27 @@ namespace StajTakip.Business.Concrete
         public IResult Add(AdminUser adminUser)
         {
             _adminRepo.Add(adminUser);
+            return new SuccessResult();
+        }
+
+        public IDataResult<AdminUser> GetByUserId(int userId)
+        {
+            var result = BusinessRules.Run(CheckByUserId(userId));
+            if(result == null)
+            {
+                var data = _adminRepo.Get(x=>x.UserId == userId);
+                return new SuccessDataResult<AdminUser>(data);
+            }
+
+            return new ErrorDataResult<AdminUser>(result.Message);
+        }
+
+        private IResult CheckByUserId(int userId)
+        {
+            var result = _adminRepo.Get(x=>x.UserId == userId);
+            if (result == null)
+                return new ErrorResult("Kullanici bulunamadi!");
+
             return new SuccessResult();
         }
     }
