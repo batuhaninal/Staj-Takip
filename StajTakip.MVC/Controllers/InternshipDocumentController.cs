@@ -70,7 +70,7 @@ namespace StajTakip.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult ShowPdf(InternshipDocument internshipDocument, IFormFile pdfFile, int documentId)
+        public IActionResult ShowPdf(InternshipDocument internshipDocument, int documentId)
         {
 
 
