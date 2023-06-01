@@ -39,7 +39,9 @@ namespace StajTakip.MVC.Controllers
                 {
                     new Claim(ClaimTypes.Name, studentId.Data.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Data.Email),
+
                     new Claim("userId", user.Data.Id.ToString())
+
                 };
                 foreach (var role in operationClaims.Data)
                 {
@@ -47,7 +49,7 @@ namespace StajTakip.MVC.Controllers
                 }
 
                 var userIdentity = new ClaimsIdentity(claims, "a");
-                
+
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
                 await HttpContext.SignInAsync(principal);
@@ -67,7 +69,7 @@ namespace StajTakip.MVC.Controllers
         [HttpPost]
         public IActionResult Register(StudentUserForRegisterDto model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = _authService.RegisterStudent(model);
                 if (result.Success)
