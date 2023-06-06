@@ -15,5 +15,6 @@ namespace StajTakip.Entities.Concrete
         public virtual User? User { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public virtual ICollection<AdminStudentRelation>? AdminStudentRelations { get; set; }
     }
 }
