@@ -1,6 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
 using StajTakip.Business.Abstract;
 using StajTakip.Entities.Concrete;
 
@@ -9,19 +8,22 @@ namespace StajTakip.MVC.Controllers
     public class InternshipDocumentController : Controller
     {
         private readonly IInternshipDocumentService _internshipDocumentService;
+        private readonly ISignatureService _signatureService;
         private readonly INotyfService _notyfService;
 
-        public InternshipDocumentController(IInternshipDocumentService internshipDocumentService, INotyfService notyfService)
+        public InternshipDocumentController(IInternshipDocumentService internshipDocumentService, ISignatureService signatureService, INotyfService notyfService)
         {
             _internshipDocumentService = internshipDocumentService;
+            _signatureService = signatureService;
             _notyfService = notyfService;
         }
 
-
         public IActionResult Index()
         {
-            var documents = _internshipDocumentService.GetAll().Data.FirstOrDefault();
-            return View(documents);
+            var documents = _internshipDocumentService.GetAll();
+            ViewData["documentList"] = documents.Data;
+
+            return View();
         }
 
         [HttpGet]
@@ -42,7 +44,7 @@ namespace StajTakip.MVC.Controllers
         {
             var userId = User.Identity.Name;
 
-            internshipDocument.StudentUserId = 1;
+            internshipDocument.StudentUserId = int.Parse(userId);
             if (pdfFile != null && pdfFile.Length > 0)
             {
 
@@ -70,7 +72,7 @@ namespace StajTakip.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult ShowPdf(InternshipDocument internshipDocument, int documentId)
+        public IActionResult UploadSignature(InternshipDocument internshipDocument, int documentId)
         {
 
 
@@ -93,8 +95,9 @@ namespace StajTakip.MVC.Controllers
                     // Access the target page to add an image
                     Aspose.Pdf.Page targetPage = pdfDocument.Pages[1];
 
+                    var signatureImg = _signatureService.Get(9).Data.SignatureData;
                     // Load desired image into file stream
-                    FileStream imgStream = new FileStream("C:/Users/afurk/Downloads/NetSocialLogo.png", FileMode.Open);
+                    MemoryStream imgStream = new MemoryStream(signatureImg);
 
                     // Add the desired image to the images resource list of the target page
                     targetPage.Resources.Images.Add(imgStream);
@@ -124,7 +127,9 @@ namespace StajTakip.MVC.Controllers
 
 
 
-                        internshipDocument.StudentUserId = 1;
+                        var userId = User.Identity.Name;
+
+                        internshipDocument.StudentUserId = int.Parse(userId);
                         internshipDocument.Data = updatedPdfStream.ToArray();
                         var result = _internshipDocumentService.Add(internshipDocument);
                         if (!result.Success)
@@ -145,7 +150,44 @@ namespace StajTakip.MVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public ActionResult SaveSign(Signature signature, IFormFile signatureBase)
+        {
 
+            //signature.Name = signatureName;
+            using (var memoryStream = new MemoryStream())
+            {
+                signatureBase.CopyTo(memoryStream);
+                signature.SignatureData = memoryStream.ToArray();
+                var result = _signatureService.Add(signature);
+                if (!result.Success)
+                {
+
+                    _notyfService.Error(result.Message);
+                }
+
+                _notyfService.Success(result.Message);
+
+            }
+            return RedirectToAction("Index");
+
+
+
+
+        }
+
+        [HttpGet]
+        public IActionResult ShowSign(int signatureId)
+        {
+            var signature = _signatureService.Get(signatureId);
+
+            if (signature != null && signature.Data != null)
+            {
+                return File(signature.Data.SignatureData, "image/png");
+            }
+
+            return View("Index", "Home");
+        }
 
     }
 }
