@@ -12,6 +12,7 @@
                 <th>Ad Soyad</th>
                 <th>Staj Evrakları</th>
                 <th>Staj Defteri</th>
+                <th>İşlemler</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,13 @@
                         <td>Bos</td>
                         <td>
                             <a asp-area="Admin" asp-controller="InternshipsBook" asp-action="BookPage" asp-route-studentId="@student.StudentUser.Id" asp-route-bookId="0">Öğrencinin Defterine Git</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-square btn-danger" asp-area="Admin" asp-controller="Student" asp-action="DeleteStudentRelation" asp-route-relationId="@student.Id" title="Öğrenci Listemden Kaldır">
+                                <span class="icon text-white-50">
+                                    <i class="fa fa-user-graduate"></i>
+                                </span>
+                            </a>
                         </td>
                     </tr>
                 }

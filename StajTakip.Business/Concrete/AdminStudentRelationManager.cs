@@ -23,7 +23,7 @@ namespace StajTakip.Business.Concrete
 
         public IResult Add(AdminStudentRelation entity)
         {
-            var result = BusinessRules.Run(CheckEntity(entity));
+            var result = BusinessRules.Run(CheckEntity(entity),CheckEntityDuplicate(entity));
             if(result != null)
             {
                 return new ErrorResult(result.Message);
@@ -73,6 +73,17 @@ namespace StajTakip.Business.Concrete
             return new SuccessResult();
         }
 
+        public IResult HardDelete(AdminStudentRelation entity)
+        {
+            var result = BusinessRules.Run(CheckEntity(entity),CheckEntityId(entity.Id));
+            if (result != null)
+            {
+                return new ErrorResult(result.Message);
+            }
+            _repo.Delete(entity);
+            return new SuccessResult();
+        }
+
         public IDataResult<AdminStudentRelation> Update(AdminStudentRelation entity)
         {
             var result = BusinessRules.Run(CheckEntity(entity),CheckEntityId(entity.Id));
@@ -89,6 +100,14 @@ namespace StajTakip.Business.Concrete
             if (entity is null)
                 return new ErrorResult("Lütfen alanları doldurunuz!");
 
+            return new SuccessResult();
+        }
+
+        private IResult CheckEntityDuplicate(AdminStudentRelation entity)
+        {
+            var result = _repo.Get(x=>x.StudentUserId == entity.StudentUserId && x.AdminUserId == entity.AdminUserId);
+            if (result != null)
+                return new ErrorResult("Öğrenci zaten mevcut eğitmene atanmıştır!");
             return new SuccessResult();
         }
 
