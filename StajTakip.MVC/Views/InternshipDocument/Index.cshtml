@@ -10,82 +10,77 @@
     <form asp-controller="InternshipDocument" asp-action="UploadPdf" method="post" enctype="multipart/form-data">
 
         <div class="container-fluid">
-           <div class="row g-4">
+            <div class="row g-4">
 
-                    <div class="card">
-                        <div class="card-header text-center">
-                            <br />
-                            <h3>Dosya Yükleyiniz</h3>
-                            <br />
-                            <input type="file" name="pdfFile" class="form-control-file" />
-                        </div>
-                        <button type="submit" class="btn btn-primary">Dosya Ekle</button>
-              
+                <div class="card">
+                    <div class="card-header text-center">
+                        <br />
+                        <h3>Dosya Yükleyiniz</h3>
+                        <br />
+                        <input type="file" name="pdfFile" class="form-control-file" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Dosya Ekle</button>
 
-                        </div>
+
                 </div>
-           </div>
+            </div>
+        </div>
     </form>
     <br />
     <div class="container-fluid">
         <div class="row g-4">
-     
-                <div class="card">
-                    <div class="card-header text-center">
-                        <div class="form-group">
-                            <br />
-                            <h3>Yüklenilen Dosyalar</h3>
 
-                        </div>
+            <div class="card">
+                <div class="card-header text-center">
+                    <div class="form-group">
                         <br />
-                        @if (Model == null)
+                        <h3>Yüklenilen Dosyalar</h3>
+
+                    </div>
+                    <br />
+                    @if (ViewData["documentList"]==null)
+                    {
+                        <h6>Henüz Pdf Yüklenmemiş.</h6>
+                    }
+                    else
+                    {
+                        @foreach (var item in ViewData["documentList"] as List<InternshipDocument>)
                         {
-                            <h6>Henüz Pdf Yüklenmemiş.</h6>
-                        }
-                        else
-                        {
-                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="11">
-                                <button class="btn btn-primary">@Model.CreatedDate.ToShortDateString() </button>
+                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">
+                                <button class="btn btn-primary">@item.CreatedDate.ToShortDateString() </button>
                             </a>
                         }
+                    }
 
-   
+
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <br />
-   
-    <div style="text-align:center">
+        <br />
+
+        <div style="text-align:center">
             <h1>İmza Oluşturma</h1>
-
-            <canvas id="signatureCanvas" width="400" height="200"></canvas>
+            <input type="text" id="signatureName" name="signatureName" placeholder="İmzayı isimlendirin.">
+            <br />
+            <br />
+            <canvas id="signatureCanvas" width="250" height="100"></canvas>
             <br>
+          
             <button id="clearButton">Temizle</button>
             <button id="saveButton">İmzayı Kaydet</button>
             <br />
             <br />
 
-            @if (Model == null)
-            {
-                <h6>Henüz Pdf Yüklenmemiş.</h6>
-            }
-            else
-            {
-                <form asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@Model.Id" method="post" enctype="multipart/form-data">
-
-
-                    <button type="submit" class="btn btn-primary">imza Ekle</button>
-                </form>
-            }
-
+           @await Component.InvokeAsync("ShowSignatureList")
         </div>
-   
 
-       
-</div>
 
-@section Scripts{
-    <script src="~/StudentTemplate/js/signatureCanvas.js"> </script>
+
+    </div>
+
+    @section Scripts{
+        <script src="~/studenttemplate/js/signaturecanvas.js"></script>
     }
+

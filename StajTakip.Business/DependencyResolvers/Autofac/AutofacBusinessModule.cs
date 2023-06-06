@@ -38,6 +38,9 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<MessageManager>().As<IMessageService>().InstancePerLifetimeScope();
             builder.RegisterType<EFMessageRepository>().As<IMessageRepository>().InstancePerLifetimeScope();
 
+            builder.RegisterType<SignatureManager>().As<ISignatureService>().InstancePerLifetimeScope();
+            builder.RegisterType<EFSignatureRepository>().As<ISignatureRepository>().InstancePerLifetimeScope();
+
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
 
 
