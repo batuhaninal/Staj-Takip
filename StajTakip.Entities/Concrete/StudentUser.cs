@@ -16,5 +16,7 @@ namespace StajTakip.Entities.Concrete
 
         public virtual ICollection<InternshipsBook>? InternshipsBooks { get; set; }
         public virtual ICollection<InternshipDocument>? InternshipDocuments { get; set; }
+
+        public virtual ICollection<AdminStudentRelation>? AdminStudentRelations { get; set; }
     }
 }
