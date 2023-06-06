@@ -11,12 +11,14 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentUserService _studentUserService;
+        private readonly IAdminStudentRelationService _adminStudentRelationService;
         private readonly INotyfService _notyfService;
 
-        public StudentController(IStudentUserService studentUserService, INotyfService notyfService)
+        public StudentController(IStudentUserService studentUserService, INotyfService notyfService, IAdminStudentRelationService adminStudentRelationService)
         {
             _studentUserService = studentUserService;
             _notyfService = notyfService;
+            _adminStudentRelationService = adminStudentRelationService;
         }
 
         public IActionResult Index()
@@ -27,8 +29,14 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult StudentList()
         {
-            var data = _studentUserService.GetAll();
-            return View(data);
+            var data = _adminStudentRelationService.GetAllByAdminIdWithStudent(int.Parse(User.Identity.Name));
+            return View(data.Data);
         }
+
+        //[HttpGet]
+        //public IActionResult AllStudents() 
+        //{
+        //    var data = _adminStudentRelationService.GetAllWithUsers()
+        //}
     }
 }

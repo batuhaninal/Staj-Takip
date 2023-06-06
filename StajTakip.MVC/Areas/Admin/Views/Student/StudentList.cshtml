@@ -4,7 +4,7 @@
 @{
 }
 
-@model IDataResult<List<StudentUser>>
+@model List<AdminStudentRelation>
 <div class="p-3">
     <table id="studentList" style="width:100%;">
         <thead>
@@ -15,17 +15,17 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.Success)
+            @if (Model.Count > 0)
             {
-                foreach (var student in Model.Data)
+                foreach (var student in Model)
                 {
                     <tr>
                         <td>
-                            @student.FirstName @student.LastName
+                            @student.StudentUser.FirstName @student.StudentUser.LastName
                         </td>
                         <td>Bos</td>
                         <td>
-                            <a asp-area="Admin" asp-controller="InternshipsBook" asp-action="BookPage" asp-route-studentId="@student.Id" asp-route-bookId="0">Öğrencinin Defterine Git</a>
+                            <a asp-area="Admin" asp-controller="InternshipsBook" asp-action="BookPage" asp-route-studentId="@student.StudentUser.Id" asp-route-bookId="0">Öğrencinin Defterine Git</a>
                         </td>
                     </tr>
                 }
