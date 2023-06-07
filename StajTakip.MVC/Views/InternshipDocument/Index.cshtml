@@ -44,12 +44,18 @@
                     }
                     else
                     {
+                        <li>
+
+                       
                         @foreach (var item in ViewData["documentList"] as List<InternshipDocument>)
                         {
-                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">
+                            <a  asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">
                                 <button class="btn btn-primary">@item.CreatedDate.ToShortDateString() </button>
+
                             </a>
+                                <button type="button" id="@item.Id" class="btn btn-primary signatureTest">@item.Id</button>
                         }
+                        </li>
                     }
 
 
@@ -74,13 +80,14 @@
             <br />
 
            @await Component.InvokeAsync("ShowSignatureList")
+            <form id="documentForm" asp-controller="InternshipDocument" asp-action="UploadSignature" asp-route-documentId="11" method="post" enctype="multipart/form-data">
+
+                <button type="submit" class="btn btn-primary">imza Ekle</button>
+            </form>
         </div>
 
 
-
-    </div>
-
     @section Scripts{
-        <script src="~/studenttemplate/js/signaturecanvas.js"></script>
+            <script src="~/studenttemplate/js/signaturecanvas.js"></script>
     }
 

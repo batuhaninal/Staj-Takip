@@ -39,6 +39,16 @@
     clearButton.addEventListener("click", function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     });
+    var dId = 0;
+    var idButton = document.getElementsByClassName("signatureTest");
+    idButton.addEventListener("click", function () {
+        dId = $(this).attr('id');
+        alert(dId);
+    });
+    //$('.signatureTest').on('click', function () {
+    //    var dId = $(this).attr('id');
+    //    alert(dId);
+    //})
 
     // İmza kaydetme butonuna tıklanınca imza verisi alınır ve işlenir
     var saveButton = document.getElementById("saveButton");
@@ -48,48 +58,52 @@
         var imageData = canvas.toDataURL("image/png");
 
         var formData = new FormData();
-        formData.append("signatureBase", imageData);
 
-        fetch("/InternshipDocument/SaveSign", {
+        formData.append("signature", imageData);
+        formData.append("documentId", dId);
+
+        fetch("/InternshipDocument/UploadSignature", {
             method: "POST",
             body: formData
         });
-        //saveButton.addEventListener("click", function () {
-        //    var signatureName = document.getElementById("signatureName").value;
-        //    canvas.toBlob(function (blob) {
-        //        var formData = new FormData();
-        //        formData.append("signatureBase", blob);
-        //        formData.append("signature.Name", signatureName); // İmza adını FormData'ya ekle
 
-        //        var xhr = new XMLHttpRequest();
-        //        xhr.open("POST", "/InternshipDocument/SaveSign", true);
-        //        xhr.onload = function () {
-        //            // İstek tamamlandığında işlemler yapabilirsiniz
-        //        };
-        //        xhr.send(formData);
-        //    }, "image/png"); // İmza verisinin hangi formatta blob olarak elde edileceğini belirtin (örneğin, "image/png" veya "image/jpeg")
-        //});
-        //var saveButton = document.getElementById("saveButton");
-        //saveButton.addEventListener("click", function () {
-        //    var signatureData = canvas.toDataURL('image/jpeg', 0.5);
+    });
+    //saveButton.addEventListener("click", function () {
+    //    var signatureName = document.getElementById("signatureName").value;
+    //    canvas.toBlob(function (blob) {
+    //        var formData = new FormData();
+    //        formData.append("signatureBase", blob);
+    //        formData.append("signature.Name", signatureName); // İmza adını FormData'ya ekle
+
+    //        var xhr = new XMLHttpRequest();
+    //        xhr.open("POST", "/InternshipDocument/SaveSign", true);
+    //        xhr.onload = function () {
+    //            // İstek tamamlandığında işlemler yapabilirsiniz
+    //        };
+    //        xhr.send(formData);
+    //    }, "image/png"); // İmza verisinin hangi formatta blob olarak elde edileceğini belirtin (örneğin, "image/png" veya "image/jpeg")
+    //});
+    //var saveButton = document.getElementById("saveButton");
+    //saveButton.addEventListener("click", function () {
+    //    var signatureData = canvas.toDataURL('image/jpeg', 0.5);
 
 
-        //    // Bu noktada, signatureData'yı sunucuya göndererek kaydedebilirsiniz
-        //    // Örneğin, Ajax kullanarak bir POST isteği gönderebilirsiniz
-        //    // Sunucu tarafında imza verisini alıp işlem yapmanız gerekecektir
+    //    // Bu noktada, signatureData'yı sunucuya göndererek kaydedebilirsiniz
+    //    // Örneğin, Ajax kullanarak bir POST isteği gönderebilirsiniz
+    //    // Sunucu tarafında imza verisini alıp işlem yapmanız gerekecektir
 
-        //    // Örneğin, imza verisini bir gizli alan içine yerleştirerek bir formu gönderme:
-        //    var hiddenInput = document.createElement('input');
-        //    hiddenInput.type = 'hidden';
-        //    hiddenInput.name = 'signatureBase';
-        //    hiddenInput.value = signatureData;
+    //    // Örneğin, imza verisini bir gizli alan içine yerleştirerek bir formu gönderme:
+    //    var hiddenInput = document.createElement('input');
+    //    hiddenInput.type = 'hidden';
+    //    hiddenInput.name = 'signatureBase';
+    //    hiddenInput.value = signatureData;
 
-        //    var form = document.createElement('form');
-        //    form.method = 'POST';
-        //    form.action = '/InternshipDocument/Kaydet'; // İmzayı kaydetmek için uygun bir URL'yi belirtin
-        //    form.appendChild(hiddenInput);
-        //    document.body.appendChild(form);
-        //    form.submit();
-        //});
-    })
+    //    var form = document.createElement('form');
+    //    form.method = 'POST';
+    //    form.action = '/InternshipDocument/Kaydet'; // İmzayı kaydetmek için uygun bir URL'yi belirtin
+    //    form.appendChild(hiddenInput);
+    //    document.body.appendChild(form);
+    //    form.submit();
+    //});
+
 };
