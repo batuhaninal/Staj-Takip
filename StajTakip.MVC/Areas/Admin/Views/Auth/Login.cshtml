@@ -60,6 +60,7 @@
                             <h3>Sign In</h3>
                         </div>
                         <form asp-area="Admin" asp-controller="Auth" asp-action="Login">
+                            
                             <div class="form-floating mb-3">
                                 <input asp-for="Username" type="text" class="form-control" id="uName">
                                 <label for="uName">Kullanıcı Adı</label>
@@ -75,6 +76,7 @@
                                 </div>
                                 <a href="">Forgot Password</a>
                             </div>*@
+                            <div asp-validation-summary="ModelOnly" class="text-primary"></div>
                             <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Giriş Yap</button>
                             <p class="text-center mb-0">Hesabınız Yok Mu? <a asp-area="Admin" asp-controller="Auth" asp-action="Register">Üye Ol</a></p>
                         </form>          

@@ -23,5 +23,7 @@ namespace StajTakip.Entities.DTOs
         public string? LastName { get; set; }
 
         public bool IsCompany { get; set; }
+
+        public int? StudentId { get; set; }
     }
 }

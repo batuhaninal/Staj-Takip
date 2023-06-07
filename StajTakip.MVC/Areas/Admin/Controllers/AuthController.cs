@@ -32,7 +32,11 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             {
                 var user = _authService.Login(model);
                 if (!user.Success)
+                {
+                    ModelState.AddModelError("", user.Message ?? "Bir hata ile karşılaşıldı!");
                     return View();
+                }
+                    
 
                 var operationClaims = _authService.GetClaims(user.Data.Id);
                 var userId = _adminUserService.GetByUserId(user.Data.Id);
@@ -73,6 +77,32 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                 var result = _authService.RegisterAdmin(model);
                 if (result.Success)
                     return RedirectToAction("Login");
+
+                ModelState.AddModelError("", result.Message ?? "Bir hata ile karşılaşıldı!");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="admin, admin.teacher")]
+        public IActionResult RegisterCompany(int studentId)
+        {
+            ViewBag.StudentId = studentId;
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles ="admin, admin.teacher")]
+        public IActionResult RegisterCompany(AdminUserForRegisterDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.IsCompany = true;
+                var result = _authService.RegisterAdmin(model);
+                if (result.Success)
+                    return RedirectToAction("StudentList","Student");
+
+                ModelState.AddModelError("", result.Message ?? "Bir hata ile karşılaşıldı!");
             }
             return View();
         }

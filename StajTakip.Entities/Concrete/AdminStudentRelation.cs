@@ -14,5 +14,6 @@ namespace StajTakip.Entities.Concrete
         public virtual AdminUser? AdminUser { get; set; }
         public int? StudentUserId { get; set; }
         public virtual StudentUser? StudentUser { get; set; }
+        public bool IsCompany { get; set; }
     }
 }
