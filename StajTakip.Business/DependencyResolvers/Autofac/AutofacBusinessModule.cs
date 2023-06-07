@@ -38,13 +38,12 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<MessageManager>().As<IMessageService>().InstancePerLifetimeScope();
             builder.RegisterType<EFMessageRepository>().As<IMessageRepository>().InstancePerLifetimeScope();
 
-<<<<<<< HEAD
             builder.RegisterType<SignatureManager>().As<ISignatureService>().InstancePerLifetimeScope();
             builder.RegisterType<EFSignatureRepository>().As<ISignatureRepository>().InstancePerLifetimeScope();
-=======
+
             builder.RegisterType<AdminStudentRelationManager>().As<IAdminStudentRelationService>().InstancePerLifetimeScope();
             builder.RegisterType<EFAdminStudentRelationRepository>().As<IAdminStudentRelationRepository>().InstancePerLifetimeScope();
->>>>>>> 5c3687928db9db4e1859399a713a7b5004dfab6d
+
 
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
 

@@ -70,14 +70,13 @@ namespace StajTakip.MVC.Controllers
 
             return RedirectToAction("Index");
         }
-
-        [HttpPost]
-        public IActionResult UploadSignature(InternshipDocument internshipDocument, int documentId)
+        public IActionResult UploadSignature(string signature, int documentId)
         {
-
-
             var documentS = _internshipDocumentService.Get(documentId);
-            if (documentS != null)
+            var signatureSub = signature.Substring(22);  // remove data:image/png;base64,
+
+            byte[] bytes = Convert.FromBase64String(signatureSub);
+            if (documentS.Success)
             {
                 using (MemoryStream pdfStream = new MemoryStream(documentS.Data.Data))
                 {
@@ -95,7 +94,7 @@ namespace StajTakip.MVC.Controllers
                     // Access the target page to add an image
                     Aspose.Pdf.Page targetPage = pdfDocument.Pages[1];
 
-                    var signatureImg = _signatureService.Get(9).Data.SignatureData;
+                    var signatureImg = bytes;
                     // Load desired image into file stream
                     MemoryStream imgStream = new MemoryStream(signatureImg);
 
@@ -124,14 +123,11 @@ namespace StajTakip.MVC.Controllers
                     using (MemoryStream updatedPdfStream = new MemoryStream())
                     {
                         pdfDocument.Save(updatedPdfStream);
-
-
-
                         var userId = User.Identity.Name;
 
-                        internshipDocument.StudentUserId = int.Parse(userId);
-                        internshipDocument.Data = updatedPdfStream.ToArray();
-                        var result = _internshipDocumentService.Add(internshipDocument);
+                        documentS.Data.StudentUserId = int.Parse(userId);
+                        documentS.Data.Data = updatedPdfStream.ToArray();
+                        var result = _internshipDocumentService.Update(documentS.Data);
                         if (!result.Success)
                         {
                             _notyfService.Error(result.Message);
@@ -141,40 +137,24 @@ namespace StajTakip.MVC.Controllers
 
 
                     }
-
                 }
 
             }
-
-
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public ActionResult SaveSign(Signature signature, IFormFile signatureBase)
-        {
 
-            //signature.Name = signatureName;
-            using (var memoryStream = new MemoryStream())
-            {
-                signatureBase.CopyTo(memoryStream);
-                signature.SignatureData = memoryStream.ToArray();
-                var result = _signatureService.Add(signature);
-                if (!result.Success)
-                {
-
-                    _notyfService.Error(result.Message);
-                }
-
-                _notyfService.Success(result.Message);
-
-            }
-            return RedirectToAction("Index");
+        //[HttpPost]
+        //public void SaveSign(string signatureBase, int documentId)
+        //{
 
 
 
 
-        }
+        //   // UploadSignature(bytes, documentId);
+        //    //signatureBase.CopyTo(bytes);
+
+        //}
 
         [HttpGet]
         public IActionResult ShowSign(int signatureId)
