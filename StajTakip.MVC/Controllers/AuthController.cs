@@ -31,7 +31,11 @@ namespace StajTakip.MVC.Controllers
             {
                 var user = _authService.Login(model);
                 if (!user.Success)
+                {
+                    ModelState.AddModelError("", user.Message);
                     return View();
+                }
+                    
 
                 var operationClaims = _authService.GetClaims(user.Data.Id);
                 var studentId = _studentUserService.GetByUserId(user.Data.Id);
@@ -74,6 +78,8 @@ namespace StajTakip.MVC.Controllers
                 var result = _authService.RegisterStudent(model);
                 if (result.Success)
                     return RedirectToAction("Login");
+
+                ModelState.AddModelError("", result.Message ?? "Bir hata ile karşılaşıldı!");
             }
             return View();
         }

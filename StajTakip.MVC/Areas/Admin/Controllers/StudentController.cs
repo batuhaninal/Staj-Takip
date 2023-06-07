@@ -46,7 +46,8 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             var model = new AdminStudentRelation
             {
                 StudentUserId = studentId,
-                AdminUserId = int.Parse(User.Identity.Name)
+                AdminUserId = int.Parse(User.Identity.Name),
+                IsCompany = User.IsInRole("admin.company")
             };
             var result = _adminStudentRelationService.Add(model);
             if (result.Success)

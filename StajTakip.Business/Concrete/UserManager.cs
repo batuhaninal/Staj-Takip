@@ -22,9 +22,13 @@ namespace StajTakip.Business.Concrete
 
         public IDataResult<User> Add(User user)
         {
-            var result = _userRepository.Add(user);
-            if(result != null)
-                return new SuccessDataResult<User>(result);
+            var result = BusinessRules.Run(CheckUserIsExist(user.Username));
+            if (result != null)
+                return new ErrorDataResult<User>(result.Message);
+
+            var addedUser = _userRepository.Add(user);
+            if(addedUser != null)
+                return new SuccessDataResult<User>(addedUser);
 
             return new ErrorDataResult<User>("Kullanici eklenemedi!");
         }
@@ -60,6 +64,14 @@ namespace StajTakip.Business.Concrete
             if (user is null)
                 return new ErrorResult("Kullanıcı bulunamadı!");
             return new SuccessResult();
+        }
+
+        private IResult CheckUserIsExist(string userName)
+        {
+            var result = _userRepository.Get(x => x.Username == userName);
+            if (result is null)
+                return new SuccessResult();
+            return new ErrorResult("Bu kullanıcı adına sahip bir kullanıcı zaten bulunmaktadır!");
         }
     }
 }

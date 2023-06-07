@@ -20,13 +20,15 @@ namespace StajTakip.Business.Concrete
         private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IAdminUserService _adminUserService;
         private readonly IStudentUserService _studentUserService;
+        private readonly IAdminStudentRelationService _adminStudentRelationService;
 
-        public AuthManager(IUserService userService, IUserOperationClaimService userOperationClaimService, IAdminUserService adminUserService, IStudentUserService studentUserService)
+        public AuthManager(IUserService userService, IUserOperationClaimService userOperationClaimService, IAdminUserService adminUserService, IStudentUserService studentUserService, IAdminStudentRelationService adminStudentRelationService)
         {
             _userService = userService;
             _userOperationClaimService = userOperationClaimService;
             _adminUserService = adminUserService;
             _studentUserService = studentUserService;
+            _adminStudentRelationService = adminStudentRelationService;
         }
 
         public IDataResult<List<OperationClaim>> GetClaims(int userId)
@@ -65,7 +67,7 @@ namespace StajTakip.Business.Concrete
             };
             var addedUser = _userService.Add(user);
             if(!addedUser.Success)
-                return new ErrorDataResult<User>("Hata Olustu!");
+                return new ErrorDataResult<User>(addedUser.Message ?? "Hata Olustu!");
 
             var adminInfo = new AdminUser
             {
@@ -86,6 +88,19 @@ namespace StajTakip.Business.Concrete
             if (!result.Success)
                 return new ErrorDataResult<User>("Hata!");
 
+            if (userForRegisterDto.IsCompany)
+            {
+                var relation = new AdminStudentRelation
+                {
+                    AdminUserId = adminInfo.Id,
+                    IsCompany = true,
+                    StudentUserId = userForRegisterDto.StudentId
+                };
+                var relationResult = _adminStudentRelationService.Add(relation);
+                if (!relationResult.Success)
+                    return new ErrorDataResult<User>(relationResult.Message ?? "Öğrenci şirkete atanamadı!");
+            }
+
             return new SuccessDataResult<User>(user);
         }
 
@@ -102,7 +117,7 @@ namespace StajTakip.Business.Concrete
             };
             var addedUser = _userService.Add(user);
             if (!addedUser.Success)
-                return new ErrorDataResult<User>("Hata Olustu!");
+                return new ErrorDataResult<User>(addedUser.Message ?? "Hata Olustu!");
 
             var studentInfo = new StudentUser
             {
