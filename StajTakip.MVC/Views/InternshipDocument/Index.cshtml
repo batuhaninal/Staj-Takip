@@ -68,7 +68,7 @@
 
         <div style="text-align:center">
             <h1>İmza Oluşturma</h1>
-            <input type="text" id="signatureName" name="signatureName" placeholder="İmzayı isimlendirin.">
+           
             <br />
             <br />
             <canvas id="signatureCanvas" width="250" height="100"></canvas>
@@ -76,14 +76,10 @@
           
             <button id="clearButton">Temizle</button>
             <button id="saveButton">İmzayı Kaydet</button>
-            <br />
-            <br />
+         
 
-           @await Component.InvokeAsync("ShowSignatureList")
-            <form id="documentForm" asp-controller="InternshipDocument" asp-action="UploadSignature" asp-route-documentId="11" method="post" enctype="multipart/form-data">
-
-                <button type="submit" class="btn btn-primary">imza Ekle</button>
-            </form>
+          
+            
         </div>
 
 
