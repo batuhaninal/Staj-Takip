@@ -144,30 +144,7 @@ namespace StajTakip.MVC.Controllers
         }
 
 
-        //[HttpPost]
-        //public void SaveSign(string signatureBase, int documentId)
-        //{
 
-
-
-
-        //   // UploadSignature(bytes, documentId);
-        //    //signatureBase.CopyTo(bytes);
-
-        //}
-
-        [HttpGet]
-        public IActionResult ShowSign(int signatureId)
-        {
-            var signature = _signatureService.Get(signatureId);
-
-            if (signature != null && signature.Data != null)
-            {
-                return File(signature.Data.SignatureData, "image/png");
-            }
-
-            return View("Index", "Home");
-        }
 
     }
 }

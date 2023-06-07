@@ -40,15 +40,11 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
     });
     var dId = 0;
-    var idButton = document.getElementsByClassName("signatureTest");
-    idButton.addEventListener("click", function () {
+   
+    $('.signatureTest').on('click', function () {
         dId = $(this).attr('id');
         alert(dId);
     });
-    //$('.signatureTest').on('click', function () {
-    //    var dId = $(this).attr('id');
-    //    alert(dId);
-    //})
 
     // İmza kaydetme butonuna tıklanınca imza verisi alınır ve işlenir
     var saveButton = document.getElementById("saveButton");
