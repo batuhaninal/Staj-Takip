@@ -1,4 +1,5 @@
-﻿using Core.Utilities.Business;
+﻿using Core.Entities.Concrete;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Abstract;

@@ -49,9 +49,21 @@ namespace StajTakip.Business.Concrete
             return new SuccessDataResult<List<AdminStudentRelation>>(result);
         }
 
+        public IDataResult<List<AdminStudentRelation>> GetAllByCompanyIdWithStudent(int companyId)
+        {
+            var result = _repo.GetAll(x=>x.AdminUserId == companyId && x.IsCompany == true, x=>x.StudentUser).ToList();
+            return new SuccessDataResult<List<AdminStudentRelation>>(result);
+        }
+
         public IDataResult<List<AdminStudentRelation>> GetAllByStudentIdWithAdmin(int studentId)
         {
             var result = _repo.GetAll(x=>x.StudentUserId == studentId, x=>x.AdminUser).ToList();
+            return new SuccessDataResult<List<AdminStudentRelation>>(result);
+        }
+
+        public IDataResult<List<AdminStudentRelation>> GetAllByStudentIdWithCompany(int studentId)
+        {
+            var result = _repo.GetAll(x => x.StudentUserId == studentId && x.AdminUser.IsCompany == true, x => x.AdminUser).ToList();
             return new SuccessDataResult<List<AdminStudentRelation>>(result);
         }
 

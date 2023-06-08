@@ -24,7 +24,9 @@
                         <td>
                             @student.StudentUser.FirstName @student.StudentUser.LastName
                         </td>
-                        <td>Bos</td>
+                        <td>
+                            <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="Documents" asp-route-studentId="@student.StudentUserId">Öğrencinin Staj Belgelerine Git</a>
+                        </td>
                         <td>
                             <a asp-area="Admin" asp-controller="InternshipsBook" asp-action="BookPage" asp-route-studentId="@student.StudentUser.Id" asp-route-bookId="0">Öğrencinin Defterine Git</a>
                         </td>

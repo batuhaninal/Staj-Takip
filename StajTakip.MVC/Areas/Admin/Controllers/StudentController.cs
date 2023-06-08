@@ -13,13 +13,15 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
     {
         private readonly IStudentUserService _studentUserService;
         private readonly IAdminStudentRelationService _adminStudentRelationService;
+        private readonly IAdminUserService _adminUserService;
         private readonly INotyfService _notyfService;
 
-        public StudentController(IStudentUserService studentUserService, INotyfService notyfService, IAdminStudentRelationService adminStudentRelationService)
+        public StudentController(IStudentUserService studentUserService, INotyfService notyfService, IAdminStudentRelationService adminStudentRelationService, IAdminUserService adminUserService)
         {
             _studentUserService = studentUserService;
             _notyfService = notyfService;
             _adminStudentRelationService = adminStudentRelationService;
+            _adminUserService = adminUserService;
         }
 
         public IActionResult Index()
@@ -27,20 +29,31 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             return View();
         }
 
+
         [HttpGet]
+        [Authorize(Roles ="admin.teacher, admin.company")]
         public IActionResult StudentList()
         {
             var data = _adminStudentRelationService.GetAllByAdminIdWithStudent(int.Parse(User.Identity.Name));
             return View(data.Data);
         }
 
+        //[HttpGet]
+        //[Authorize(Roles = "admin, admin.teacher")]
+        //public IActionResult CompanyList()
+        //{
+
+        //}
+
         [HttpGet]
+        [Authorize(Roles = "admin.teacher")]
         public IActionResult AllStudents()
         {
             var data = _studentUserService.GetAll();
             return View(data.Data);
         }
 
+        [Authorize(Roles = "admin.teacher")]
         public IActionResult AddStudentRelation(int studentId)
         {
             var model = new AdminStudentRelation
@@ -59,6 +72,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             return RedirectToAction("AllStudents");
         }
 
+        [Authorize(Roles = "admin.teacher")]
         public IActionResult DeleteStudentRelation(int relationId)
         {
             var result = _adminStudentRelationService.HardDelete(relationId);
