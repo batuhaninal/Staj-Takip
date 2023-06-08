@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
 using StajTakip.Entities.DTOs;
 using System.Security.Claims;
+using StajTakip.MVC.Models;
 
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
@@ -12,12 +13,14 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
         private readonly IAdminUserService _adminUserService;
 
-        public AuthController(IAuthService authService, IAdminUserService adminUserService)
+        public AuthController(IAuthService authService, IAdminUserService adminUserService, IUserService userService)
         {
             _authService = authService;
             _adminUserService = adminUserService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -57,7 +60,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
 
                 await HttpContext.SignInAsync(principal);
 
-                return RedirectToAction("Index", "InternshipsBook");
+                return RedirectToAction("StudentList", "Student");
 
             }
             return View();
@@ -74,6 +77,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.IsCompany = false;
                 var result = _authService.RegisterAdmin(model);
                 if (result.Success)
                     return RedirectToAction("Login");
@@ -103,6 +107,30 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                     return RedirectToAction("StudentList","Student");
 
                 ModelState.AddModelError("", result.Message ?? "Bir hata ile karşılaşıldı!");
+            }
+            return View();
+        }
+        [HttpGet]
+        [Authorize(Roles ="admin, admin.teacher, admin.company")]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, admin.teacher, admin.company")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _userService.ChangePassword(model);
+                if (!result.Success)
+                {
+                    ModelState.AddModelError("", result.Message ?? "Hata! Lütfen alanları kontrol ediniz!");
+                    return View();
+                }
+                await Logout();
+                return RedirectToAction("Login");
             }
             return View();
         }
