@@ -11,12 +11,14 @@ namespace StajTakip.MVC.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
         private readonly IStudentUserService _studentUserService;
 
-        public AuthController(IAuthService authService, IStudentUserService studentUserService)
+        public AuthController(IAuthService authService, IStudentUserService studentUserService, IUserService userService)
         {
             _authService = authService;
             _studentUserService = studentUserService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -80,6 +82,30 @@ namespace StajTakip.MVC.Controllers
                     return RedirectToAction("Login");
 
                 ModelState.AddModelError("", result.Message ?? "Bir hata ile karşılaşıldı!");
+            }
+            return View();
+        }
+        [HttpGet]
+        [Authorize(Roles = "student")]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "student")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _userService.ChangePassword(model);
+                if (!result.Success)
+                {
+                    ModelState.AddModelError("", result.Message ?? "Hata! Lütfen alanları kontrol ediniz!");
+                    return View();
+                }
+                await Logout();
+                return RedirectToAction("Login");
             }
             return View();
         }

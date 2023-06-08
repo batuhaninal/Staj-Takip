@@ -74,6 +74,7 @@ namespace StajTakip.Business.Concrete
                 UserId = addedUser.Data.Id,
                 FirstName = userForRegisterDto.FirstName,
                 LastName = userForRegisterDto.LastName,
+                IsCompany = userForRegisterDto.IsCompany,
             };
 
             var res = _adminUserService.Add(adminInfo);
