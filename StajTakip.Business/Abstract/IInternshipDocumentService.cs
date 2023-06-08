@@ -11,5 +11,6 @@ namespace StajTakip.Business.Abstract
         IDataResult<InternshipDocument> Update(InternshipDocument entity);
         IDataResult<InternshipDocument> Get(int id);
         IDataResult<List<InternshipDocument>> GetAll();
+        IDataResult<List<InternshipDocument>> GetAllByStudentId(int studentId);
     }
 }

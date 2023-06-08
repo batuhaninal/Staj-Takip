@@ -39,6 +39,12 @@ namespace StajTakip.Business.Concrete
             return new SuccessDataResult<List<InternshipDocument>>(data);
         }
 
+        public IDataResult<List<InternshipDocument>> GetAllByStudentId(int studentId)
+        {
+            var data = _internshipDocumentRepository.GetAll(x=>x.StudentUserId == studentId).ToList();
+            return new SuccessDataResult<List<InternshipDocument>>(data);
+        }
+
         public IResult HardDelete(InternshipDocument entity)
         {
             var result = BusinessRules.Run(IsExist(entity.Id));

@@ -1,0 +1,73 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<InternshipDocument>
+
+<div class="p-3">
+    <table id="documentList" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Evrak Adı</th>
+                <th>İşlemler</th>
+                <th>Secili</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                    @foreach (var document in Model)
+                    {
+                    <tr>
+                        <td>
+                                @document.DocumentName
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@document.Id">
+                                Goruntule
+                            </a>
+                            <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">Kontrol Edildi Olarak İşaretle</a>
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input radioButton" type="radio" name="check" id="@document.Id">
+                            </div>
+                        </td>
+                    </tr>
+                    }
+            }
+            else
+            {
+                <h1>Henuz Kullanici Kayitli Degil</h1>
+            }
+
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <div style="text-align:center">
+        <h1>İmza Oluşturma</h1>
+
+        <br />
+        <br />
+        <canvas id="signatureCanvas" width="250" height="100"></canvas>
+        <br>
+
+        <button id="clearButton">Temizle</button>
+        <button id="saveButton">İmzayı Kaydet</button>
+
+
+
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#documentList').DataTable();
+        });
+    </script>
+    <script src="~/studenttemplate/js/signatureteacher.js"></script>
+}
