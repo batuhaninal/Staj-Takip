@@ -85,6 +85,26 @@ namespace StajTakip.MVC.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _userService.ForgotPassword(model);
+                if (!result.Success)
+                    ModelState.AddModelError("", result.Message ?? "Lütfen daha sonra yeniden deneyiniz!");
+
+                return RedirectToAction("Login");
+            }
+            return View();
+        }
         [HttpGet]
         [Authorize(Roles = "student")]
         public IActionResult ChangePassword()

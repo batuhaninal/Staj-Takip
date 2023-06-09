@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.Hashing;
 using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Abstract;
@@ -17,10 +18,12 @@ namespace StajTakip.Business.Concrete
     public class UserManager : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMailService _mailService;
 
-        public UserManager(IUserRepository userRepository)
+        public UserManager(IUserRepository userRepository, IMailService mailService)
         {
             _userRepository = userRepository;
+            _mailService = mailService;
         }
 
         public IDataResult<User> Add(User user)
@@ -91,6 +94,34 @@ namespace StajTakip.Business.Concrete
             return new SuccessDataResult<User>(user);
         }
 
+
+        public IResult ForgotPassword(ForgotPasswordDto model)
+        {
+            var result = BusinessRules.Run(CheckUserMailAndUsername(model.Email, model.Username));
+            if (result != null)
+                return new ErrorResult(result.Message ?? "Hata");
+
+            var user = _userRepository.Get(x => x.Username == model.Username);
+            byte[] passwordSalt, passwordHash;
+            string password = PasswordGeneratorHelper.CreatePassword(16);
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            var updatedUser = Update(user);
+            if (!updatedUser.Success)
+                return new ErrorResult(updatedUser.Message ?? "Hata!");
+
+            var mailResult = _mailService.SendForgotPasswordInfo(new ForgotPasswordEmailDto
+            {
+                Password = password,
+                ReceiverMail = user.Email
+            });
+
+            if (!mailResult.Success)
+                return new ErrorResult(mailResult.Message ?? "Mail Gonderilemedi! Lütfen yeniden sıfırlayınız!");
+            return new SuccessResult();
+        }
+
         private IResult CheckUsernameByUserId(int userId, string userName)
         {
             var result = _userRepository.Get(x => x.Username == userName && x.Id == userId);
@@ -129,5 +160,15 @@ namespace StajTakip.Business.Concrete
 
             return new SuccessResult();
         }
+
+        private IResult CheckUserMailAndUsername(string email, string userName)
+        {
+            var result = _userRepository.Get(x => x.Email == email && x.Username == userName);
+            if (result == null)
+                return new ErrorResult("Lütfen kullanıcı adınızı ve emailinizi kontrol ediniz!");
+
+            return new SuccessResult();
+        }
+
     }
 }
