@@ -1,10 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
 using StajTakip.Entities.Concrete;
 
 namespace StajTakip.MVC.Controllers
 {
+    [Authorize(Roles = "admin,admin.teacher,admin.company,student")]
     public class InternshipDocumentController : Controller
     {
         private readonly IInternshipDocumentService _internshipDocumentService;
@@ -20,7 +22,9 @@ namespace StajTakip.MVC.Controllers
 
         public IActionResult Index()
         {
-            var documents = _internshipDocumentService.GetAll();
+            var userId = User.Identity.Name;
+            var parseUserId = int.Parse(userId);
+            var documents = _internshipDocumentService.GetAllByStudentId(parseUserId);
             ViewData["documentList"] = documents.Data;
 
             return View();
@@ -42,9 +46,8 @@ namespace StajTakip.MVC.Controllers
         [HttpPost]
         public IActionResult UploadPdf(InternshipDocument internshipDocument, IFormFile pdfFile)
         {
-            var userId = User.Identity.Name;
 
-            internshipDocument.StudentUserId = int.Parse(userId);
+
             if (pdfFile != null && pdfFile.Length > 0)
             {
 
@@ -72,6 +75,7 @@ namespace StajTakip.MVC.Controllers
         }
         public IActionResult UploadSignature(string signature, int documentId)
         {
+
             var documentS = _internshipDocumentService.Get(documentId);
             var signatureSub = signature.Substring(22);  // remove data:image/png;base64,
 
@@ -143,7 +147,16 @@ namespace StajTakip.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [HttpPost]
+        public IActionResult DeletePdf(int documentId)
+        {
+            var result = _internshipDocumentService.HardDelete(documentId);
+            if (!result.Success)
+            {
+                _notyfService.Error(result.Message);
+            }
+            return RedirectToAction("Index");
+        }
 
 
     }

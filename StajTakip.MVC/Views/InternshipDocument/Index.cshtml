@@ -6,8 +6,10 @@
 }
 @model InternshipDocument
 <link href="~/studenttemplate/css/style.css" rel="stylesheet" />
+<link href="~/studenttemplate/css/bootstrap.min.css" rel="stylesheet" />
 <div>
     <form asp-controller="InternshipDocument" asp-action="UploadPdf" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="StudentUserId" value="@User.Identity.Name" />
 
         <div class="container-fluid">
             <div class="row g-4">
@@ -17,73 +19,192 @@
                         <br />
                         <h3>Dosya Yükleyiniz</h3>
                         <br />
-                        <input type="file" name="pdfFile" class="form-control-file" />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Dosya Ekle</button>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-12 col-lg-3">
+                                <input type="text" class="form-control" id="dN" asp-for="DocumentName" placeholder="Lütfen pdf ismini giriniz!">
+                            </div>
+                            <div class="col-sm-12 col-lg-3">
+                                <input type="file" name="pdfFile" class="form-control-file" />
+                            </div>
+                        </div>
 
+                    </div>
+                    <br />
+                    
+                    <button type="submit" class="btn btn-primary btn-xs">Dosya Ekle</button>
 
                 </div>
             </div>
         </div>
     </form>
     <br />
-    <div class="container-fluid">
-        <div class="row g-4">
+ 
 
-            <div class="card">
-                <div class="card-header text-center">
-                    <div class="form-group">
-                        <br />
-                        <h3>Yüklenilen Dosyalar</h3>
+    <table id="documentList" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Döküman İsmi</th>
+                <th>Döküman Görüntüle</th>
+                <th>Durumlar</th>
+                <th>Seç</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewData["documentList"] == null)
+            {
+                <h6>Henüz Pdf Yüklenmemiş.</h6>
+            }
+            else
+            {
+                @foreach (var item in ViewData["documentList"] as List<InternshipDocument>)
+                {
+                    <tr>
+                        <th style="color:black">@item.DocumentName</th>
+                        <td>
+                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">
+                                <button class="btn btn-primary">Görüntüle</button>
 
-                    </div>
-                    <br />
-                    @if (ViewData["documentList"]==null)
+                            </a>
+                        </td>
+                        <td>
+                            @if (item.IsTeacherChecked==true)
+                            {
+                                <a class="btn btn-square btn-info" title="Danışmanınız belgenizi onaylamıştır">
+                                    <span class="icon text-white-100">
+                                        <i class="fas fa-person-booth"></i>
+                                    </span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-square btn-danger" title="Danışmanınız belgenizi onaylamamıştır!">
+                                    <span class="icon text-white-100">
+                                        <i class="fas fa-person-booth"></i>
+                                    </span>
+                                </a>
+                            }
+
+                            @if (item.IsCompanyChecked==true)
+                            {
+                                <a class="btn btn-square btn-info" title="Şirket belgenizi onaylamıştır.">
+                                    <span class="icon text-white-100">
+                                        <i class="fas fa-building"></i>
+                                    </span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-square btn-danger" title="Şirket belgenizi onaylamamıştır!">
+                                    <span class="icon text-white-100">
+                                        <i class="fas fa-building"></i>
+                                    </span>
+                                </a>
+                            }
+                            
+                        <td>
+                            <button type="button" id="@item.Id" class="btn btn-outline-success signatureTest">Döküman Seç</button>
+                        </td>
+                        <td>
+                            <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
+
+                                <button type="submit" class="btn btn-outline-warning">Döküman Sil</button>
+                            </form>
+
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+@*<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Dökümanlar </h5>
+
+                </div>
+                <div class="ibox-content">
+                    @if (ViewData["documentList"] == null)
                     {
                         <h6>Henüz Pdf Yüklenmemiş.</h6>
                     }
                     else
                     {
-                        <li>
 
-                       
-                        @foreach (var item in ViewData["documentList"] as List<InternshipDocument>)
-                        {
-                            <a  asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">
-                                <button class="btn btn-primary">@item.CreatedDate.ToShortDateString() </button>
+                        <table id="documentList" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Döküman İsmi</th>
+                                    <th>Döküman Görüntüle</th>
+                                    <th>Seç</th>
+                                    <th>Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewData["documentList"] as List<InternshipDocument>)
+                                {
+                                    <tr>
+                                        <th style="color:black">@item.DocumentName</th>
+                                        <td>
+                                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">
+                                                <button class="btn btn-primary">Görüntüle</button>
 
-                            </a>
-                                <button type="button" id="@item.Id" class="btn btn-primary signatureTest">@item.Id</button>
-                        }
-                        </li>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <button type="button" id="@item.Id" class="btn btn-outline-success signatureTest">Döküman Seç</button>
+                                        </td>
+                                        <td>
+                                            <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
+
+                                                <button type="submit" class="btn btn-outline-warning">Döküman Sil</button>
+                                            </form>
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
                     }
-
-
                 </div>
             </div>
         </div>
+    </div>
+
+</div>*@
 
 
-        <br />
+<div style="text-align:center">
+    <h1>İmza Oluşturma</h1>
 
-        <div style="text-align:center">
-            <h1>İmza Oluşturma</h1>
-           
-            <br />
-            <br />
-            <canvas id="signatureCanvas" width="250" height="100"></canvas>
-            <br>
-          
-            <button id="clearButton">Temizle</button>
-            <button id="saveButton">İmzayı Kaydet</button>
-         
+  
+    <canvas id="signatureCanvas" width="250" height="100"></canvas>
+    <br>
 
-          
-            
-        </div>
+    <button id="clearButton">Temizle</button>
+    <button id="saveButton">İmzayı Kaydet</button>
 
 
-    @section Scripts{
-            <script src="~/studenttemplate/js/signaturecanvas.js"></script>
+
+
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#documentList').DataTable();
+        });
+    </script>
+    <script src="~/studenttemplate/js/signaturecanvas.js"></script>
     }
 
