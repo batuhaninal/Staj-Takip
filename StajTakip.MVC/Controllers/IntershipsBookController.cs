@@ -1,6 +1,4 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +7,7 @@ using StajTakip.Entities.DTOs;
 
 namespace StajTakip.MVC.Controllers
 {
-    [Authorize(Roles ="admin, student")]
+    [Authorize(Roles = "admin, student")]
     public class InternshipsBookController : Controller
     {
         private readonly IInternshipsBookService _bookRepository;
