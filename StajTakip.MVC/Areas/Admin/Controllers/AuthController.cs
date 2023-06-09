@@ -149,6 +149,8 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                 var result = _userService.ForgotPassword(model);
                 if(!result.Success)
                     ModelState.AddModelError("", result.Message ?? "Lütfen daha sonra yeniden deneyiniz!");
+
+                return RedirectToAction("Login");
             }
             return View();
         }

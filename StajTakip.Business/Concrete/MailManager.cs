@@ -59,10 +59,12 @@ namespace StajTakip.Business.Concrete
             {
                 From = new MailAddress(_smtpSettings.SenderEmail),
                 To = { new MailAddress(model.ReceiverMail) },
-                Subject = "Hacklendin Yarram!",
+                Subject = "Şifre Değişimi Başarıyla Gerçekleşti!",
                 IsBodyHtml = true,
-                Body = $"Şifre Değişimi Gerçekleşti!\nYeni Şifreniz : {model.Password} \n" +
-                $"Lütfen giriş yaptıktan sonra şifrenizi değiştiriniz!",
+                Body = $"Yeni Şifreniz : {model.Password} <br/>" +
+                $"Lütfen giriş yaptıktan sonra şifrenizi değiştiriniz! <br/>" +
+                $"Gönderen : {_smtpSettings.SenderName}<br/>" +
+                $"Gönderen Email :{_smtpSettings.SenderEmail}<br/>",
             };
 
             SmtpClient smtpClient = new SmtpClient
