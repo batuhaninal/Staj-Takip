@@ -136,6 +136,24 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto model)
+        {
+            if (ModelState.IsValid) 
+            {
+                var result = _userService.ForgotPassword(model);
+                if(!result.Success)
+                    ModelState.AddModelError("", result.Message ?? "Lütfen daha sonra yeniden deneyiniz!");
+            }
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult AccessDenied()
         {
             return View();

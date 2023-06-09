@@ -11,5 +11,6 @@ namespace StajTakip.Business.Abstract
     public interface IMailService
     {
         IResult Send(EmailSendDto emailSendDto);
+        IResult SendForgotPasswordInfo(ForgotPasswordEmailDto model);
     }
 }

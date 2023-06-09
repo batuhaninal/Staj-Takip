@@ -17,5 +17,6 @@ namespace StajTakip.Business.Abstract
         IDataResult<User> GetByUsername(string username);
         IDataResult<User> GetById(int userId);
         IResult ChangePassword(ChangePasswordDto model);
+        IResult ForgotPassword(ForgotPasswordDto model);
     }
 }

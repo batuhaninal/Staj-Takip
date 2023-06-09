@@ -52,5 +52,32 @@ namespace StajTakip.Business.Concrete
 
             return new SuccessResult("E-Posta basariyla gonderildi");
         }
+
+        public IResult SendForgotPasswordInfo(ForgotPasswordEmailDto model)
+        {
+            MailMessage message = new MailMessage
+            {
+                From = new MailAddress(_smtpSettings.SenderEmail),
+                To = { new MailAddress(model.ReceiverMail) },
+                Subject = "Hacklendin Yarram!",
+                IsBodyHtml = true,
+                Body = $"Şifre Değişimi Gerçekleşti!\nYeni Şifreniz : {model.Password} \n" +
+                $"Lütfen giriş yaptıktan sonra şifrenizi değiştiriniz!",
+            };
+
+            SmtpClient smtpClient = new SmtpClient
+            {
+                Host = _smtpSettings.Server,
+                Port = _smtpSettings.Port,
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
+
+            smtpClient.Send(message);
+
+            return new SuccessResult("E-Posta basariyla gonderildi");
+        }
     }
 }
