@@ -27,6 +27,18 @@ namespace StajTakip.Business.Concrete
             return new SuccessResult();
         }
 
+        public IDataResult<AdminUser> GetByAdminUserId(int adminUserId)
+        {
+            var result = BusinessRules.Run(CheckByAdminUserId(adminUserId));
+            if (result == null)
+            {
+                var data = _adminRepo.Get(x => x.Id == adminUserId);
+                return new SuccessDataResult<AdminUser>(data);
+            }
+
+            return new ErrorDataResult<AdminUser>(result.Message ?? "Beklenmeyen bir hata meydana geldi!");
+        }
+
         public IDataResult<AdminUser> GetByUserId(int userId)
         {
             var result = BusinessRules.Run(CheckByUserId(userId));
@@ -42,6 +54,15 @@ namespace StajTakip.Business.Concrete
         private IResult CheckByUserId(int userId)
         {
             var result = _adminRepo.Get(x=>x.UserId == userId);
+            if (result == null)
+                return new ErrorResult("Kullanici bulunamadi!");
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckByAdminUserId(int adminId)
+        {
+            var result = _adminRepo.Get(x => x.Id == adminId);
             if (result == null)
                 return new ErrorResult("Kullanici bulunamadi!");
 

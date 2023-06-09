@@ -103,18 +103,19 @@ app.UseEndpoints(endpoints =>
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
 
-    app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
     endpoints.MapControllerRoute(
-        name: "default",
+        name: "Student",
         pattern: "{controller=InternshipDocument}/{action=Index}/{id?}");
 
     endpoints.MapControllerRoute(
         name: "pdfRoute",
         pattern: "InternshipDocument/ShowPdf/{id}",
         defaults: new { controller = "InternshipDocument", action = "ShowPdf" });
+
+
+    app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 });
 
