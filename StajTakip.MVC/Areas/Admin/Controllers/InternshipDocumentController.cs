@@ -111,9 +111,6 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                     using (MemoryStream updatedPdfStream = new MemoryStream())
                     {
                         pdfDocument.Save(updatedPdfStream);
-                        var userId = User.Identity.Name;
-
-                        documentS.Data.StudentUserId = int.Parse(userId);
                         documentS.Data.Data = updatedPdfStream.ToArray();
                         var result = _internshipDocumentService.Update(documentS.Data);
                         if (!result.Success)
@@ -124,9 +121,10 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
 
                     }
                 }
-
+                return RedirectToAction("Documents", new { studentId = documentS.Data.StudentUserId });
             }
-            return RedirectToAction("Documents");
+            _notyfService.Error("Beklenmeyen bir hata meydana geldi! Lütfen daha sonra tekrar deneyiniz.");
+            return RedirectToAction("StudentList");
         }
     }
 }

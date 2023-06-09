@@ -65,9 +65,7 @@
                             <span class="text-danger" asp-validation-for="Password"></span>
                         </div>
 
-                        @*<div class="text-danger" asp-validation-summary="ModelOnly">
-                        </div>*@
-
+                        <div asp-validation-summary="ModelOnly" class="text-primary"></div>
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-lg btn-block">
                             Kayit Ol
@@ -78,7 +76,6 @@
                                 Zaten bir hesabınız var mi?
                             </p>
                         </div>
-                        <div asp-validation-summary="ModelOnly" class="text-primary"></div>
                         <a asp-area="" asp-controller="Auth" asp-action="Login" class="btn btn-success btn-lg btn-block">Giris Yap</a>
                     </form>
                 </div>
