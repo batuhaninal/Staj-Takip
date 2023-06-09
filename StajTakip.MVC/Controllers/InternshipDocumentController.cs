@@ -54,6 +54,7 @@ namespace StajTakip.MVC.Controllers
                 if (Path.GetExtension(pdfFile.FileName).ToLower() != ".pdf")
                 {
                     ModelState.AddModelError("pdfFile", "Lütfen pdf belgesi yükleyiniz.");
+                    _notyfService.Error("Lütfen pdf belgesi yükleyiniz!");
                     return RedirectToAction("Index");
                 }
 
@@ -127,9 +128,6 @@ namespace StajTakip.MVC.Controllers
                     using (MemoryStream updatedPdfStream = new MemoryStream())
                     {
                         pdfDocument.Save(updatedPdfStream);
-                        var userId = User.Identity.Name;
-
-                        documentS.Data.StudentUserId = int.Parse(userId);
                         documentS.Data.Data = updatedPdfStream.ToArray();
                         var result = _internshipDocumentService.Update(documentS.Data);
                         if (!result.Success)
