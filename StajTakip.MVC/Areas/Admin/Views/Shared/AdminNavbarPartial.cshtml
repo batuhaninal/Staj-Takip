@@ -76,15 +76,6 @@
                 <a href="#" class="dropdown-item text-center">See all notifications</a>
             </div>
         </div>
-        <div class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="fa fa-user me-lg-2"></i>
-                <span class="d-none d-lg-inline-flex">John Doe</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                <a asp-area="Admin" asp-controller="Auth" asp-action="ChangePassword" class="dropdown-item">Şifre Değiştir</a>
-                <a asp-area="Admin" asp-controller="Auth" asp-action="Logout" class="dropdown-item">Çıkış Yap</a>
-            </div>
-        </div>
+        @await Component.InvokeAsync("UserMenu")
     </div>
 </nav>

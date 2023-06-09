@@ -36,6 +36,16 @@ namespace StajTakip.Business.Concrete
             return new ErrorDataResult<List<StudentUser>>("Henüz kullanıcı yok!");
         }
 
+        public IDataResult<StudentUser> GetById(int studentUserId)
+        {
+            var result = BusinessRules.Run(CheckByStudentUserId(studentUserId));
+            if (result != null)
+                return new ErrorDataResult<StudentUser>(result.Message ?? "Beklenmeyen bir hatayla karşılaşıldı!");
+
+            var user = _studentRepo.Get(x=>x.Id == studentUserId);
+            return new SuccessDataResult<StudentUser>(user);
+        }
+
         public IDataResult<StudentUser> GetByUserId(int userId)
         {
             var result = BusinessRules.Run(CheckByUserId(userId));
@@ -51,6 +61,15 @@ namespace StajTakip.Business.Concrete
         private IResult CheckByUserId(int userId)
         {
             var result = _studentRepo.Get(x => x.UserId == userId);
+            if (result == null)
+                return new ErrorResult("Kullanici bulunamadi!");
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckByStudentUserId(int studentId)
+        {
+            var result = _studentRepo.Get(x=>x.Id == studentId);
             if (result == null)
                 return new ErrorResult("Kullanici bulunamadi!");
 
