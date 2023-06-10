@@ -67,7 +67,7 @@
         fetch("/Admin/InternshipDocument/UploadSignature", {
             method: "POST",
             body: formData
-        });
+        }).then((response) => location.reload());
 
     });
 };

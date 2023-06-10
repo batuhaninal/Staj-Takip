@@ -1,8 +1,10 @@
 ﻿using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
+using Microsoft.EntityFrameworkCore;
 using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Abstract;
+using StajTakip.DataAccess.Concrete.Contexts;
 using StajTakip.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,7 @@ namespace StajTakip.Business.Concrete
     public class AdminUserManager : IAdminUserService
     {
         private readonly IAdminUserRepository _adminRepo;
+        private readonly StajTakipContext _context = new StajTakipContext();
 
         public AdminUserManager(IAdminUserRepository adminRepo)
         {
@@ -67,6 +70,15 @@ namespace StajTakip.Business.Concrete
                 return new ErrorResult("Kullanici bulunamadi!");
 
             return new SuccessResult();
+        }
+
+        public IDataResult<List<AdminUser>> GetAllAdminWithRelations()
+        {
+            var companies = _context.AdminUsers.Where(x=>x.IsCompany == true)
+                .Include(x=>x.AdminStudentRelations)
+                .ThenInclude(x=>x.StudentUser)
+                .ToList();
+            return new SuccessDataResult<List<AdminUser>>(companies);
         }
     }
 }

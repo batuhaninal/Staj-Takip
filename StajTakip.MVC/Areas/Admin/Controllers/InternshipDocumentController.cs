@@ -115,9 +115,9 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                         var result = _internshipDocumentService.Update(documentS.Data);
                         if (!result.Success)
                         {
-                            _notyfService.Error(result.Message);
+                            _notyfService.Error(result.Message ?? "Beklenmeyen bir hata ile karşılaşıldı lütfen daha sonra tekrar deneyiniz!");
                         }
-                        _notyfService.Success(result.Message);
+                        _notyfService.Success(result.Message ?? "Belge başarılı bir şekilde imzalandı!");
 
                     }
                 }
