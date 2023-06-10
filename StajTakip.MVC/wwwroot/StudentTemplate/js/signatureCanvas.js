@@ -61,7 +61,7 @@
         fetch("/InternshipDocument/UploadSignature", {
             method: "POST",
             body: formData
-        });
+        }).then((response) => location.reload());
 
     });
     //saveButton.addEventListener("click", function () {

@@ -1,0 +1,107 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<AdminUser>
+
+<div id="modalPlaceHolder" aria-hidden="true"></div>
+
+<div class="p-3">
+    <table class="table table-hover" id="allCompany" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Şirket Adı</th>
+                <th>Şirkete Ait Öğrenciler</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                @foreach (var company in Model)
+                {
+                    <tr>
+                        <td>@company.FirstName @company.LastName</td>
+                        <td>
+                            @if (company.AdminStudentRelations.Any())
+                            {
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@company.Id" aria-expanded="true" aria-controls="collapse_@company.Id">
+                                                Şirkete Kayıtlı Öğrenciler
+                                            </button>
+                                        </h2>
+                                        <div id="collapse_@company.Id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <ul>
+                                                    @foreach (var relation in company.AdminStudentRelations)
+                                                    {
+                                                        <li>
+
+                                                            <label class="m-3">@relation.StudentUser.FirstName @relation.StudentUser.LastName</label>
+                                                            <a class="btn btn-danger ml-3" asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
+                                                                <span class="icon text-white-50">
+                                                                    <i class="fas fa-circle"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <label>Henüz bir öğrenci kayıtlı değil!</label>
+                            }
+
+                        </td>
+                        <td>
+                            <button class="btn btn-success ml-3 btnStudentList" companyId="@company.Id" title="Şirkete bir öğrenci ekle!">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    Henuz şirket hesabı bulunmamaktadir!
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#allCompany').DataTable();
+
+            const placeHolderDiv = $('#modalPlaceHolder');
+
+            $('.btnStudentList').click(function (event) {
+                event.preventDefault();
+                var companyId = $(this).attr('companyId');
+                const url = `/Admin/Company/StudentListModal?companyId=${companyId}`;
+                debugger;
+                $.get(url).done(function (data) {
+                    placeHolderDiv.html(data);
+                    placeHolderDiv.find('.modal').modal('show');
+                });
+
+                placeHolderDiv.on('click', '.close', function (event) {
+                    event.preventDefault();
+                    placeHolderDiv.find('.modal').modal('hide');
+                });
+            });
+        });
+    </script>
+}
