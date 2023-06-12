@@ -66,17 +66,18 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
 
                     if (User.IsInRole("admin.teacher"))
                     {
-                        lwrLeftX = 600;
-                        lwrLeftY = 150;
-                        uprRightX = 450;
-                        uprRightY = 220;
+                        lwrLeftX = 410;
+                        lwrLeftY = 170;
+                        uprRightX = 330;
+                        uprRightY = 240;
                     }
                     else if (User.IsInRole("admin.company"))
                     {
-                        lwrLeftX = 370;
-                        lwrLeftY = 150;
-                        uprRightX = 220;
-                        uprRightY = 220;
+
+                        lwrLeftX = 530;
+                        lwrLeftY = 200;
+                        uprRightX = 450;
+                        uprRightY = 270;
                     }
 
                     // Access the target page to add an image
