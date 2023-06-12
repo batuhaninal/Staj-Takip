@@ -91,10 +91,11 @@ namespace StajTakip.MVC.Controllers
 
 
                     // Set coordinates where image is to be pasted
-                    int lwrLeftX = 370;
-                    int lwrLeftY = 150;
-                    int uprRightX = 220;
-                    int uprRightY = 220;
+
+                    int lwrLeftX = 390;
+                    int lwrLeftY = 400;
+                    int uprRightX = 335;
+                    int uprRightY = 440;
 
                     // Access the target page to add an image
                     Aspose.Pdf.Page targetPage = pdfDocument.Pages[1];
@@ -153,6 +154,7 @@ namespace StajTakip.MVC.Controllers
             {
                 _notyfService.Error(result.Message);
             }
+            _notyfService.Success(result.Message);
             return RedirectToAction("Index");
         }
 
