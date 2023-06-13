@@ -7,6 +7,7 @@
 @model InternshipDocument
 <link href="~/studenttemplate/css/style.css" rel="stylesheet" />
 <link href="~/studenttemplate/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <div>
     <form asp-controller="InternshipDocument" asp-action="UploadPdf" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="StudentUserId" value="@User.Identity.Name" />
@@ -21,10 +22,10 @@
                         <br />
                         <div class="row justify-content-center">
                             <div class="col-sm-12 col-lg-3">
-                                <input type="text" class="form-control" id="dN" asp-for="DocumentName" placeholder="Lütfen pdf ismini giriniz!">
+                                <input type="text" required="" class="form-control" id="dN" asp-for="DocumentName" placeholder="Lütfen pdf ismini giriniz!">
                             </div>
                             <div class="col-sm-12 col-lg-3">
-                                <input type="file" name="pdfFile" class="form-control-file" />
+                                <input type="file" required="" name="pdfFile" class="form-control-file" />
                             </div>
                         </div>
 
@@ -106,10 +107,11 @@
                             <button type="button" id="@item.Id" class="btn btn-outline-success signatureTest">Döküman Seç</button>
                         </td>
                         <td>
-                            <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
+                         @*   <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
 
-                                <button type="submit" class="btn btn-outline-warning">Döküman Sil</button>
-                            </form>
+                               
+                            </form>*@
+                            <a href="#" id="deleteDocument" data="@item.Id" class="btn btn-outline-danger deleteDocument">Döküman Sil</a>
 
                         </td>
                     </tr>
@@ -121,66 +123,6 @@
 </div>
 
 
-
-@*<div class="wrapper wrapper-content animated fadeInRight">
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5>Dökümanlar </h5>
-
-                </div>
-                <div class="ibox-content">
-                    @if (ViewData["documentList"] == null)
-                    {
-                        <h6>Henüz Pdf Yüklenmemiş.</h6>
-                    }
-                    else
-                    {
-
-                        <table id="documentList" class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Döküman İsmi</th>
-                                    <th>Döküman Görüntüle</th>
-                                    <th>Seç</th>
-                                    <th>Sil</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in ViewData["documentList"] as List<InternshipDocument>)
-                                {
-                                    <tr>
-                                        <th style="color:black">@item.DocumentName</th>
-                                        <td>
-                                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">
-                                                <button class="btn btn-primary">Görüntüle</button>
-
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <button type="button" id="@item.Id" class="btn btn-outline-success signatureTest">Döküman Seç</button>
-                                        </td>
-                                        <td>
-                                            <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
-
-                                                <button type="submit" class="btn btn-outline-warning">Döküman Sil</button>
-                                            </form>
-
-                                        </td>
-                                    </tr>
-                                }
-
-                            </tbody>
-                        </table>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>*@
 
 
 <div style="text-align:center">
@@ -204,7 +146,41 @@
         $(document).ready(function () {
             $('#documentList').DataTable();
         });
+
+       
+
+        $('.deleteDocument').click(function () {
+            var id = $(this).attr('data');
+            swal({
+                title: "Emin misiniz?",
+                text: "Sildikten son bu işlem geri alınamaz!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "/InternshipDocument/DeletePdf/" + id,
+                            type: 'POST',
+                            success: function () {
+                                swal("Silme işlemi başarılı !",
+                                    {
+                                        icon: "success",
+                                    }
+                                ).then(function () {
+                                    location.reload();
+                                });
+
+                            }
+                        });
+                    } else {
+                        swal("Silme işlemini iptal ettiniz!");
+                    }
+                });
+        });
     </script>
+
     <script src="~/studenttemplate/js/signaturecanvas.js"></script>
     }
 
