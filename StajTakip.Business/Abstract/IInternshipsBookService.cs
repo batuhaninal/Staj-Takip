@@ -18,6 +18,7 @@ namespace StajTakip.Business.Abstract
         IDataResult<InternshipsBook> Update(InternshipsBookPageUpdateDto entity);
         IDataResult<List<InternshipsBookPageListDto>> GetPageListDtoByStudentId(int studentUserId);
         IDataResult<InternshipsBook> Get(int id);
+        IDataResult<InternshipsBook> GetWithImages(int id);
         IDataResult<InternshipsBook> GetFirstByUserId(int userId);
         IDataResult<List<InternshipsBook>> GetAll();
         IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId);

@@ -16,5 +16,6 @@ namespace StajTakip.Business.Abstract
         IDataResult<BookImage> Update(BookImage entity);
         IDataResult<BookImage> Get(int id);
         IDataResult<List<BookImage>> GetAll();
+        IDataResult<List<BookImage>> GetAllByBookId(int bookId);
     }
 }

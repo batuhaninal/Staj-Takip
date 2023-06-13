@@ -44,6 +44,9 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<AdminStudentRelationManager>().As<IAdminStudentRelationService>().InstancePerLifetimeScope();
             builder.RegisterType<EFAdminStudentRelationRepository>().As<IAdminStudentRelationRepository>().InstancePerLifetimeScope();
 
+            builder.RegisterType<BookImageManager>().As<IBookImageService>().InstancePerLifetimeScope();
+            builder.RegisterType<EFBookImageRepository>().As<IBookImageRepository>().InstancePerLifetimeScope();
+
 
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
 

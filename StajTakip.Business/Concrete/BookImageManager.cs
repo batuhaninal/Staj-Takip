@@ -45,6 +45,15 @@ namespace StajTakip.Business.Concrete
             return new SuccessDataResult<List<BookImage>>(data);
         }
 
+        public IDataResult<List<BookImage>> GetAllByBookId(int bookId)
+        {
+            var result = BusinessRules.Run(CheckImageIsExistOnBook(bookId));
+            if(result != null)
+                return new ErrorDataResult<List<BookImage>>(result.Message ?? "Beklenmeyen bir hata ile karşılaşıldı!");
+            var data = _bookImageRepository.GetAll(x => x.InternshipsBookId == bookId).ToList();
+            return new SuccessDataResult<List<BookImage>>(data);
+        }
+
         public IResult HardDelete(BookImage entity)
         {
             var result = BusinessRules.Run(IsExist(entity.Id));
@@ -91,6 +100,15 @@ namespace StajTakip.Business.Concrete
             }
 
             return new ErrorResult(Messages.IsExist);
+        }
+
+        private IResult CheckImageIsExistOnBook(int bookId)
+        {
+            var result = _bookImageRepository.Any(x=>x.InternshipsBookId == bookId);
+            if (!result)
+                return new ErrorResult("Henüz resim eklenmemiş!");
+
+            return new SuccessResult();
         }
     }
 }

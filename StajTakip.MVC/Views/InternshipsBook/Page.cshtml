@@ -7,6 +7,11 @@
 
 @model InternshipsBook
 
+<div id="placeHolderParent">
+    <div id="modalPlaceHolder" aria-hidden="true"></div>
+</div>
+
+
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="text-center">
@@ -95,7 +100,11 @@
 
                     </div>*@
                     <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
+                    <button id="btnImageAdd" bookId="@Model.Id" type="button" class="btn btn-info">Resim Ekle</button>
                 </form>
+                <div class="part">
+                    @*                @await Component.InvokeAsync("ImageList", new{bookId=Model.Id})*@
+                </div>
             </div>
         </div>
         <div class="col-sm-12 col-lg-3">
@@ -108,4 +117,110 @@
 @section Scripts{
     <script src="~/js/ckeditor/ckeditor.js"></script>
     <script src="~/StudentTemplate/js/StudentCK.js"></script>
+    <script>
+        $(document).ready(function () {
+            var placeHolderDiv = $('#modalPlaceHolder');
+
+            refreshList();
+
+            function refreshList() {
+                //deletePlaceHolder();
+                //createPlaceholder();
+                var refreshListUrl = `/InternshipsBook/ImageList?bookId=${@Model.Id}`;
+                $.get(refreshListUrl).done(function (data) {
+                    var divPart = $('.part');
+                    divPart.html(data);
+                });
+            }
+
+            function createPlaceholder() {
+                let placeDiv = `<div id="modalPlaceHolder" aria-hidden="true"></div>`;
+                $('#placeHolderParent').html(placeDiv);
+            }
+
+            function deletePlaceHolder() {
+                $('#modalPlaceHolder').remove();
+            }
+
+
+            // Image show popup
+            $(document).on('click', '.btnShowImage', function () {
+                var imageId = $(this).attr('imageId');
+                const imageUrl = `/InternshipsBook/ImageShowPopup?imageId=${imageId}`;
+                $.get(imageUrl).done(function (data) {
+                    placeHolderDiv.html(data);
+                    placeHolderDiv.find('.modal').modal('show');
+                })
+                    .done(function () {
+                        let deletePostCount = 0;
+                        placeHolderDiv.on('click', '#btnDelete', function () {
+                            deletePostCount++;
+                            if(deletePostCount>1){
+
+                            }else{
+                                $.ajax({
+                                    type: 'post',
+                                    url: `/InternshipsBook/DeleteImage?imageId=${imageId}`,
+                                    success: function () {
+                                        alert("success");
+                                        refreshList();
+                                        closeModal();
+                                    }
+                                })
+                            }
+                        });
+                    });
+            });
+
+
+
+
+
+
+            // Image Add Popup
+
+            $('#btnImageAdd').on('click', function (event) {
+                event.preventDefault();
+                var bookIdGet = $(this).attr('bookId');
+                const url = `/InternshipsBook/AddImagePopup?bookId=${bookIdGet}`;
+                debugger;
+                $.get(url).done(function (data) {
+                    placeHolderDiv.html(data);
+                    placeHolderDiv.find('.modal').modal('show');
+                });
+
+                let count = 0;
+
+                placeHolderDiv.on('click', '#postImage', function (e) {
+                    e.preventDefault();
+                    count++;
+                    if (count > 1) {
+
+                    } else {
+                        const form = $('#imageForm');
+                        const dataToSend = new FormData(form.get(0));
+                        var postUrl = '/InternshipsBook/AddImagePopup';
+                        $.ajax({
+                            type: 'post',
+                            data: dataToSend,
+                            url: postUrl,
+                            processData: false,
+                            contentType: false,
+                            success: function (func) {
+                                alert('success');
+                                refreshList();
+                                closeModal();
+                            }
+                        });
+                    }
+                });
+
+
+                function closeModal(){
+                    placeHolderDiv.find('.modal').modal('hide');
+                }
+            });
+        });
+    </script>
 }
+

@@ -22,6 +22,8 @@ namespace StajTakip.MVC.Controllers
 
         public IActionResult Index()
         {
+            //if (User.IsInRole("admin") || User.IsInRole("admin.teacher") || User.IsInRole("admin.company"))
+            //    return Redirect("/Admin/Student/StudentList");
             var userId = User.Identity.Name;
             var parseUserId = int.Parse(userId);
             var documents = _internshipDocumentService.GetAllByStudentId(parseUserId);
