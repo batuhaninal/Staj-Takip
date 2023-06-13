@@ -10,6 +10,7 @@ namespace StajTakip.Entities.Concrete
         public bool IsTeacherChecked { get; set; } = false;
         public int StudentUserId { get; set; }
         public virtual StudentUser? StudentUser { get; set; }
+        public virtual ICollection<BookImage>? BookImages { get; set; }
 
     }
 }

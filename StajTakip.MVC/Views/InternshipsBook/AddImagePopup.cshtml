@@ -1,0 +1,37 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model BookImage
+
+<!-- Modal -->
+<div class="modal fade" id="studentList" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="exampleModalLongTitle">Öğrenci Listesi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="imageForm" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="InternshipsBookId" value="@ViewBag.bookId"/>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ImageName" type="text" class="form-control" id="iName">
+                        <label for="iName">Resim İsmi</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input name="image" type="file" class="form-control" id="imageD">
+                        <label for="imageD">Dosya</label>
+                    </div>
+                    <button type="button" class="btn btn-success" id="postImage">Ekle</button>
+                </form>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-secondary close" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>

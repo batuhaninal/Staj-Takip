@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<BookImage>
+
+<div id="placeHolderPartial" aria-hidden="true"></div>
+<ul>
+    @if (Model != null)
+    {
+        @foreach (var image in Model)
+        {
+            @*<a asp-area="" asp-controller="InternshipsBook" asp-action="ShowImage" asp-route-imageId="@image.Id" imageId="@image.Id" class="btn btn-info btnShowImage">@image.ImageName</a>*@
+            <li><button type="button" imageId="@image.Id" class="btn btn-info btnShowImage">@image.ImageName</button></li>
+        }
+    }
+    else
+    {
+        <li>Henüz resim eklenmemiş!</li>
+    }
+</ul>
+
+@*<script>
+    function showPopup(imageId) {
+        const imageUrl = `/InternshipsBook/ImageShowPopup?imageId=${imageId}`;
+        var placeHolderDiv = $('#placeHolderPartial');
+        $.get(imageUrl).done(function (data) {
+            placeHolderDiv.html(data);
+            placeHolderDiv.find('.modal').modal('show');
+        });
+    }
+</script>*@
+

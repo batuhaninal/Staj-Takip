@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StajTakip.DataAccess.Concrete.Contexts;
 
@@ -11,9 +12,10 @@ using StajTakip.DataAccess.Concrete.Contexts;
 namespace StajTakip.DataAccess.Migrations
 {
     [DbContext(typeof(StajTakipContext))]
-    partial class StajTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20230613105649_book_image_update")]
+    partial class book_image_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,9 +188,6 @@ namespace StajTakip.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("InternshipsBookId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -206,8 +205,6 @@ namespace StajTakip.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InternshipsBookId");
 
                     b.ToTable("BookImages");
                 });
@@ -568,17 +565,6 @@ namespace StajTakip.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("StajTakip.Entities.Concrete.BookImage", b =>
-                {
-                    b.HasOne("StajTakip.Entities.Concrete.InternshipsBook", "InternshipsBook")
-                        .WithMany("BookImages")
-                        .HasForeignKey("InternshipsBookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("InternshipsBook");
-                });
-
             modelBuilder.Entity("StajTakip.Entities.Concrete.InternshipDocument", b =>
                 {
                     b.HasOne("StajTakip.Entities.Concrete.StudentUser", "StudentUser")
@@ -630,11 +616,6 @@ namespace StajTakip.DataAccess.Migrations
             modelBuilder.Entity("StajTakip.Entities.Concrete.AdminUser", b =>
                 {
                     b.Navigation("AdminStudentRelations");
-                });
-
-            modelBuilder.Entity("StajTakip.Entities.Concrete.InternshipsBook", b =>
-                {
-                    b.Navigation("BookImages");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.StudentUser", b =>

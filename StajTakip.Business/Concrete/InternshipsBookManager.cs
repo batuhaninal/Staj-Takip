@@ -102,6 +102,18 @@ namespace StajTakip.Business.Concrete
 
         }
 
+        public IDataResult<InternshipsBook> GetWithImages(int id)
+        {
+            var result = BusinessRules.Run(IsBookExist(id));
+            if (result == null)
+            {
+                var data = _repository.Get(x => x.Id == id, x=>x.BookImages);
+                return new SuccessDataResult<InternshipsBook>(data);
+            }
+
+            return new ErrorDataResult<InternshipsBook>(result.Message);
+        }
+
         public IResult HardDelete(InternshipsBook entity)
         {
             var result = BusinessRules.Run(IsBookExist(entity.Id));
