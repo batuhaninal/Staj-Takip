@@ -95,9 +95,9 @@ namespace StajTakip.MVC.Controllers
                     // Set coordinates where image is to be pasted
 
                     int lwrLeftX = 390;
-                    int lwrLeftY = 400;
+                    int lwrLeftY = 430;
                     int uprRightX = 335;
-                    int uprRightY = 440;
+                    int uprRightY = 470;
 
                     // Access the target page to add an image
                     Aspose.Pdf.Page targetPage = pdfDocument.Pages[1];
@@ -107,7 +107,13 @@ namespace StajTakip.MVC.Controllers
                     MemoryStream imgStream = new MemoryStream(signatureImg);
 
                     // Add the desired image to the images resource list of the target page
+                    if (targetPage.Resources.Images.Count >= 2)
+                    {
+                        targetPage.Resources.Images.Delete(targetPage.Resources.Images.Count - 1);
+                        targetPage.Resources.Images.Delete(1);
+                    }
                     targetPage.Resources.Images.Add(imgStream);
+
 
                     // Save the current graphics state
                     targetPage.Contents.Add(new Aspose.Pdf.Operators.GSave());
