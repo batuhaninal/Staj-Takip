@@ -5,9 +5,9 @@
     Layout = "_StudentLayout";
 }
 @model InternshipDocument
-<link href="~/studenttemplate/css/style.css" rel="stylesheet" />
+@*<link href="~/studenttemplate/css/style.css" rel="stylesheet" />
 <link href="~/studenttemplate/css/bootstrap.min.css" rel="stylesheet" />
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
 <div>
     <form asp-controller="InternshipDocument" asp-action="UploadPdf" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="StudentUserId" value="@User.Identity.Name" />
@@ -132,8 +132,8 @@
     <canvas id="signatureCanvas" width="250" height="100"></canvas>
     <br>
 
-    <button id="clearButton">Temizle</button>
-    <button id="saveButton">İmzayı Kaydet</button>
+    <button type="button" class="btn btn-danger mr-3" id="clearButton">Temizle</button>
+    <button type="button" class="btn btn-success" id="saveButton">İmzayı Kaydet</button>
 
 
 
@@ -150,6 +150,7 @@
        
 
         $('.deleteDocument').click(function () {
+            debugger;
             var id = $(this).attr('data');
             swal({
                 title: "Emin misiniz?",
@@ -161,7 +162,7 @@
                 .then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-                            url: "/InternshipDocument/DeletePdf/" + id,
+                            url: `/InternshipDocument/DeletePdf?documentId=${id}`,
                             type: 'POST',
                             success: function () {
                                 swal("Silme işlemi başarılı !",

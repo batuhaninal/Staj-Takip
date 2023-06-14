@@ -24,6 +24,9 @@ namespace StajTakip.Business.Concrete
 
         public IResult Add(BookImage entity)
         {
+            var result = BusinessRules.Run(CheckImageCountOnPage(entity.InternshipsBookId));
+            if (result is not null)
+                return new ErrorResult(result.Message);
             _bookImageRepository.Add(entity);
             return new SuccessResult();
         }
@@ -107,6 +110,15 @@ namespace StajTakip.Business.Concrete
             var result = _bookImageRepository.Any(x=>x.InternshipsBookId == bookId);
             if (!result)
                 return new ErrorResult("Henüz resim eklenmemiş!");
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckImageCountOnPage(int pageId)
+        {
+            var result = _bookImageRepository.GetAll(x=>x.InternshipsBookId==pageId).Count;
+            if (result >= 8)
+                return new ErrorResult("Sayfaya 8'den fazla resim ekleyemezsiniz!");
 
             return new SuccessResult();
         }
