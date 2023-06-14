@@ -107,11 +107,12 @@
                             <button type="button" id="@item.Id" class="btn btn-outline-success signatureTest">Döküman Seç</button>
                         </td>
                         <td>
-                            <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
+                           @* <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
 
                                 <button type="submit" class="btn btn-outline-warning">Döküman Sil</button>
-                            </form>
-                            @*<a href="#" id="deleteDocument" data="@item.Id" class="btn btn-outline-danger deleteDocument">Döküman Sil</a>*@
+                            </form>*@
+                            <a href="#" data="@item.Id" class="btn btn-outline-danger deleteDocument">Döküman Sil</a>
+                            @*<a class="btn btn-outline-danger deleteDocument" asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id"> Sil</a>*@
 
                         </td>
                     </tr>
@@ -150,8 +151,9 @@
        
 
 
+
         $('.deleteDocument').click(function () {
-            debugger;
+
             var id = $(this).attr('data');
             swal({
                 title: "Emin misiniz?",
@@ -163,7 +165,9 @@
                 .then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
+
                             url: `/InternshipDocument/DeletePdf?documentId=${id}`,
+
                             type: 'POST',
                             success: function () {
                                 swal("Silme işlemi başarılı !",
@@ -181,37 +185,6 @@
                     }
                 });
         });
-
-        //$('.deleteDocument').click(function () {
-        //    var id = $(this).attr('data');
-        //    swal({
-        //        title: "Emin misiniz?",
-        //        text: "Sildikten son bu işlem geri alınamaz!",
-        //        icon: "warning",
-        //        buttons: true,
-        //        dangerMode: true,
-        //    })
-        //        .then((willDelete) => {
-        //            if (willDelete) {
-        //                $.ajax({
-        //                    url: "/InternshipDocument/DeletePdf/" + id,
-        //                    type: 'POST',
-        //                    success: function () {
-        //                        swal("Silme işlemi başarılı !",
-        //                            {
-        //                                icon: "success",
-        //                            }
-        //                        ).then(function () {
-        //                            location.reload();
-        //                        });
-
-        //                    }
-        //                });
-        //            } else {
-        //                swal("Silme işlemini iptal ettiniz!");
-        //            }
-        //        });
-        //});
 
     </script>
 

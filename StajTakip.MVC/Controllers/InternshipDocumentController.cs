@@ -154,7 +154,7 @@ namespace StajTakip.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
+
         public IActionResult DeletePdf(int documentId)
         {
             var result = _internshipDocumentService.HardDelete(documentId);
