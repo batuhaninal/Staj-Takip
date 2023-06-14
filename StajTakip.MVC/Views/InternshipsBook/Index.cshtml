@@ -6,12 +6,6 @@
 }
 @model InternshipsBook
 
-@*<h1>İmza Oluşturma</h1>
-<canvas id="signatureCanvas" width="400" height="200"></canvas>
-<br>
-<button id="clearButton">Temizle</button>
-<button id="saveButton">İmzayı Kaydet</button>*@
-
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-12 col-lg-3">
@@ -20,58 +14,49 @@
         <div class="col-sm-12 col-lg-9">
             <div class="bg-light rounded h-100 p-4">
                 <form asp-controller="InternshipsBook" asp-action="Index" method="post">
-                    <input type="hidden" asp-for="StudentUserId" value="@User.Identity.Name"/>
+                    <input type="hidden" asp-for="StudentUserId" value="@User.Identity.Name" />
                     <div class="form-floating mb-3">
                         <div class="row g-4">
+                            <div class="col-lg-3"></div>
                             <div class="col-lg-6 col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group text-center">
                                     <label for="dte">Tarih</label>
                                     <input type="date" class="form-control"
                                            id="dte" asp-for="Date" placeholder="Lütgen tarih giriniz!">
                                     <span class="text-danger" asp-validation-for="Date"></span>
                                 </div>
-
                             </div>
-                            @*<div class="col-lg-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="workD">Çalışma Günleri</label>
-                                    <input type="text" class="form-control"
-                                           id="workD" asp-for="WorkDays" placeholder="(örn=12-13)">
-                                    <span class="text-danger" asp-validation-for="WorkDays"></span>
-                                </div>
-
-                            </div>*@
+                            <div class="col-lg-3"></div>
                         </div>
                     </div>
-                    @* <div class="form-floating mb-3">
-                    <div class="form-group">
-                    <label for="titl">Başlık</label>
-                    <input type="text" class="form-control"
-                    id="titl" asp-for="Title" placeholder="Lütgen Başlık giriniz!">
-                    <span class="text-danger" asp-validation-for="Title"></span>
-                    </div>
+                    @if (ViewBag.Template == null)
+                    {
+                        <div class="text-center">
+                            <label class="text-danger">Danışman herhangi bir template belirtmemiştir! Lütfen iletişime geçiniz!</label>
+                        </div>
+                        <div class="button-group text-center m-3">
+                            <a asp-area="" asp-controller="InternshipsBook" asp-action="TemplateIssue" class="btn btn-warning">Danışmana İlet!</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-floating mb-3">
+                            <div class="form-group text-center">
 
-                    </div>*@
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            <label for="cont">İçerik</label>
 
-                            <textarea class="ckStudent" id="Content" name="Content">
-                            @Html.Raw(ViewBag.Template)
-                            </textarea>
-                            <span class="text-danger" asp-validation-for="Content"></span>
+                                <textarea class="ckStudent" id="Content" name="Content">
+                                    @Html.Raw(ViewBag.Template)
+                                    </textarea>
+
+                                <span class="text-danger" asp-validation-for="Content"></span>
+                            </div>
+
                         </div>
 
-                    </div>
-                    @*<div class="form-floating mb-3">
-                    <div class="form-group">
-                    <label for="summa">Özet</label>
-                    <input type="text" class="form-control" id="summa" asp-for="Summary" />
-                    <span class="text-danger" asp-validation-for="Summary"></span>
-                    </div>
-
-                    </div>*@
-                    <button type="submit" class="btn btn-success">Yeni Sayfa Ekle</button>
+                        <div class="button-group text-center m-3">
+                            <button type="submit" class="btn btn-success">Yeni Sayfa Ekle</button>
+                        </div>
+                    }
                 </form>
             </div>
         </div>
@@ -82,6 +67,5 @@
 @section Scripts{
     <script src="~/js/ckeditor/ckeditor.js"></script>
     <script src="~/StudentTemplate/js/StudentCK.js"></script>
-    @*<script type="application/ecmascript" src="~/StudentTemplate/js/signatureCanvas.js"></script>*@
 }
 

@@ -93,6 +93,7 @@
 @section Scripts{
     <script src="~/js/ckeditor/ckeditor.js"></script>
     <script src="~/StudentTemplate/js/StudentCK.js"></script>
+    <script src="~/studenttemplate/js/sweetalertmanager.js"></script>
     <script>
         $(document).ready(function () {
             var placeHolderDiv = $('#modalPlaceHolder');
@@ -100,8 +101,6 @@
             refreshList();
 
             function refreshList() {
-                //deletePlaceHolder();
-                //createPlaceholder();
                 var refreshListUrl = `/InternshipsBook/ImageList?bookId=${@Model.Id}`;
                 $.get(refreshListUrl).done(function (data) {
                     var divPart = $('.part');
@@ -109,54 +108,23 @@
                 });
             }
 
-            function createPlaceholder() {
-                let placeDiv = `<div id="modalPlaceHolder" aria-hidden="true"></div>`;
-                $('#placeHolderParent').html(placeDiv);
-            }
-
-            function deletePlaceHolder() {
-                $('#modalPlaceHolder').remove();
-            }
-
             function closeModal() {
                 placeHolderDiv.find('.modal').modal('hide');
-            }
-
-            function successSwal(message) {
-                console.log(message);
-                swal({
-                    title: "Başarılı!",
-                    text: message ??= "İşleminiz başarıyla gerçekleştirildi!",
-                    icon: "success",
-                    button: "Kapat",
-                });
-            }
-
-            function errorSwal(errorMessage) {
-                swal({
-                    title: "Hata",
-                    text: errorMessage ??= "İşleminiz gerçekleştirilirken bir hata ile karşılaşıldı!",
-                    icon: "error",
-                    button: "Kapat",
-                });
             }
 
             $(document).on('click', '.close', function () {
                 closeModal();
             });
 
-
             // Image show popup
             $(document).on('click', '.btnShowImage', function (event) {
                 event.preventDefault();
                 var imageId = $(this).attr('imageId');
                 const imageUrl = `/InternshipsBook/ImageShowPopup?imageId=${imageId}`;
-                
                 $.get(imageUrl).done(function (data) {
                     placeHolderDiv.html(data);
                     placeHolderDiv.find('.modal').modal('show');
                 });
-
                 placeHolderDiv.off('click','#btnDelete').on('click', '#btnDelete', function (e) {
                     e.preventDefault();
                     $.ajax({
@@ -188,8 +156,6 @@
                     placeHolderDiv.html(data);
                     placeHolderDiv.find('.modal').modal('show');
                 });
-
-
                 placeHolderDiv.off('click','#postImage').on('click', '#postImage', function (e) {
                     e.preventDefault();
                     const form = $('#imageForm');

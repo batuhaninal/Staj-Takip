@@ -17,14 +17,16 @@ namespace StajTakip.MVC.Controllers
         private readonly IInternshipsBookService _bookRepository;
         private readonly IBookTemplateService _bookTemplateService;
         private readonly IBookImageService _bookImageService;
+        private readonly IMessageService _messageService;
         private readonly INotyfService _notyfService;
 
-        public InternshipsBookController(IInternshipsBookService bookRepository, INotyfService notifyService, IBookTemplateService bookTemplateService, IBookImageService bookImageService)
+        public InternshipsBookController(IInternshipsBookService bookRepository, INotyfService notifyService, IBookTemplateService bookTemplateService, IBookImageService bookImageService, IMessageService messageService)
         {
             _bookRepository = bookRepository;
             _notyfService = notifyService;
             _bookTemplateService = bookTemplateService;
             _bookImageService = bookImageService;
+            _messageService = messageService;
         }
 
         [HttpGet]
@@ -32,7 +34,7 @@ namespace StajTakip.MVC.Controllers
         {
             var template = _bookTemplateService.GetCurrent();
             if (!template.Success || template.Data == null)
-                ViewBag.Template = "";
+                ViewBag.Template = null;
             else
                 ViewBag.Template = template.Data.Template;
             return View();
@@ -167,6 +169,18 @@ namespace StajTakip.MVC.Controllers
         public IActionResult BookPagePagination(int? currentPage)
         {
             return ViewComponent("InternshipsBookPagesList", currentPage);
+        }
+
+        public IActionResult TemplateIssue()
+        {
+            var result = _messageService.SendTemplateIssue(int.Parse(User.Identity.Name));
+            if (!result.Success)
+            {
+                _notyfService.Error(result.Message ?? "Beklenmeyen bir hata meydana geldi! Lütfen daha sonra tekrar deneyiniz!");
+                return RedirectToAction("Index");
+            }
+            _notyfService.Success("Sorun ile ilgili bilgilendirme danışmanınıza başarıyla gönderildi!");
+            return RedirectToAction("Index");
         }
     }
 }

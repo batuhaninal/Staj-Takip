@@ -75,5 +75,16 @@ namespace StajTakip.Business.Concrete
 
             return new SuccessResult();
         }
+
+        public IDataResult<StudentUser> GetByIdWithRelations(int studentId)
+        {
+            var result = BusinessRules.Run(CheckByStudentUserId(studentId));
+            if(result != null)
+                return new ErrorDataResult<StudentUser>(result.Message);
+
+            var user = _studentRepo.Get(x=>x.Id ==studentId, x=>x.AdminStudentRelations);
+
+            return new SuccessDataResult<StudentUser>(user);
+        }
     }
 }

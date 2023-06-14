@@ -12,6 +12,7 @@ namespace StajTakip.Business.Abstract
     {
         IResult Add(StudentUser studentUser);
         IDataResult<StudentUser> GetByUserId(int userId);
+        IDataResult<StudentUser> GetByIdWithRelations(int studentId);
         IDataResult<List<StudentUser>> GetAll();
         IDataResult<StudentUser> GetById(int studentUserId);
     }
