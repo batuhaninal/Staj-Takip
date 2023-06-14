@@ -59,17 +59,17 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
 
 
                     // Set coordinates where image is to be pasted
-                    int lwrLeftX = 370;
-                    int lwrLeftY = 150;
-                    int uprRightX = 220;
-                    int uprRightY = 220;
+                    int lwrLeftX = 390;
+                    int lwrLeftY = 430;
+                    int uprRightX = 335;
+                    int uprRightY = 470;
 
                     if (User.IsInRole("admin.teacher"))
                     {
-                        lwrLeftX = 410;
-                        lwrLeftY = 170;
-                        uprRightX = 330;
-                        uprRightY = 240;
+                        lwrLeftX = 405;
+                        lwrLeftY = 150;
+                        uprRightX = 325;
+                        uprRightY = 220;
                     }
                     else if (User.IsInRole("admin.company"))
                     {
@@ -99,6 +99,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
 
                     // Define how the image be placed in the PDF
                     targetPage.Contents.Add(new Aspose.Pdf.Operators.ConcatenateMatrix(mtrx));
+
                     Aspose.Pdf.XImage xImg = targetPage.Resources.Images[targetPage.Resources.Images.Count];
 
                     // Draw the image
