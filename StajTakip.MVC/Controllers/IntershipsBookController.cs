@@ -7,6 +7,7 @@ using StajTakip.Business.Abstract;
 using StajTakip.DataAccess.Migrations;
 using StajTakip.Entities.Concrete;
 using StajTakip.Entities.DTOs;
+using System.Text.Json;
 
 namespace StajTakip.MVC.Controllers
 {
@@ -109,13 +110,14 @@ namespace StajTakip.MVC.Controllers
                     image.CopyTo(memoryStream);
                     model.Data = memoryStream.ToArray();
                     var result = _bookImageService.Add(model);
+                    var parsedJson = JsonSerializer.Serialize(result);
                     if (!result.Success)
                     {
                         //_notyfService.Error(result.Message);
-                        return Json("0");
+                        return Json(parsedJson);
                     }
                     //_notyfService.Success(result.Message);
-                    return Json("1");
+                    return Json(parsedJson);
                 }
             }
             return Json("0");

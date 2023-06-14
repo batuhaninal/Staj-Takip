@@ -5,30 +5,17 @@
 }
 @model List<BookImage>
 
-<div id="placeHolderPartial" aria-hidden="true"></div>
-<ul>
+<div class="text-center">
+    <h2>Resimler</h2>
     @if (Model != null)
     {
         @foreach (var image in Model)
         {
-            @*<a asp-area="" asp-controller="InternshipsBook" asp-action="ShowImage" asp-route-imageId="@image.Id" imageId="@image.Id" class="btn btn-info btnShowImage">@image.ImageName</a>*@
-            <li><button type="button" imageId="@image.Id" class="btn btn-info btnShowImage">@image.ImageName</button></li>
+            <button type="button" imageId="@image.Id" class="btn btn-info btnShowImage m-1">@image.ImageName</button>
         }
     }
     else
     {
-        <li>Henüz resim eklenmemiş!</li>
+        <label>Henüz resim eklenmemiş!</label>
     }
-</ul>
-
-@*<script>
-    function showPopup(imageId) {
-        const imageUrl = `/InternshipsBook/ImageShowPopup?imageId=${imageId}`;
-        var placeHolderDiv = $('#placeHolderPartial');
-        $.get(imageUrl).done(function (data) {
-            placeHolderDiv.html(data);
-            placeHolderDiv.find('.modal').modal('show');
-        });
-    }
-</script>*@
-
+</div>
