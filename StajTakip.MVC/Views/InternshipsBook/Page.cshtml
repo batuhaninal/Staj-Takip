@@ -123,9 +123,10 @@
             }
 
             function successSwal(message) {
+                console.log(message);
                 swal({
                     title: "Başarılı!",
-                    text: this.message ?? "İşleminiz başarıyla gerçekleştirildi!",
+                    text: message ??= "İşleminiz başarıyla gerçekleştirildi!",
                     icon: "success",
                     button: "Kapat",
                 });
@@ -134,7 +135,7 @@
             function errorSwal(errorMessage) {
                 swal({
                     title: "Hata",
-                    text: this.errorMessage ?? "İşleminiz gerçekleştirilirken bir hata ile karşılaşıldı!",
+                    text: errorMessage ??= "İşleminiz gerçekleştirilirken bir hata ile karşılaşıldı!",
                     icon: "error",
                     button: "Kapat",
                 });
