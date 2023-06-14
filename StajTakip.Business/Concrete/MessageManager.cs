@@ -16,11 +16,13 @@ namespace StajTakip.Business.Concrete
     {
         private readonly IMessageRepository _messageRepo;
         private readonly IMailService _mailService;
+        private readonly IStudentUserService _studentUserService;
 
-        public MessageManager(IMessageRepository messageRepo, IMailService mailService, IUserService userService)
+        public MessageManager(IMessageRepository messageRepo, IMailService mailService, IUserService userService, IStudentUserService studentUserService)
         {
             _messageRepo = messageRepo;
             _mailService = mailService;
+            _studentUserService = studentUserService;
         }
 
         public IResult Add(Message message)
@@ -127,6 +129,32 @@ namespace StajTakip.Business.Concrete
                 return new SuccessDataResult<Message>(message);
             }
             return new ErrorDataResult<Message>(result.Message);
+        }
+
+        public IResult SendTemplateIssue(int studentUserId)
+        {
+            var user = _studentUserService.GetByIdWithRelations(studentUserId);
+            if(!user.Success)
+                return new ErrorResult(user.Message);
+
+            Message message= message = new Message
+            {
+                MessageDate = DateTime.Now,
+                SenderId = studentUserId,
+                Subject = "Geçerli Template Hatası",
+                MessageDetail = "Lütfen geçerli bir template oluşturun veya atayınız!",
+            };
+
+            foreach (var relation in user.Data.AdminStudentRelations)
+            {
+                if(!relation.IsCompany)
+                {
+                    message.ReceiverId = relation.AdminUserId.Value;
+                    _messageRepo.Add(message);
+                }
+            }
+
+            return new SuccessResult();
         }
     }
 }

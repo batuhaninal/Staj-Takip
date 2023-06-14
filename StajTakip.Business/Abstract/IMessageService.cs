@@ -13,6 +13,7 @@ namespace StajTakip.Business.Abstract
         IDataResult<List<Message>> GetInboxListByUser(int receiverId);
         IDataResult<List<Message>> GetSendboxListByUser(int senderId);
         IResult Add(Message message);
+        IResult SendTemplateIssue(int studentUserId);
         IResult Delete(int id);
         IResult Update(Message message);
         IDataResult<Message> GetByMessageId(int messageId);
