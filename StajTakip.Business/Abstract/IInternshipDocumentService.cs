@@ -9,6 +9,8 @@ namespace StajTakip.Business.Abstract
         IResult HardDelete(InternshipDocument entity);
         IResult HardDelete(int id);
         IDataResult<InternshipDocument> Update(InternshipDocument entity);
+        IDataResult<InternshipDocument> RejectDocument(InternshipDocument entity, int adminUserId);
+        IDataResult<InternshipDocument> AcceptDocument(InternshipDocument entity, int adminUserId);
         IDataResult<InternshipDocument> Get(int id);
         IDataResult<List<InternshipDocument>> GetAll();
         IDataResult<List<InternshipDocument>> GetAllByStudentId(int studentId);

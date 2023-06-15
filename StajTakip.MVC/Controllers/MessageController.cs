@@ -16,6 +16,21 @@ namespace StajTakip.MVC.Controllers
             _notyfService = notyfService;
         }
 
+
+        public IActionResult Inbox()
+        {
+            var messages = _messageService.GetInboxListByUser(int.Parse(User.Claims
+                .Where(x => x.Type == "userId")
+                .Select(x => x.Value)
+                .FirstOrDefault()));
+            if (messages.Success)
+            {
+                _notyfService.Information("Sayfa başarıyla yüklendi!");
+                return View(messages.Data);
+            }
+            return View();
+        }
+
         [HttpGet]
         public IActionResult Sendbox()
         {

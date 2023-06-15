@@ -27,7 +27,13 @@
             <div class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Message" asp-action="Sendbox" class="m-3">
                     <i class="fa fa-envelope me-lg-2"></i>
-                    <span class="d-none d-lg-inline-flex">Bildirimler</span>
+                    <span class="d-none d-lg-inline-flex">Gönderilen Bildirimler</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Message" asp-action="Inbox" class="m-3">
+                    <i class="fa fa-bell me-lg-2"></i>
+                    <span class="d-none d-lg-inline-flex">Gelen Bildirimler</span>
                 </a>
             </div>
             @*<div class="nav-item dropdown">

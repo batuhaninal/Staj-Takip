@@ -14,5 +14,6 @@ namespace StajTakip.Business.Abstract
         IDataResult<AdminUser> GetByUserId(int userId);
         IDataResult<AdminUser> GetByAdminUserId(int adminUserId);
         IDataResult<List<AdminUser>> GetAllAdminWithRelations();
+        IDataResult<AdminUser> GetByAdminUserIdWithUser(int adminUserId);
     }
 }

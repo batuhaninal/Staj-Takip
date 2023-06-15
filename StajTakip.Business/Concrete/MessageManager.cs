@@ -199,5 +199,44 @@ namespace StajTakip.Business.Concrete
 
             return new SuccessResult();
         }
+
+        public IResult RejectDocument(int studentId, int adminId, int documentId, string documentName)
+        {
+            var studentUser = _studentUserService.GetById(studentId);
+            var adminUser = _adminUserService.GetByAdminUserId(adminId);
+            if (!studentUser.Success)
+                return new ErrorResult(studentUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
+
+            if(!adminUser.Success)
+                return new ErrorResult(adminUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
+
+            var message = Messages.RejectDocument($"{studentUser.Data.FirstName} {studentUser.Data.LastName}", $"{adminUser.Data.FirstName} {adminUser.Data.LastName}", documentId, documentName);
+
+            message.SenderUserId = adminUser.Data.UserId;
+            message.ReceiverUserId = studentUser.Data.UserId;
+
+            _messageRepo.Add(message);
+            return new SuccessResult();
+        }
+
+
+        public IResult AcceptDocument(int studentId, int adminId, int documentId, string documentName)
+        {
+            var studentUser = _studentUserService.GetById(studentId);
+            var adminUser = _adminUserService.GetByAdminUserId(adminId);
+            if (!studentUser.Success)
+                return new ErrorResult(studentUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
+
+            if (!adminUser.Success)
+                return new ErrorResult(adminUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
+
+            var message = Messages.AcceptDocument($"{adminUser.Data.FirstName} {adminUser.Data.LastName}", documentId, documentName);
+
+            message.SenderUserId = adminUser.Data.UserId;
+            message.ReceiverUserId = studentUser.Data.UserId;
+
+            _messageRepo.Add(message);
+            return new SuccessResult();
+        }
     }
 }

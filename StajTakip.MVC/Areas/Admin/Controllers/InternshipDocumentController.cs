@@ -26,7 +26,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             return View(data.Data);
         }
 
-        public IActionResult CheckDocument(int documentId)
+        public IActionResult AcceptDocument(int documentId)
         {
             var document = _internshipDocumentService.Get(documentId);
             if (!document.Success)
@@ -36,12 +36,31 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             }
             document.Data.IsTeacherChecked = User.IsInRole("admin.teacher") ? true : document.Data.IsTeacherChecked;
             document.Data.IsCompanyChecked = User.IsInRole("admin.company") ? true : document.Data.IsCompanyChecked;
-            var result = _internshipDocumentService.Update(document.Data);
+            var result = _internshipDocumentService.AcceptDocument(document.Data, int.Parse(User.Identity.Name));
             if (!result.Success)
                 _notyfService.Error(result.Message ?? "Hata!");
             _notyfService.Success("Evrak başarıyla onaylandı!");
             return RedirectToAction("Documents", new { studentId = document.Data.StudentUserId });
         }
+
+        public IActionResult RejectDocument(int documentId)
+        {
+            var document = _internshipDocumentService.Get(documentId);
+            if (!document.Success)
+            {
+                _notyfService.Error(document.Message ?? "Hata!");
+                return RedirectToAction("StudentList", "Student");
+            }
+            document.Data.IsTeacherChecked = User.IsInRole("admin.teacher") ? false : document.Data.IsTeacherChecked;
+            document.Data.IsCompanyChecked = User.IsInRole("admin.company") ? false : document.Data.IsCompanyChecked;
+            var result = _internshipDocumentService.RejectDocument(document.Data, int.Parse(User.Identity.Name));
+            if (!result.Success)
+                _notyfService.Error(result.Message ?? "Hata!");
+            _notyfService.Success("Evrak başarıyla ret edildi!");
+            return RedirectToAction("Documents", new { studentId = document.Data.StudentUserId });
+        }
+
+
 
         public IActionResult UploadSignature(string signature, int documentId)
         {
