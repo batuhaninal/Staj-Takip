@@ -10,12 +10,13 @@ namespace StajTakip.Entities.Concrete
 {
     public class Message : EntityBase
     {
-        public int? SenderId { get; set; }
+        public int? SenderUserId { get; set; }
         public virtual User? SenderUser { get; set; }
-        public int? ReceiverId { get; set; }
+        public int? ReceiverUserId { get; set; }
         public virtual User? ReceiverUser { get; set; }
         public string Subject { get; set; }
         public string MessageDetail { get; set; }
         public DateTime MessageDate { get; set; }
+        public bool IsSolved { get; set; }
     }
 }

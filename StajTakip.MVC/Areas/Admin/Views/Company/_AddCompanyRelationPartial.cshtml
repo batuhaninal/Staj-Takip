@@ -14,20 +14,27 @@
                 <h5 class="modal-title" id="exampleModalLongTitle">Öğrenci Listesi</h5>
             </div>
             <div class="modal-body">
-                <ul>
+@*                <ul>*@
                     @foreach (var student in Model)
                     {
-                        <li>
-                            @student.FirstName @student.LastName
+                        @*<li>*@
+                            <div class="d-flex justify-content-between m-1">
+                                <label>@student.Id</label>
+                                <label>@student.FirstName @student.LastName</label>
+                                <a asp-area="Admin" asp-controller="Company" asp-action="AddStudentForCompany" asp-route-StudentUserId="@student.Id" asp-route-AdminUserId="@ViewBag.CompanyId" asp-route-IsCompany="true">
+                                    <span title="@student.FirstName @student.LastName öğrencisini ekle!" class="badge bg-success">Ekle</span>
+                                </a>
+                            </div>
+                                
                             
-                                <a asp-area="Admin" asp-controller="Company" asp-action="AddStudentForCompany" asp-route-StudentUserId="@student.Id" asp-route-AdminUserId="@ViewBag.CompanyId" asp-route-IsCompany="true" class="btn btn-square btn-success align-content-end">
+                              @*  <a asp-area="Admin" asp-controller="Company" asp-action="AddStudentForCompany" asp-route-StudentUserId="@student.Id" asp-route-AdminUserId="@ViewBag.CompanyId" asp-route-IsCompany="true" class="btn btn-square btn-success align-content-end">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-building"></i>
                                     </span>
-                            </a>
-                        </li>
+                            </a>*@
+                        @*</li>*@
                     }
-                </ul>
+                @*</ul>*@
             </div>
             <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary close" data-dismiss="modal">Kapat</button>

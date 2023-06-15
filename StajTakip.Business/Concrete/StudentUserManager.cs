@@ -36,6 +36,16 @@ namespace StajTakip.Business.Concrete
             return new ErrorDataResult<List<StudentUser>>("Henüz kullanıcı yok!");
         }
 
+        public IDataResult<List<StudentUser>> GetAllWithEmail()
+        {
+            var data = _studentRepo.GetAll(null, x=>x.User).ToList();
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<StudentUser>>(data);
+            }
+            return new ErrorDataResult<List<StudentUser>>("Henüz kullanıcı yok!");
+        }
+
         public IDataResult<StudentUser> GetById(int studentUserId)
         {
             var result = BusinessRules.Run(CheckByStudentUserId(studentUserId));
@@ -83,6 +93,17 @@ namespace StajTakip.Business.Concrete
                 return new ErrorDataResult<StudentUser>(result.Message);
 
             var user = _studentRepo.Get(x=>x.Id ==studentId, x=>x.AdminStudentRelations);
+
+            return new SuccessDataResult<StudentUser>(user);
+        }
+
+        public IDataResult<StudentUser> GetByIdWithUser(int studentUserId)
+        {
+            var result = BusinessRules.Run(CheckByStudentUserId(studentUserId));
+            if (result != null)
+                return new ErrorDataResult<StudentUser>(result.Message);
+
+            var user = _studentRepo.Get(x => x.Id == studentUserId, x => x.User);
 
             return new SuccessDataResult<StudentUser>(user);
         }

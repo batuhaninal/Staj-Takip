@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Core.Utilities.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
@@ -49,7 +50,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         [Authorize(Roles = "admin.teacher")]
         public IActionResult AllStudents()
         {
-            var data = _studentUserService.GetAll();
+            var data = _studentUserService.GetAllWithEmail();
             return View(data.Data);
         }
 
@@ -62,7 +63,12 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                 AdminUserId = int.Parse(User.Identity.Name),
                 IsCompany = User.IsInRole("admin.company")
             };
-            var result = _adminStudentRelationService.Add(model);
+            Core.Utilities.Results.IResult result;
+            if (model.IsCompany)
+                result = _adminStudentRelationService.AddForCompany(model);
+            else
+                result = _adminStudentRelationService.AddForTeacher(model); 
+
             if (result.Success)
             {
                 _notyfService.Success("Basariyla eklendi!");

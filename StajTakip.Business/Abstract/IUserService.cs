@@ -16,6 +16,7 @@ namespace StajTakip.Business.Abstract
         IDataResult<User> Update(User user);
         IDataResult<User> GetByUsername(string username);
         IDataResult<User> GetById(int userId);
+        IDataResult<string[]> GetEmailsByIds(params int[] userId);
         IResult ChangePassword(ChangePasswordDto model);
         IResult ForgotPassword(ForgotPasswordDto model);
     }

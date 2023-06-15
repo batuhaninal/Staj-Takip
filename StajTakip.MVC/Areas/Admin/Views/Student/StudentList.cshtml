@@ -5,14 +5,24 @@
 }
 
 @model List<AdminStudentRelation>
+
+<div class="text-center m-3">
+    <h2>Kayıtlı Öğrencilerim</h2>
+</div>
+
 <div class="p-3">
     <table id="studentList" style="width:100%;">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Ad Soyad</th>
                 <th>Staj Evrakları</th>
                 <th>Staj Defteri</th>
-                <th>İşlemler</th>
+                @if (User.IsInRole("admin.teacher"))
+                {
+                    <th>İşlemler</th>
+                }
+                
             </tr>
         </thead>
         <tbody>
@@ -21,6 +31,7 @@
                 foreach (var student in Model)
                 {
                     <tr>
+                        <th>@student.StudentUserId</th>
                         <td>
                             @student.StudentUser.FirstName @student.StudentUser.LastName
                         </td>
@@ -30,20 +41,23 @@
                         <td>
                             <a asp-area="Admin" asp-controller="InternshipsBook" asp-action="BookPage" asp-route-studentId="@student.StudentUser.Id" asp-route-bookId="0">Öğrencinin Defterine Git</a>
                         </td>
-                        <td>
-                            <a class="btn btn-square btn-info" asp-area="Admin" asp-controller="Auth" asp-action="RegisterCompany" asp-route-studentId="@student.StudentUserId" title="Öğrenci için bir şirket kullanıcı hesabı oluştur!">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-building"></i>
-                                </span>
-                            </a>
+                        @if (User.IsInRole("admin.teacher"))
+                        {
+                            <td>
+                                <a class="btn btn-square btn-info" asp-area="Admin" asp-controller="Auth" asp-action="RegisterCompany" asp-route-studentId="@student.StudentUserId" title="Öğrenci için bir şirket kullanıcı hesabı oluştur!">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-building"></i>
+                                    </span>
+                                </a>
 
-                            <a class="btn btn-square btn-danger" asp-area="Admin" asp-controller="Student" asp-action="DeleteStudentRelation" asp-route-relationId="@student.Id" title="Öğrenci Listemden Kaldır">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-circle"></i>
-                                </span>
-                            </a>
+                                <a class="btn btn-square btn-danger" asp-area="Admin" asp-controller="Student" asp-action="DeleteStudentRelation" asp-route-relationId="@student.Id" title="Öğrenci Listemden Kaldır">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-circle"></i>
+                                    </span>
+                                </a>
 
-                        </td>
+                            </td>
+                        }
                     </tr>
                 }
             }

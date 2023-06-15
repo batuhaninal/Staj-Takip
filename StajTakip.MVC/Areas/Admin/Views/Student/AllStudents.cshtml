@@ -6,10 +6,16 @@
 
 @model List<StudentUser>
 
+<div class="text-center m-3">
+    <h2>Tüm Öğrenciler</h2>
+</div>
+
 <div class="p-3">
     <table id="allStudents" style="width:100%;">
         <thead>
             <tr>
+                <th>#</th>
+                <th>E-Posta</th>
                 <th>Ad Soyad</th>
                 <th>Islemler</th>
             </tr>
@@ -20,11 +26,13 @@
                 @foreach (var student in Model)
                 {
                     <tr>
+                        <td>@student.Id</td>
+                        <td>@student.User.Email</td>
                         <td>@student.FirstName @student.LastName</td>
                         <td>
-                            <a class="btn btn-square btn-success" asp-area="Admin" asp-controller="Student" asp-action="AddStudentRelation" asp-route-studentId="@student.Id" title="Öğrencilerime Ekle">
+                            <a class="btn btn-square btn-success" asp-area="Admin" asp-controller="Student" asp-action="AddStudentRelation" asp-route-studentId="@student.Id" title="@student.Id id değerli öğrenciyi öğrencilerime ekle!">
                                 <span class="icon text-white-50">
-                                    <i class="fa fa-user-graduate"></i>
+                                    <i class="fa fa-user"></i>
                                 </span>
                             </a>
                         </td>
