@@ -3,15 +3,14 @@
 *@
 @{
 }
-
 @model List<Message>
 
-<table id="sendboxList">
+<table id="inboxList">
     <thead>
         <tr>
             <th>Konu</th>
             <th>Mesaj İçeriği</th>
-            <th>Gönderilen Mail</th>
+            <th>Gönderen Mail</th>
             <th>Gönderilme Tarihi</th>
             <th>Çözüldü mü?</th>
         </tr>
@@ -39,20 +38,19 @@
                             </div>
                         </div>
                     </td>
-                    <td>@message.ReceiverUser.Email</td>
+                    <td>@message.SenderUser.Email</td>
                     <td>@message.MessageDate</td>
                     <td>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" asp-for="@message.IsSolved" id="flexCheckDisabled" disabled>
-@*                            @if (message.IsSolved)
+                            @if (message.IsSolved)
                             {
                                 <div class="ml-3">
                                     <label class="form-check-label" for="flexCheckDisabled">
                                         <a asp-area="" asp-controller="Message" asp-action="Delete" asp-route-messageId="@message.Id"><span class="badge bg-danger">Sil</span></a>
                                     </label>
                                 </div>
-                            }*@
-                            
+                            }
                         </div>
 
                     </td>
@@ -62,10 +60,10 @@
         else
         {
             <tr>
-                <td>     
-                </td>
+                <td></td>
                 <td></td>
                 <td><label class="text-danger">Henüz mesaj gönderilmemiş!</label></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -75,8 +73,9 @@
 
 @section Scripts{
     <script>
-        $(document).ready(function(){
-            $('#sendboxList').DataTable();
+        $(document).ready(function () {
+            $('#inboxList').DataTable();
         });
     </script>
 }
+

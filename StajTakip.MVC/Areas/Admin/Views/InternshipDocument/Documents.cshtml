@@ -22,24 +22,65 @@
         <tbody>
             @if (Model.Count > 0)
             {
-                    @foreach (var document in Model)
-                    {
+                @foreach (var document in Model)
+                {
                     <tr>
                         <td>@document.Id</td>
                         <td>
-                                @document.DocumentName
+                            @document.DocumentName
                         </td>
                         <td>
                             <div class="d-flex justify-content-around">
                                 <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@document.Id">
                                     <h5><span title="@document.DocumentName belgesini görüntüle!" class="badge bg-info">Görüntüle</span></h5>
-                                    
+
                                 </a>
-                                <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">
-                                    <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Kontrol Edildi Olarak İşaretle</span></h5>
-                                    
+                                @*@if (User.IsInRole("admin.teacher"))
+                        {
+                        @if (!document.IsTeacherChecked)
+                        {
+                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="AcceptDocument" asp-route-documentId="@document.Id">
+                        <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Belgeyi kabul et!</span></h5>
+
+                        </a>
+                        }
+                        else
+                        {
+                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="RejectDocument" asp-route-documentId="@document.Id">
+                        <h5><span title="@document.DocumentName belgesini kontrol edilmedi olarak işaretle!" class="badge bg-warning">Belgeyi reddet!</span></h5>
+
+                        </a>
+                        }
+                        }
+                        else if(User.IsInRole("admin.company"))
+                        {
+                        @if (!document.IsCompanyChecked.Value)
+                        {
+                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="AcceptDocument" asp-route-documentId="@document.Id">
+                        <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Belgeyi kabul et!</span></h5>
+
+                        </a>
+                        }
+                        else
+                        {
+                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="RejectDocument" asp-route-documentId="@document.Id">
+                        <h5><span title="@document.DocumentName belgesini kontrol edilmedi olarak işaretle!" class="badge bg-warning">Belgeyi reddet!</span></h5>
+
+                        </a>
+                        }
+                        }*@
+
+                                <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="AcceptDocument" asp-route-documentId="@document.Id">
+                                    <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Belgeyi kabul et!</span></h5>
+
                                 </a>
-                            @*<a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">Kontrol Edildi Olarak İşaretle</a>*@
+
+                                <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="RejectDocument" asp-route-documentId="@document.Id">
+                                    <h5><span title="@document.DocumentName belgesini kontrol edilmedi olarak işaretle!" class="badge bg-warning">Belgeyi reddet!</span></h5>
+
+                                </a>
+
+                                @*<a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">Kontrol Edildi Olarak İşaretle</a>*@
                             </div>
                         </td>
                         <td>
@@ -48,7 +89,7 @@
                             </div>
                         </td>
                     </tr>
-                    }
+                }
             }
             else
             {

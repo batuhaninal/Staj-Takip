@@ -42,6 +42,18 @@ namespace StajTakip.Business.Concrete
             return new ErrorDataResult<AdminUser>(result.Message ?? "Beklenmeyen bir hata meydana geldi!");
         }
 
+        public IDataResult<AdminUser> GetByAdminUserIdWithUser(int adminUserId)
+        {
+            var result = BusinessRules.Run(CheckByAdminUserId(adminUserId));
+            if (result == null)
+            {
+                var data = _adminRepo.Get(x => x.Id == adminUserId, x=>x.User);
+                return new SuccessDataResult<AdminUser>(data);
+            }
+
+            return new ErrorDataResult<AdminUser>(result.Message ?? "Beklenmeyen bir hata meydana geldi!");
+        }
+
         public IDataResult<AdminUser> GetByUserId(int userId)
         {
             var result = BusinessRules.Run(CheckByUserId(userId));

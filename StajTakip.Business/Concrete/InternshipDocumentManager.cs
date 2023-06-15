@@ -18,6 +18,23 @@ namespace StajTakip.Business.Concrete
             _messageService = messageService;
         }
 
+        public IDataResult<InternshipDocument> AcceptDocument(InternshipDocument entity, int adminUserId)
+        {
+            var result = BusinessRules.Run(IsExist(entity.Id));
+            if (result == null)
+            {
+                var data = _internshipDocumentRepository.Update(entity);
+
+                var messageResult = _messageService.AcceptDocument(data.StudentUserId, adminUserId, data.Id, data.DocumentName);
+                if(!messageResult.Success)
+                    return new SuccessDataResult<InternshipDocument>(data, messageResult.Message ?? "Bildirim gönderilemedi fakat döküman onaylandı!");
+
+                return new SuccessDataResult<InternshipDocument>(data);
+            }
+
+            return new ErrorDataResult<InternshipDocument>(result.Message);
+        }
+
         public IResult Add(InternshipDocument entity)
         {
             _internshipDocumentRepository.Add(entity);
@@ -74,6 +91,23 @@ namespace StajTakip.Business.Concrete
                 return new SuccessResult();
             }
             return result;
+        }
+
+        public IDataResult<InternshipDocument> RejectDocument(InternshipDocument entity, int adminUserId)
+        {
+            var result = BusinessRules.Run(IsExist(entity.Id));
+            if (result == null)
+            {
+                var data = _internshipDocumentRepository.Update(entity);
+
+                var messageResult = _messageService.RejectDocument(data.StudentUserId, adminUserId, data.Id, data.DocumentName);
+                if (!messageResult.Success)
+                    return new SuccessDataResult<InternshipDocument>(data, messageResult.Message ?? "Bildirim gönderilemedi fakat döküman onaylandı!");
+
+                return new SuccessDataResult<InternshipDocument>(data);
+            }
+
+            return new ErrorDataResult<InternshipDocument>(result.Message);
         }
 
         public IDataResult<InternshipDocument> Update(InternshipDocument entity)

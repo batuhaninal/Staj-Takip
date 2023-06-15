@@ -16,6 +16,8 @@ namespace StajTakip.Business.Abstract
         IDataResult<List<Message>> GetSendboxListByUser(int senderId);
         IResult SendTemplateIssue(int studentUserId);
         IResult SendDocumentAdded(int studentUserId, int documentId, string documentName);
+        IResult RejectDocument(int studentId, int adminId, int documentId, string documentName);
+        IResult AcceptDocument(int studentId, int adminId, int documentId, string documentName);
         IResult Delete(int id);
         IResult Update(Message message);
         IDataResult<Message> GetByMessageId(int messageId);
