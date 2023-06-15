@@ -5,10 +5,15 @@
 }
 @model List<InternshipDocument>
 
+<div class="text-center m-3">
+    <h2>Öğrenci Staj Belgeleri</h2>
+</div>
+
 <div class="p-3">
     <table id="documentList" style="width:100%;">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Evrak Adı</th>
                 <th>İşlemler</th>
                 <th>Secili</th>
@@ -20,14 +25,22 @@
                     @foreach (var document in Model)
                     {
                     <tr>
+                        <td>@document.Id</td>
                         <td>
                                 @document.DocumentName
                         </td>
                         <td>
-                            <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@document.Id">
-                                Goruntule
-                            </a>
-                            <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">Kontrol Edildi Olarak İşaretle</a>
+                            <div class="d-flex justify-content-around">
+                                <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@document.Id">
+                                    <h5><span title="@document.DocumentName belgesini görüntüle!" class="badge bg-info">Görüntüle</span></h5>
+                                    
+                                </a>
+                                <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">
+                                    <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Kontrol Edildi Olarak İşaretle</span></h5>
+                                    
+                                </a>
+                            @*<a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">Kontrol Edildi Olarak İşaretle</a>*@
+                            </div>
                         </td>
                         <td>
                             <div class="form-check">
@@ -39,7 +52,12 @@
             }
             else
             {
-                <h1>Henuz Kullanici Kayitli Degil</h1>
+                <tr>
+                    <td></td>
+                    <td>Henüz belge eklenmemiş!</td>
+                    <td></td>
+                    <td></td>
+                </tr>
             }
 
         </tbody>

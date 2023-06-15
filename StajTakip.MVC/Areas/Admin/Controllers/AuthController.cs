@@ -89,9 +89,13 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
 
         [HttpGet]
         [Authorize(Roles ="admin, admin.teacher")]
-        public IActionResult RegisterCompany(int studentId)
+        public IActionResult RegisterCompany(int? studentId)
         {
-            ViewBag.StudentId = studentId;
+            if (studentId.HasValue)
+            {
+                ViewBag.StudentId = studentId;
+            }
+            ViewBag.StudentId = 0;
             return View();
         }
 

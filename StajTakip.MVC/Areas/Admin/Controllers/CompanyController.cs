@@ -43,7 +43,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _adminStudentRelationService.Add(postModel);
+                var result = _adminStudentRelationService.AddForCompany(postModel);
                 if(!result.Success)
                 {
                     _notyfService.Error(result.Message ?? "Hata!");

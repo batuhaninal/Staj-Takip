@@ -170,5 +170,23 @@ namespace StajTakip.Business.Concrete
             return new SuccessResult();
         }
 
+        public IDataResult<string[]> GetEmailsByIds(params int[] userId)
+        {
+            string[] emails = new string[userId.Count()];
+            int i = 0;
+            foreach (var id in userId)
+            {
+                var result = BusinessRules.Run(CheckUser(id));
+                if (result is null)
+                {
+                    emails[i] = _userRepository.Get(x => x.Id == id).Email;
+                    i++;
+                }
+            }
+            if (emails.Count() == 0)
+                return new ErrorDataResult<string[]>("Kullanıcı bulunamadı!");
+
+            return new SuccessDataResult<string[]>(emails);
+        }
     }
 }

@@ -44,6 +44,7 @@
     <table id="documentList" class="table table-hover">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Döküman İsmi</th>
                 <th>Döküman Görüntüle</th>
                 <th>Durumlar</th>
@@ -61,6 +62,7 @@
                 @foreach (var item in ViewData["documentList"] as List<InternshipDocument>)
                 {
                     <tr>
+                        <td>@item.Id</td>
                         <th style="color:black">@item.DocumentName</th>
                         <td>
                             <a asp-area="" asp-controller="InternshipDocument" asp-action="ShowPdf" asp-route-documentId="@item.Id">

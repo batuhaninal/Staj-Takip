@@ -10,6 +10,7 @@ namespace StajTakip.Entities.DTOs
     {
         // 191118016@samsun.edu.tr
         public string SenderMail { get; set; }
+        public string[] ReceiverMail { get; set; }
 
         // Staj takip formu 1. asama
         public string Subject { get; set; }

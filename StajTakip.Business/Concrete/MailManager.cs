@@ -25,18 +25,21 @@ namespace StajTakip.Business.Concrete
 
         public IResult Send(EmailSendDto emailSendDto)
         {
+
             MailMessage message = new MailMessage
             {
                 // stajtakip@outlook.com
                 From = new MailAddress(_smtpSettings.SenderEmail),
-                To = { new MailAddress("") },
                 Subject = emailSendDto.Subject,
                 IsBodyHtml = true,
-                Body = $"Gönderen E-Posta: {emailSendDto.SenderMail}\n{emailSendDto.Message}",
-                // Attachments = 
+                Body = $"Gönderen E-Posta: {emailSendDto.SenderMail}<br/>{emailSendDto.Message}",
             };
 
-            //message.Attachments.Add()
+            for (int i = 0; i < emailSendDto.ReceiverMail.Count(); i++)
+            {
+                if(i < (emailSendDto.ReceiverMail.Count() -1))
+                    message.To.Add(new MailAddress(emailSendDto.ReceiverMail[i]));
+            }
 
             SmtpClient smtpClient = new SmtpClient
             {

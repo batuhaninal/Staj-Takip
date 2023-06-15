@@ -10,15 +10,23 @@ namespace StajTakip.Business.Concrete
     public class InternshipDocumentManager : IInternshipDocumentService
     {
         private readonly IInternshipDocumentRepository _internshipDocumentRepository;
+        private readonly IMessageService _messageService;
 
-        public InternshipDocumentManager(IInternshipDocumentRepository internshipDocumentRepository)
+        public InternshipDocumentManager(IInternshipDocumentRepository internshipDocumentRepository, IMessageService messageService)
         {
             _internshipDocumentRepository = internshipDocumentRepository;
+            _messageService = messageService;
         }
 
         public IResult Add(InternshipDocument entity)
         {
             _internshipDocumentRepository.Add(entity);
+            var messageResult = _messageService.SendDocumentAdded(entity.StudentUserId,entity.Id,entity.DocumentName);
+            if (!messageResult.Success)
+            {
+                return new SuccessResult(messageResult.Message ?? "Mesaj gönderilemedi fakat döküman başarılı şekilde eklendi!");
+            }
+
             return new SuccessResult();
         }
 

@@ -11,6 +11,8 @@ namespace StajTakip.Business.Abstract
     public interface IAdminStudentRelationService
     {
         IResult Add(AdminStudentRelation entity);
+        IResult AddForCompany(AdminStudentRelation entity);
+        IResult AddForTeacher(AdminStudentRelation entity);
         IResult HardDelete(AdminStudentRelation entity);
         IResult HardDelete(int id);
         IDataResult<AdminStudentRelation> Update(AdminStudentRelation entity);

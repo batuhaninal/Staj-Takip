@@ -6,12 +6,18 @@
 
 @model List<AdminUser>
 
+<div class="text-center m-3">
+    <h2>Tüm Şirket Hesapları</h2>
+</div>
+
+
 <div id="modalPlaceHolder" aria-hidden="true"></div>
 
 <div class="p-3">
     <table class="table table-hover" id="allCompany" style="width:100%;">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Şirket Adı</th>
                 <th>Şirkete Ait Öğrenciler</th>
                 <th>İşlemler</th>
@@ -23,6 +29,7 @@
                 @foreach (var company in Model)
                 {
                     <tr>
+                        <td>@company.Id</td>
                         <td>@company.FirstName @company.LastName</td>
                         <td>
                             @if (company.AdminStudentRelations.Any())
@@ -40,13 +47,19 @@
                                                     @foreach (var relation in company.AdminStudentRelations)
                                                     {
                                                         <li>
+                                                            <div class="d-flex justify-content-between">
 
-                                                            <label class="m-3">@relation.StudentUser.FirstName @relation.StudentUser.LastName</label>
-                                                            <a class="btn btn-danger ml-3" asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
-                                                                <span class="icon text-white-50">
-                                                                    <i class="fas fa-circle"></i>
-                                                                </span>
-                                                            </a>
+                                                                <label>@relation.StudentUser.FirstName @relation.StudentUser.LastName</label>
+                                                                <a asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
+                                                                    <span title="@relation.StudentUser.FirstName @relation.StudentUser.LastName öğrencisini çıkart!" class="badge bg-danger">Çıkart</span>
+                                                                </a>
+                                                            </div>
+
+                                                            @*<a class="btn btn-danger ml-3" asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
+                                            <span class="icon text-white-50">
+                                            <i class="fas fa-circle"></i>
+                                            </span>
+                                            </a>*@
                                                         </li>
                                                     }
                                                 </ul>

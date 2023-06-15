@@ -91,15 +91,18 @@ namespace StajTakip.Business.Concrete
 
             if (userForRegisterDto.IsCompany)
             {
-                var relation = new AdminStudentRelation
+                if(userForRegisterDto.StudentId != 0)
                 {
-                    AdminUserId = adminInfo.Id,
-                    IsCompany = true,
-                    StudentUserId = userForRegisterDto.StudentId
-                };
-                var relationResult = _adminStudentRelationService.Add(relation);
-                if (!relationResult.Success)
-                    return new ErrorDataResult<User>(relationResult.Message ?? "Öğrenci şirkete atanamadı!");
+                    var relation = new AdminStudentRelation
+                    {
+                        AdminUserId = adminInfo.Id,
+                        IsCompany = true,
+                        StudentUserId = userForRegisterDto.StudentId
+                    };
+                    var relationResult = _adminStudentRelationService.AddForCompany(relation);
+                    if (!relationResult.Success)
+                        return new ErrorDataResult<User>(relationResult.Message ?? "Öğrenci şirkete atanamadı!");
+                }
             }
 
             return new SuccessDataResult<User>(user);
