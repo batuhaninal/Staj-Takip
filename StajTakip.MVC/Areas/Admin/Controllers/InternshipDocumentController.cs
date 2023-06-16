@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
+using StajTakip.Entities.ComplexTypes;
 
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
@@ -127,13 +128,14 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                     // Restores the graphics state
                     targetPage.Contents.Add(new Aspose.Pdf.Operators.GRestore());
 
+                    
+                    Roles role= User.IsInRole("admin.teacher") ? Roles.Teacher : Roles.Company;
                     // Save updated document
-
                     using (MemoryStream updatedPdfStream = new MemoryStream())
                     {
                         pdfDocument.Save(updatedPdfStream);
                         documentS.Data.Data = updatedPdfStream.ToArray();
-                        var result = _internshipDocumentService.Update(documentS.Data);
+                        var result = _internshipDocumentService.SignDocument(documentS.Data, int.Parse(User.Identity.Name), role);
                         if (!result.Success)
                         {
                             _notyfService.Error(result.Message ?? "Beklenmeyen bir hata ile karşılaşıldı lütfen daha sonra tekrar deneyiniz!");

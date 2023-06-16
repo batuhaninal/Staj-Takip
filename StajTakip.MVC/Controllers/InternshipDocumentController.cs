@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
+using StajTakip.Entities.ComplexTypes;
 using StajTakip.Entities.Concrete;
 
 namespace StajTakip.MVC.Controllers
@@ -138,7 +139,7 @@ namespace StajTakip.MVC.Controllers
                     {
                         pdfDocument.Save(updatedPdfStream);
                         documentS.Data.Data = updatedPdfStream.ToArray();
-                        var result = _internshipDocumentService.Update(documentS.Data);
+                        var result = _internshipDocumentService.SignDocument(documentS.Data, int.Parse(User.Identity.Name),Roles.Student);
                         if (!result.Success)
                         {
                             _notyfService.Error(result.Message);

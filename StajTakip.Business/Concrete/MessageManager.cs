@@ -1,8 +1,10 @@
-﻿using Core.Utilities.Business;
+﻿using Core.Entities.Concrete;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Constants;
 using StajTakip.DataAccess.Abstract;
+using StajTakip.Entities.ComplexTypes;
 using StajTakip.Entities.Concrete;
 using StajTakip.Entities.DTOs;
 using System;
@@ -10,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace StajTakip.Business.Concrete
 {
@@ -237,6 +240,77 @@ namespace StajTakip.Business.Concrete
 
             _messageRepo.Add(message);
             return new SuccessResult();
+        }
+
+        public IResult SendSignedDocumentNoty(int senderStudentOrAdminId, int documentId, int documentOwnerId, string documentName, Roles role)
+        {
+            int[] ids;
+            string name = "";
+            // Student Notification
+            if (role == Roles.Student)
+            {
+                var relationResult = _adminStudentRelationService.GetAllByStudentIdWithAdmin(senderStudentOrAdminId);
+
+                if (!relationResult.Success)
+                    return new ErrorResult(relationResult.Message ?? "Beklenmeyen bir hata ile karşılaşıldı!");
+
+                ids = new int[relationResult.Data.Count + 1];
+                int i = 0;
+                int userId = 0; 
+                foreach (var relation in relationResult.Data)
+                {
+                    if(i == 0)
+                    {
+                        userId = relation.StudentUser.UserId;
+                        name = $"{relation.StudentUser.FirstName} {relation.StudentUser.LastName}";
+                    }
+                    Message message = Messages.SignedDocument(name, documentId, documentName);
+                    message.SenderUserId = relation.StudentUser.UserId;
+                    message.ReceiverUserId = relation.AdminUser.UserId;
+                    _messageRepo.Add(message);
+                    ids[i] = relation.AdminUser.UserId;
+                    i++;
+                }
+
+                ids[i] = userId;
+            }
+            // Admin ve company notification
+            else
+            {
+                var user = _adminUserService.GetByAdminUserId(senderStudentOrAdminId);
+                if (!user.Success)
+                    return new ErrorResult(user.Message ?? "Beklenmeyen hata!");
+                name = $"{user.Data.FirstName} {user.Data.LastName}";
+                Message adminMessage = Messages.SignedDocument(name, documentId, documentName);
+                adminMessage.SenderUserId = user.Data.UserId;
+                var studentUser = _studentUserService.GetById(documentOwnerId);
+                if (!studentUser.Success)
+                    return new ErrorResult(studentUser.Message ?? "Beklenmeyen hata!");
+                adminMessage.ReceiverUserId = studentUser.Data.UserId;
+                _messageRepo.Add(adminMessage);
+                ids = new int[2];
+                ids[0] = studentUser.Data.UserId;
+                ids[1] = user.Data.UserId;
+            }
+
+            //E-Posta
+            var emails = _userService.GetEmailsByIds(ids);
+
+            if (emails.Success)
+            {
+                var mail = new EmailSendDto
+                {
+                    Subject = Messages.SignedDocument(name, documentId, documentName).Subject,
+                    Message = Messages.SignedDocument(name, documentId, documentName).MessageDetail,
+                    SenderMail = emails.Data[0],
+                    ReceiverMail = emails.Data
+                };
+
+                var sendMail = _mailService.Send(mail);
+                if (sendMail.Success)
+                    return new SuccessResult("Bildirim gönderildi fakat e-posta gönderilemedi!" + sendMail.Message ?? "E-Posta hatas!");
+            }
+            return new SuccessResult("Bildirim gönderildi fakat e-posta gönderilemedi!");
         }
     }
 }

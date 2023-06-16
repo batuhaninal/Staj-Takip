@@ -58,5 +58,17 @@ namespace StajTakip.Business.Constants
                 IsSolved = true,
             };
         }
+
+
+        public static Message SignedDocument(string userFirstLastName, int documentId, string documentName)
+        {
+            return new Message
+            {
+                MessageDate = DateTime.Now,
+                Subject = $"{documentName} adlı dökümanınıza imzalama işlemi gerçekleştirildi!",
+                MessageDetail = $"{documentName} isimli {documentId} id değerine sahip dökümanınız {userFirstLastName} tarafından imzalandı! Belgeler kısmından lütfen kontrol ediniz!",
+                IsSolved = true,
+            };
+        }
     }
 }

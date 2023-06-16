@@ -79,7 +79,7 @@ namespace StajTakip.Business.Concrete
 
         public IDataResult<List<AdminStudentRelation>> GetAllByStudentIdWithAdmin(int studentId)
         {
-            var result = _repo.GetAll(x => x.StudentUserId == studentId, x => x.AdminUser).ToList();
+            var result = _repo.GetAll(x => x.StudentUserId == studentId, x=>x.StudentUser, x => x.AdminUser).ToList();
             return new SuccessDataResult<List<AdminStudentRelation>>(result);
         }
 
