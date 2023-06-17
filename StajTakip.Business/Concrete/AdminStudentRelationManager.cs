@@ -52,7 +52,7 @@ namespace StajTakip.Business.Concrete
             }
             _repo.Add(entity);
             return new SuccessResult();
-        }
+        }    
 
         public IDataResult<AdminStudentRelation> Get(int id)
         {
@@ -62,7 +62,7 @@ namespace StajTakip.Business.Concrete
                 return new ErrorDataResult<AdminStudentRelation>(result.Message);
             }
             var model = _repo.Get(x => x.Id == id, x => x.StudentUser, x => x.AdminUser);
-            return new SuccessDataResult<AdminStudentRelation>();
+            return new SuccessDataResult<AdminStudentRelation>(model);
         }
 
         public IDataResult<List<AdminStudentRelation>> GetAllByAdminIdWithStudent(int adminId)

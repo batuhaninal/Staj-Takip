@@ -14,14 +14,16 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         private readonly IAdminUserService _adminUserService;
         private readonly IAdminStudentRelationService _adminStudentRelationService;
         private readonly IStudentUserService _studentUserService;
+        private readonly IMessageService _messageService;
         private readonly INotyfService _notyfService;
 
-        public CompanyController(IAdminUserService adminUserService, IAdminStudentRelationService adminStudentRelationService, INotyfService notyfService, IStudentUserService studentUserService)
+        public CompanyController(IAdminUserService adminUserService, IAdminStudentRelationService adminStudentRelationService, INotyfService notyfService, IStudentUserService studentUserService, IMessageService messageService)
         {
             _adminUserService = adminUserService;
             _adminStudentRelationService = adminStudentRelationService;
             _notyfService = notyfService;
             _studentUserService = studentUserService;
+            _messageService = messageService;
         }
 
         [HttpGet]
@@ -43,7 +45,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _adminStudentRelationService.AddForCompany(postModel);
+                var result = _messageService.AddRelation(int.Parse(User.Identity.Name), postModel.StudentUserId.Value, postModel.AdminUserId.Value);
                 if(!result.Success)
                 {
                     _notyfService.Error(result.Message ?? "Hata!");
@@ -57,7 +59,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         [Authorize(Roles = "admin.teacher")]
         public IActionResult DeleteStudentRelation(int relationId)
         {
-            var result = _adminStudentRelationService.HardDelete(relationId);
+            var result = _messageService.DeleteRelation(relationId, int.Parse(User.Identity.Name));
             if (result.Success)
             {
                 _notyfService.Success("Öğrenci başarıyla şirket listesinden silindi!");

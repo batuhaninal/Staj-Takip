@@ -10,6 +10,7 @@ using StajTakip.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -334,6 +335,111 @@ namespace StajTakip.Business.Concrete
                 }
             }    
             return count;
+        }
+
+        public IResult DeleteRelation(int relationId, int teacherId)
+        {
+            var relation = _adminStudentRelationService.Get(relationId);
+            if (!relation.Success)
+                return new ErrorResult(relation.Message ?? "Beklenmeyen hata!");
+
+            var studentUser = _studentUserService.GetByIdWithUser(relation.Data.StudentUserId.Value);
+            var companyUser = _adminUserService.GetByAdminUserIdWithUser(relation.Data.AdminUserId.Value);
+            var teacherUser = _adminUserService.GetByAdminUserIdWithUser(teacherId);
+
+            var relationResult = _adminStudentRelationService.HardDelete(relation.Data);
+            if (!relationResult.Success)
+                return new ErrorResult(relationResult.Message ?? "Beklenmeyen hata!");
+
+
+            if (!studentUser.Success || !companyUser.Success || !teacherUser.Success)
+                return new SuccessResult($"Öğrencinin ilişkisi silindi fakat mail gönderilemedi!");
+
+            var studentName = $"{studentUser.Data.FirstName} {studentUser.Data.LastName}";
+            var companyName = $"{companyUser.Data.FirstName} {companyUser.Data.LastName}";
+            var teacherName = $"{teacherUser.Data.FirstName} {teacherUser.Data.LastName}";
+            for (int i = 0; i < 2; i++)
+            {
+                var message = Messages.DeleteRelation(teacherName, studentName, companyName);
+                message.SenderUserId = teacherUser.Data.UserId;
+                if (i == 0)
+                {
+                    message.ReceiverUserId = companyUser.Data.UserId;
+                }
+                else
+                {
+                    message.ReceiverUserId = studentUser.Data.UserId;
+                }
+                _messageRepo.Add(message);
+            }
+
+            string[] emails = { studentUser.Data.User.Email, companyUser.Data.User.Email, teacherUser.Data.User.Email };
+
+            var mail = new EmailSendDto
+            {
+                Subject = Messages.DeleteRelation(teacherName, studentName, companyName).Subject,
+                Message = Messages.DeleteRelation(teacherName, studentName, companyName).MessageDetail,
+                SenderMail = emails[2],
+                ReceiverMail = emails
+            };
+
+            var mailResult = _mailService.Send(mail);
+            if (!mailResult.Success)
+                return new SuccessResult(mailResult.Message ?? "E-Posta gönderilirken hata oluştu ama bildirim gönderildi");
+
+            return new SuccessResult();
+        }
+
+        public IResult AddRelation(int teacherId, int studentId, int companyId)
+        {
+            var relationResult = _adminStudentRelationService.Add(new AdminStudentRelation
+            {
+                StudentUserId = studentId,
+                AdminUserId = companyId,
+            });
+
+            if (!relationResult.Success)
+                return new ErrorResult(relationResult.Message ?? "Beklenmeyen hata!");
+
+            var studentUser = _studentUserService.GetByIdWithUser(studentId);
+            var companyUser = _adminUserService.GetByAdminUserIdWithUser(companyId);
+            var teacherUser = _adminUserService.GetByAdminUserIdWithUser(teacherId);
+            if (!studentUser.Success || !companyUser.Success || !teacherUser.Success)
+                return new SuccessResult($"Öğrencinin ilişkisi eklendi fakat mail gönderilemedi!");
+
+            var studentName = $"{studentUser.Data.FirstName} {studentUser.Data.LastName}";
+            var companyName = $"{companyUser.Data.FirstName} {companyUser.Data.LastName}";
+            var teacherName = $"{teacherUser.Data.FirstName} {teacherUser.Data.LastName}";
+            for (int i = 0; i < 2; i++)
+            {
+                var message = Messages.AddRelation(teacherName, studentName, companyName);
+                message.SenderUserId = teacherUser.Data.UserId;
+                if (i == 0)
+                {
+                    message.ReceiverUserId = companyUser.Data.UserId;
+                }
+                else
+                {
+                    message.ReceiverUserId = studentUser.Data.UserId;
+                }
+                _messageRepo.Add(message);
+            }
+
+            string[] emails = { studentUser.Data.User.Email, companyUser.Data.User.Email, teacherUser.Data.User.Email };
+
+            var mail = new EmailSendDto
+            {
+                Subject = Messages.AddRelation(teacherName, studentName, companyName).Subject,
+                Message = Messages.AddRelation(teacherName, studentName, companyName).MessageDetail,
+                SenderMail = emails[2],
+                ReceiverMail = emails
+            };
+
+            var mailResult = _mailService.Send(mail);
+            if (!mailResult.Success)
+                return new SuccessResult(mailResult.Message ?? "E-Posta gönderilirken hata oluştu ama bildirim gönderildi");
+
+            return new SuccessResult();
         }
     }
 }
