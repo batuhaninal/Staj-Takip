@@ -18,6 +18,8 @@ namespace StajTakip.Business.Abstract
         IResult SendTemplateIssue(int studentUserId);
         IResult SendDocumentAdded(int studentUserId, int documentId, string documentName);
         IResult SendSignedDocumentNoty(int senderStudentOrAdminId, int documentId, int documentOwnerId, string documentName, Roles role);
+        IResult DeleteRelation(int relationId,int teacherId);
+        IResult AddRelation(int teacherId, int studentId, int companyId);
         IResult RejectDocument(int studentId, int adminId, int documentId, string documentName);
         IResult AcceptDocument(int studentId, int adminId, int documentId, string documentName);
         IResult Delete(int id);

@@ -16,7 +16,7 @@
             { name: 'align', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
             { name: 'links', items: ['Link', 'Unlink'] },
             { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'] },
-            { name: 'insert', items: ['Image', 'Table'] },
+            { name: 'insert', items: ['Table'] },
             { name: 'tools', items: ['Maximize'] },
             { name: 'editing', items: ['Scayt'] }
         ],

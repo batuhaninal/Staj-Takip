@@ -85,5 +85,33 @@ namespace StajTakip.Business.Constants
                 IsStudentRead = false
             };
         }
+
+        public static Message DeleteRelation(string teacherName,string studentName, string companyName)
+        {
+            return new Message
+            {
+                MessageDate = DateTime.Now,
+                Subject = $"{studentName} adlı öğrenci {companyName} adlı şirketten çıkartıldı!",
+                MessageDetail = $"İşlem {teacherName} tarafından gerçekleştirildi. Eğer staj işlemleriniz bitmediyse lütfen ilgi danışmana <strong>{teacherName}</strong> ulaşıp bilgi alınız!",
+                IsSolved = true,
+                IsTeacherRead = false,
+                IsCompanyRead = false,
+                IsStudentRead = false
+            };
+        }
+
+        public static Message AddRelation(string teacherName, string studentName, string companyName)
+        {
+            return new Message
+            {
+                MessageDate = DateTime.Now,
+                Subject = $"{studentName} adlı öğrenci {companyName} adlı şirkettine atandı!",
+                MessageDetail = $"İşlem {teacherName} tarafından gerçekleştirildi. Lütfen staj dökümanınızı {companyName} şirketindeki ilgili kişiye imzalatınız! Artık dökümanlarınız ve staj defterleriniz {companyName} şirketi tarafından görüntülenebilecektir.",
+                IsSolved = true,
+                IsTeacherRead = false,
+                IsCompanyRead = false,
+                IsStudentRead = false
+            };
+        }
     }
 }
