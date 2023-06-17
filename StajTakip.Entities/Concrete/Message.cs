@@ -18,5 +18,8 @@ namespace StajTakip.Entities.Concrete
         public string MessageDetail { get; set; }
         public DateTime MessageDate { get; set; }
         public bool IsSolved { get; set; }
+        public bool IsTeacherRead { get; set; } = false;
+        public bool IsCompanyRead { get; set; } = false;
+        public bool IsStudentRead { get; set; } = false;
     }
 }

@@ -49,5 +49,35 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             _notyfService.Success(message.Data.IsSolved ? "Sorun başarıyla çözüldü olarak işaretlendi!" : "Çözülmedi olarak işaretlendi!");
             return RedirectToAction("Inbox");
         }
+
+        public IActionResult CheckRead(int messageId)
+        {
+            var result = _messageService.GetByMessageId(messageId);
+            if (!result.Success)
+            {
+                _notyfService.Error(result.Message ?? "Beklenmeyen hata!");
+                return RedirectToAction("Inbox");
+            }
+
+            result.Data.IsCompanyRead = User.IsInRole("admin.company") ? !result.Data.IsCompanyRead : result.Data.IsCompanyRead;
+            result.Data.IsTeacherRead = User.IsInRole("admin.teacher") ? !result.Data.IsTeacherRead : result.Data.IsTeacherRead;
+            var updateResult = _messageService.Update(result.Data);
+            if (!updateResult.Success)
+            {
+                _notyfService.Error(updateResult.Message ?? "Beklenmeyen hata!");
+                return RedirectToAction("Inbox");
+            }
+
+            if (User.IsInRole("admin.company"))
+            {
+                _notyfService.Success(result.Data.IsCompanyRead == false ? "Mesaj okunmadı olarak işaretlendi!" : "Mesaj okundu olarak işaretlendi!");
+            } 
+            else if (User.IsInRole("admin.teacher"))
+            {
+                _notyfService.Success(result.Data.IsTeacherRead == false ? "Mesaj okunmadı olarak işaretlendi!" : "Mesaj okundu olarak işaretlendi!");
+            }
+           
+            return RedirectToAction("Inbox");
+        }
     }
 }

@@ -6,6 +6,10 @@
 
 @model List<Message>
 
+<div class="text-center m-3">
+    <h2>Gelen Kutusu</h2>
+</div>
+
 <table id="inboxList">
     <thead>
         <tr>
@@ -43,21 +47,60 @@
                     <td>@message.SenderUser.Email</td>
                     <td>@message.MessageDate</td>
                     <td>
-                        @if (message.IsSolved)
+                        
+                        @if (User.IsInRole("admin.teacher"))
                         {
-                            <div class="ml-3">
-                                <label class="form-check-label" for="flexCheckDisabled">
-                                    <a asp-area="Admin" asp-controller="Message" asp-action="CheckSolved" asp-route-messageId="@message.Id"><span title="Düzeltilmedi olarak işaretle!" class="badge bg-warning text-dark">Güncelle</span></a>
-                                </label>
-                            </div>
+                            @if (message.IsSolved)
+                            {
+                                <div class="ml-3">
+                                    <label class="form-check-label" for="flexCheckDisabled">
+                                        <a asp-area="Admin" asp-controller="Message" asp-action="CheckSolved" asp-route-messageId="@message.Id"><span title="Düzeltilmedi olarak işaretle!" class="badge bg-warning text-dark">Güncelle</span></a>
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="ml-3">
+                                    <label class="form-check-label" for="flexCheckDisabled">
+                                        <a asp-area="Admin" asp-controller="Message" asp-action="CheckSolved" asp-route-messageId="@message.Id"><span title="Düzeltildi olarak işaretle!" class="badge bg-success">Güncelle</span></a>
+                                    </label>
+                                </div>
+                            }
+                            @if (message.IsTeacherRead)
+                            {
+                                <div class="ml-3">
+                                    <label class="form-check-label" for="flexCheckDisabled">
+                                        <a asp-area="Admin" asp-controller="Message" asp-action="CheckRead" asp-route-messageId="@message.Id"><span title="Okunmadı olarak işaretle!" class="badge bg-primary text-dark">Okundu</span></a>
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="ml-3">
+                                    <label class="form-check-label" for="flexCheckDisabled">
+                                        <a asp-area="Admin" asp-controller="Message" asp-action="CheckRead" asp-route-messageId="@message.Id"><span title="Okundu olarak işaretle!" class="badge bg-info text-dark">Okunmadı</span></a>
+                                    </label>
+                                </div>
+                            }
                         }
                         else
                         {
-                            <div class="ml-3">
-                                <label class="form-check-label" for="flexCheckDisabled">
-                                    <a asp-area="Admin" asp-controller="Message" asp-action="CheckSolved" asp-route-messageId="@message.Id"><span title="Düzeltildi olarak işaretle!" class="badge bg-success">Güncelle</span></a>
-                                </label>
-                            </div>
+                            @if (message.IsCompanyRead)
+                            {
+                                <div class="ml-3">
+                                    <label class="form-check-label" for="flexCheckDisabled">
+                                        <a asp-area="Admin" asp-controller="Message" asp-action="CheckRead" asp-route-messageId="@message.Id"><span title="Okunmadı olarak işaretle!" class="badge bg-primary text-dark">Okundu</span></a>
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="ml-3">
+                                    <label class="form-check-label" for="flexCheckDisabled">
+                                        <a asp-area="Admin" asp-controller="Message" asp-action="CheckRead" asp-route-messageId="@message.Id"><span title="Okundu olarak işaretle!" class="badge bg-info text-dark">Okunmadı</span></a>
+                                    </label>
+                                </div>
+                            }
                         }
                         <div class="ml-3">
                             <label class="form-check-label" for="flexCheckDisabled">

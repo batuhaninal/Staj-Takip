@@ -14,15 +14,19 @@ namespace StajTakip.MVC.Areas.Admin.ViewComponents.Messages
 
         public IViewComponentResult Invoke()
         {
+            int adminUserId = int.Parse(User.Identity.Name);
+            ViewBag.UnreadMessage = 0;
             if (User.IsInRole("admin.teacher"))
             {
-                var messages = _messageService.GetLastNotificationListByUser(int.Parse(User.Identity.Name));
+                var messages = _messageService.GetLastNotificationListByUser(adminUserId);
+                ViewBag.UnreadMessage = _messageService.GetInboxNewMessageCount(adminUserId, Entities.ComplexTypes.Roles.Teacher);
                 return View(messages.Data);
             }else if (User.IsInRole("admin.company"))
             {
-                var messages = _messageService.GetLastNotificationListByCompany(int.Parse(User.Identity.Name));
+                var messages = _messageService.GetLastNotificationListByCompany(adminUserId);
+                ViewBag.UnreadMessage = _messageService.GetInboxNewMessageCount(adminUserId, Entities.ComplexTypes.Roles.Company);
                 return View(messages.Data);
-            }
+            }      
             return View();
         }
     }

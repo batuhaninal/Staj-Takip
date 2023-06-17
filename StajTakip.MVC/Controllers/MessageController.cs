@@ -46,6 +46,27 @@ namespace StajTakip.MVC.Controllers
             return View();
         }
 
+        public IActionResult CheckRead(int messageId, int pageId)
+        {
+            var result = _messageService.GetByMessageId(messageId);
+            if (!result.Success)
+            {
+                _notyfService.Error(result.Message ?? "Beklenmeyen hata!");
+                return pageId == 1 ? RedirectToAction("Inbox") : RedirectToAction("Sendbox");
+            }
+
+            result.Data.IsStudentRead = !result.Data.IsStudentRead;
+            var updateResult = _messageService.Update(result.Data);
+            if(!updateResult.Success)
+            {
+                _notyfService.Error(updateResult.Message ?? "Beklenmeyen hata!");
+                return pageId == 1 ? RedirectToAction("Inbox") : RedirectToAction("Sendbox");
+            }
+
+            _notyfService.Success(result.Data.IsStudentRead == false ? "Mesaj okunmadı olarak işaretlendi!" : "Mesaj okundu olarak işaretlendi!");
+            return pageId == 1 ? RedirectToAction("Inbox") : RedirectToAction("Sendbox");
+        }
+
         public IActionResult Delete(int messageId)
         {
             var result = _messageService.Delete(messageId);

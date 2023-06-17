@@ -7,8 +7,24 @@
 
 <div class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-        <i class="fa fa-envelope me-lg-2"></i>
-        <span class="d-none d-lg-inline-flex">Message</span>
+        
+        <i class="fa fa-envelope me-lg-2 position-relative">
+            @if (ViewBag.UnreadMessage > 99)
+            {
+                <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                    99+
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            }
+            else
+            {
+                <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                    @ViewBag.UnreadMessage
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            }
+        </i>
+        <span class="d-none d-lg-inline-flex">Gelen Kutusu</span>
     </a>
     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
         @foreach (var message in Model)

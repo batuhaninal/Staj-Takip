@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StajTakip.DataAccess.Concrete.Contexts;
 
@@ -11,9 +12,10 @@ using StajTakip.DataAccess.Concrete.Contexts;
 namespace StajTakip.DataAccess.Migrations
 {
     [DbContext(typeof(StajTakipContext))]
-    partial class StajTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20230616231656_message_read_operations")]
+    partial class message_read_operations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +38,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OperationClaims", (string)null);
+                    b.ToTable("OperationClaims");
                 });
 
             modelBuilder.Entity("Core.Entities.Concrete.User", b =>
@@ -88,7 +90,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Core.Entities.Concrete.UserOperationClaim", b =>
@@ -107,7 +109,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserOperationClaims", (string)null);
+                    b.ToTable("UserOperationClaims");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.AdminStudentRelation", b =>
@@ -133,7 +135,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasIndex("StudentUserId");
 
-                    b.ToTable("AdminStudentRelations", (string)null);
+                    b.ToTable("AdminStudentRelations");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.AdminUser", b =>
@@ -160,7 +162,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AdminUsers", (string)null);
+                    b.ToTable("AdminUsers");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.BookImage", b =>
@@ -209,7 +211,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasIndex("InternshipsBookId");
 
-                    b.ToTable("BookImages", (string)null);
+                    b.ToTable("BookImages");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.BookTemplate", b =>
@@ -256,7 +258,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BookTemplates", (string)null);
+                    b.ToTable("BookTemplates");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.InternshipDocument", b =>
@@ -311,7 +313,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasIndex("StudentUserId");
 
-                    b.ToTable("InternshipDocuments", (string)null);
+                    b.ToTable("InternshipDocuments");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.InternshipsBook", b =>
@@ -365,7 +367,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasIndex("StudentUserId");
 
-                    b.ToTable("InternshipsBooks", (string)null);
+                    b.ToTable("InternshipsBooks");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.Message", b =>
@@ -434,7 +436,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasIndex("SenderUserId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.StudentUser", b =>
@@ -458,7 +460,7 @@ namespace StajTakip.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("StudentUsers", (string)null);
+                    b.ToTable("StudentUsers");
                 });
 
             modelBuilder.Entity("StajTakip.Entities.Concrete.AdminStudentRelation", b =>

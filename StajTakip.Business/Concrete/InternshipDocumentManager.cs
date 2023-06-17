@@ -3,6 +3,7 @@ using Core.Utilities.Results;
 using StajTakip.Business.Abstract;
 using StajTakip.Business.Constants;
 using StajTakip.DataAccess.Abstract;
+using StajTakip.Entities.ComplexTypes;
 using StajTakip.Entities.Concrete;
 
 namespace StajTakip.Business.Concrete
@@ -116,6 +117,21 @@ namespace StajTakip.Business.Concrete
             if (result == null)
             {
                 var data = _internshipDocumentRepository.Update(entity);
+                return new SuccessDataResult<InternshipDocument>(data);
+            }
+
+            return new ErrorDataResult<InternshipDocument>(result.Message);
+        }
+
+        public IDataResult<InternshipDocument> SignDocument(InternshipDocument entity, int userId, Roles role)
+        {
+            var result = BusinessRules.Run(IsExist(entity.Id));
+            if (result == null)
+            {
+                var data = _internshipDocumentRepository.Update(entity);
+                var messageResult = _messageService.SendSignedDocumentNoty(userId, data.Id, data.StudentUserId, data.DocumentName, role);
+                if (!messageResult.Success)
+                    return new SuccessDataResult<InternshipDocument>(data, "Belge başarıyla imzalandı fakat"+ result.Message ??  "Bildirim mesajı gönderilemedi!");
                 return new SuccessDataResult<InternshipDocument>(data);
             }
 

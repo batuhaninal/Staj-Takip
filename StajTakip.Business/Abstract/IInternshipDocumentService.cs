@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Results;
+using StajTakip.Entities.ComplexTypes;
 using StajTakip.Entities.Concrete;
 
 namespace StajTakip.Business.Abstract
@@ -9,6 +10,7 @@ namespace StajTakip.Business.Abstract
         IResult HardDelete(InternshipDocument entity);
         IResult HardDelete(int id);
         IDataResult<InternshipDocument> Update(InternshipDocument entity);
+        IDataResult<InternshipDocument> SignDocument(InternshipDocument entity, int userId, Roles role);
         IDataResult<InternshipDocument> RejectDocument(InternshipDocument entity, int adminUserId);
         IDataResult<InternshipDocument> AcceptDocument(InternshipDocument entity, int adminUserId);
         IDataResult<InternshipDocument> Get(int id);
