@@ -1,10 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
 
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="admin, admin.teacher, admin.company")]
     public class MessageController : Controller
     {
         private readonly IMessageService _messageService;

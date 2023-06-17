@@ -13,10 +13,10 @@
 <table id="inboxList">
     <thead>
         <tr>
+            <th>Gönderilme Tarihi</th>
             <th>Konu</th>
             <th>Mesaj İçeriği</th>
-            <th>Gönderen Mail</th>
-            <th>Gönderilme Tarihi</th>
+            <th>Gönderen Mail</th>  
             <th>İşlemler</th>
             <th>Çözüldü mü?</th>
         </tr>
@@ -27,6 +27,7 @@
             @foreach (var message in Model)
             {
                 <tr>
+                    <td>@message.MessageDate</td>
                     <td>@message.Subject</td>
                     <td>
                         <div class="accordion" id="accordionExample">
@@ -45,7 +46,6 @@
                         </div>
                     </td>
                     <td>@message.SenderUser.Email</td>
-                    <td>@message.MessageDate</td>
                     <td>
                         
                         @if (User.IsInRole("admin.teacher"))
