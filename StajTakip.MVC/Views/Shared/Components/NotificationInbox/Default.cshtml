@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="nav-item">
+    <a class="nav-link" asp-area="" asp-controller="Message" asp-action="Inbox" class="m-3">
+        <i class="fa fa-bell me-lg-2 position-relative">
+            @if (ViewBag.UnreadMessage > 99)
+            {
+                <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                    99+
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            }
+            else
+            {
+                <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                    @ViewBag.UnreadMessage
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            }
+        </i>
+        <span class="d-none d-lg-inline-flex">Gelen Bildirimler</span>
+    </a>
+</div>

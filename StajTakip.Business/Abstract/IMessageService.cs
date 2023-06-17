@@ -24,5 +24,6 @@ namespace StajTakip.Business.Abstract
         IResult Update(Message message);
         IDataResult<Message> GetByMessageId(int messageId);
         IDataResult<List<Message>> GetAll();
+        int GetInboxNewMessageCount(int receiverId, Roles role);
     }
 }

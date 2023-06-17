@@ -140,7 +140,7 @@ namespace StajTakip.Business.Concrete
             var user = _adminUserService.GetByAdminUserId(receiverId);
             if (!user.Success)
                 return new ErrorDataResult<List<Message>>("Beklenmeyen bir hata meydana geldi!");
-            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId, x => x.SenderUser).TakeLast(5).ToList();
+            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId && !x.IsTeacherRead, x => x.SenderUser).TakeLast(5).ToList();
             if (messages == null)
                 return new ErrorDataResult<List<Message>>("Mesaj kutusu boş");
 
@@ -152,7 +152,7 @@ namespace StajTakip.Business.Concrete
             var user = _adminUserService.GetByAdminUserId(receiverId);
             if (!user.Success)
                 return new ErrorDataResult<List<Message>>("Beklenmeyen bir hata meydana geldi!");
-            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId, x => x.SenderUser).TakeLast(5).ToList();
+            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId && !x.IsCompanyRead, x => x.SenderUser).TakeLast(5).ToList();
             if (messages == null)
                 return new ErrorDataResult<List<Message>>("Mesaj kutusu boş");
 
@@ -311,6 +311,29 @@ namespace StajTakip.Business.Concrete
                     return new SuccessResult("Bildirim gönderildi fakat e-posta gönderilemedi!" + sendMail.Message ?? "E-Posta hatas!");
             }
             return new SuccessResult("Bildirim gönderildi fakat e-posta gönderilemedi!");
+        }
+
+        public int GetInboxNewMessageCount(int receiverId, Roles role)
+        {
+            int count = 0;
+            if (role == Roles.Student)
+            {
+                var sUserId = _studentUserService.GetById(receiverId).Data.UserId;
+                count = _messageRepo.Count(x => x.ReceiverUserId == sUserId && !x.IsStudentRead);
+            }
+            else
+            {
+                var aUserId = _adminUserService.GetByAdminUserId(receiverId).Data.UserId;
+                if (role == Roles.Company)
+                {
+                    count = _messageRepo.Count(x => x.ReceiverUserId == aUserId && !x.IsCompanyRead);
+                }
+                else if (role == Roles.Teacher)
+                {
+                    count = _messageRepo.Count(x => x.ReceiverUserId == aUserId && !x.IsTeacherRead);
+                }
+            }    
+            return count;
         }
     }
 }
