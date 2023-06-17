@@ -12,10 +12,10 @@
 <table id="inboxList">
     <thead>
         <tr>
+            <th>Gönderilme Tarihi</th>
             <th>Konu</th>
             <th>Mesaj İçeriği</th>
             <th>Gönderen Mail</th>
-            <th>Gönderilme Tarihi</th>
             <th>Çözüldü mü?</th>
             <th>İşlemler</th>
         </tr>
@@ -26,6 +26,7 @@
             @foreach (var message in Model)
             {
                 <tr>
+                    <td>@message.MessageDate</td>
                     <td>@message.Subject</td>
                     <td>
                         <div class="accordion" id="accordionExample">
@@ -44,7 +45,6 @@
                         </div>
                     </td>
                     <td>@message.SenderUser.Email</td>
-                    <td>@message.MessageDate</td>
                     <td>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" asp-for="@message.IsSolved" id="flexCheckDisabled" disabled>
@@ -72,7 +72,7 @@
                         {
                             <div class="ml-3">
                                 <label class="form-check-label" for="flexCheckDisabled">
-                                    <a asp-area="" asp-controller="Message" asp-action="Delete" asp-route-messageId="@message.Id"><span class="badge bg-danger">Sil</span></a>
+                                    <a class="button-message-delete" mes-id="@message.Id" asp-area="" asp-controller="Message" asp-action="Delete" asp-route-messageId="@message.Id"><span class="badge bg-danger">Sil</span></a>
                                 </label>
                             </div>
                         }
@@ -98,7 +98,39 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $('#inboxList').DataTable();
+            var table = $('#inboxList').DataTable();
+            table.order([0,'desc']).draw();
+
+            $('.button-message-delete').click(function (e) {
+                e.preventDefault();
+                var mesId = $(this).attr('mes-id');
+                swal({
+                    title: "Mesajı Silmek İstediğinize Emin misiniz?",
+                    text: "Sildikten son bu işlem geri alınamaz!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: `/Message/Delete?messageId=${mesId}`,
+                                type: 'POST',
+                                success: function () {
+                                    swal("Mesaj silme işlemi başarılı !",
+                                        {
+                                            icon: "success",
+                                        }
+                                    ).then(function () {
+                                        location.reload();
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("Silme işlemini iptal ettiniz!");
+                        }
+                    });
+            });
         });
     </script>
 }

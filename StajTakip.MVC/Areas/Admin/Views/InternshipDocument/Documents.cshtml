@@ -35,52 +35,14 @@
                                     <h5><span title="@document.DocumentName belgesini görüntüle!" class="badge bg-info">Görüntüle</span></h5>
 
                                 </a>
-                                @*@if (User.IsInRole("admin.teacher"))
-                        {
-                        @if (!document.IsTeacherChecked)
-                        {
-                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="AcceptDocument" asp-route-documentId="@document.Id">
-                        <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Belgeyi kabul et!</span></h5>
-
-                        </a>
-                        }
-                        else
-                        {
-                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="RejectDocument" asp-route-documentId="@document.Id">
-                        <h5><span title="@document.DocumentName belgesini kontrol edilmedi olarak işaretle!" class="badge bg-warning">Belgeyi reddet!</span></h5>
-
-                        </a>
-                        }
-                        }
-                        else if(User.IsInRole("admin.company"))
-                        {
-                        @if (!document.IsCompanyChecked.Value)
-                        {
-                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="AcceptDocument" asp-route-documentId="@document.Id">
-                        <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Belgeyi kabul et!</span></h5>
-
-                        </a>
-                        }
-                        else
-                        {
-                        <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="RejectDocument" asp-route-documentId="@document.Id">
-                        <h5><span title="@document.DocumentName belgesini kontrol edilmedi olarak işaretle!" class="badge bg-warning">Belgeyi reddet!</span></h5>
-
-                        </a>
-                        }
-                        }*@
-
-                                <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="AcceptDocument" asp-route-documentId="@document.Id">
+                                <a class="button-accept" do-id="@document.Id" asp-area="Admin" asp-controller="InternshipDocument" asp-action="AcceptDocument" asp-route-documentId="@document.Id">
                                     <h5><span title="@document.DocumentName belgesini kontrol edildi olarak işaretle!" class="badge bg-success">Belgeyi kabul et!</span></h5>
 
                                 </a>
 
-                                <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="RejectDocument" asp-route-documentId="@document.Id">
+                                <a class="button-reject" do-id="@document.Id" asp-area="Admin" asp-controller="InternshipDocument" asp-action="RejectDocument" asp-route-documentId="@document.Id">
                                     <h5><span title="@document.DocumentName belgesini kontrol edilmedi olarak işaretle!" class="badge bg-warning">Belgeyi reddet!</span></h5>
-
                                 </a>
-
-                                @*<a asp-area="Admin" asp-controller="InternshipDocument" asp-action="CheckDocument" asp-route-documentId="@document.Id">Kontrol Edildi Olarak İşaretle</a>*@
                             </div>
                         </td>
                         <td>
@@ -126,6 +88,71 @@
     <script>
         $(document).ready(function () {
             $('#documentList').DataTable();
+
+
+            $('.button-reject').click(function(e){
+                e.preventDefault();
+                var doId = $(this).attr('do-id');
+                swal({
+                    title: "Belgeyi Ret Etmek İstediğinizden Emin misiniz?",
+                    text: "Öğrenciye gerekli bildirim gönderilecek ve öğrencinin bu belgeyi silmesi istenecektir! Devam etmek istediğinize emin misiniz!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: `/Admin/InternshipDocument/RejectDocument?documentId=${doId}`,
+                                type: 'POST',
+                                success: function () {
+                                    swal("Ret işlemi başarılı !",
+                                        {
+                                            icon: "success",
+                                        }
+                                    ).then(function () {
+                                        location.reload();
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("Ret işlemini iptal ettiniz!");
+                        }
+                    });
+            });
+
+
+
+            $('.button-accept').click(function (e) {
+                e.preventDefault();
+                var doId = $(this).attr('do-id');
+                swal({
+                    title: "Belgeyi Kabul Etme İşlemi!",
+                    text: "Öğrenciye gerekli bildirim gönderilecek ve öğrencinin bu belgeyi tutması istenecektir! Devam etmek istediğinize emin misiniz!",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: `/Admin/InternshipDocument/AcceptDocument?documentId=${doId}`,
+                                type: 'POST',
+                                success: function () {
+                                    swal("Belge kabul işlemi başarılı !",
+                                        {
+                                            icon: "success",
+                                        }
+                                    ).then(function () {
+                                        location.reload();
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("Belge kabul edildi!");
+                        }
+                    });
+            });
         });
     </script>
     <script src="~/studenttemplate/js/signatureteacher.js"></script>

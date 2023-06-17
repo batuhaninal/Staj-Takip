@@ -88,6 +88,8 @@ app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseStatusCodePagesWithReExecute("/Auth/NotFound/", "?code={0}");
+
 app.UseRouting();
 
 app.UseAuthentication();
@@ -100,12 +102,12 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
       name: "Admin",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+      pattern: "{area:exists}/{controller=Message}/{action=Inbox}/{id?}"
     );
 
     endpoints.MapControllerRoute(
         name: "Student",
-        pattern: "{controller=InternshipDocument}/{action=Index}/{id?}");
+        pattern: "{controller=Message}/{action=Inbox}/{id?}");
 
     endpoints.MapControllerRoute(
         name: "pdfRoute",
@@ -116,6 +118,12 @@ app.UseEndpoints(endpoints =>
     app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Login}/{id?}");
+
+    endpoints.MapFallback(context =>
+    {
+        context.Response.Redirect("/Auth/NotFoundPage");
+        return Task.CompletedTask;
+    });
 
 });
 

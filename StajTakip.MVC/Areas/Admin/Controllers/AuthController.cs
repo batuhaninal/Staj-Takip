@@ -60,7 +60,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
 
                 await HttpContext.SignInAsync(principal);
 
-                return RedirectToAction("StudentList", "Student");
+                return RedirectToAction("Inbox", "Message");
 
             }
             return View();

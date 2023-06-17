@@ -50,16 +50,10 @@
                                                             <div class="d-flex justify-content-between">
 
                                                                 <label>@relation.StudentUser.FirstName @relation.StudentUser.LastName</label>
-                                                                <a asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
+                                                                <a class="button-relation-delete" rela-id="@relation.Id" asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
                                                                     <span title="@relation.StudentUser.FirstName @relation.StudentUser.LastName öğrencisini çıkart!" class="badge bg-danger">Çıkart</span>
                                                                 </a>
                                                             </div>
-
-                                                            @*<a class="btn btn-danger ml-3" asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
-                                            <span class="icon text-white-50">
-                                            <i class="fas fa-circle"></i>
-                                            </span>
-                                            </a>*@
                                                         </li>
                                                     }
                                                 </ul>
@@ -87,7 +81,10 @@
             else
             {
                 <tr>
-                    Henuz şirket hesabı bulunmamaktadir!
+                    <td></td>
+                    <td>Henuz şirket hesabı bulunmamaktadir!</td>
+                    <td></td>
+                    <td></td>     
                 </tr>
             }
         </tbody>
@@ -114,6 +111,38 @@
                     event.preventDefault();
                     placeHolderDiv.find('.modal').modal('hide');
                 });
+            });
+
+
+            $('.button-relation-delete').click(function (e) {
+                e.preventDefault();
+                var reId = $(this).attr('rela-id');
+                swal({
+                    title: "Öğrenciyi Çıkartmak İstediğinizden Emin misiniz?",
+                    text: "Öğrencinin şirketle olan bağlantısı kesilecektir. Daha sonra yeniden atama yapabilirsiniz!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: `/Admin/Company/DeleteStudentRelation?relationId=${reId}`,
+                                type: 'POST',
+                                success: function () {
+                                    swal("Öğrenci başarılı bir şekilde şirketten çıkartıldı!",
+                                        {
+                                            icon: "success",
+                                        }
+                                    ).then(function () {
+                                        location.reload();
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("İşlemi iptal ettiniz!");
+                        }
+                    });
             });
         });
     </script>

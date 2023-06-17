@@ -60,7 +60,7 @@ namespace StajTakip.MVC.Controllers
 
                 await HttpContext.SignInAsync(principal);
 
-                return RedirectToAction("Index", "InternshipsBook");
+                return RedirectToAction("Inbox", "Message");
 
             }
             return View();
@@ -132,6 +132,12 @@ namespace StajTakip.MVC.Controllers
 
         [HttpGet]
         public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult NotFoundPage()
         {
             return View();
         }

@@ -1,10 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
 
 namespace StajTakip.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="admin, admin.teacher, admin.company")]
     public class MessageController : Controller
     {
         private readonly IMessageService _messageService;
@@ -78,6 +80,18 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             }
            
             return RedirectToAction("Inbox");
+        }
+
+        public IActionResult Delete(int messageId)
+        {
+            var result = _messageService.Delete(messageId);
+            if (result.Success)
+            {
+                _notyfService.Success(result.Message ?? "Silme işlemi başarılı!");
+                return RedirectToAction("Sendbox");
+            }
+            _notyfService.Error(result.Message ?? "Bir hata oluştu! Lütfen daha sonra tekrar deneyiniz!");
+            return RedirectToAction("Sendbox");
         }
     }
 }
