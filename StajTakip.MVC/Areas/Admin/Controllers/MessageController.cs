@@ -81,5 +81,17 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
            
             return RedirectToAction("Inbox");
         }
+
+        public IActionResult Delete(int messageId)
+        {
+            var result = _messageService.Delete(messageId);
+            if (result.Success)
+            {
+                _notyfService.Success(result.Message ?? "Silme işlemi başarılı!");
+                return RedirectToAction("Sendbox");
+            }
+            _notyfService.Error(result.Message ?? "Bir hata oluştu! Lütfen daha sonra tekrar deneyiniz!");
+            return RedirectToAction("Sendbox");
+        }
     }
 }

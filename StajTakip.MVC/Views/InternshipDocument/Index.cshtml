@@ -31,7 +31,7 @@
 
                     </div>
                     <br />
-                    
+
                     <button type="submit" class="btn btn-primary btn-xs">Dosya Ekle</button>
 
                 </div>
@@ -39,7 +39,7 @@
         </div>
     </form>
     <br />
- 
+
 
     <table id="documentList" class="table table-hover">
         <thead>
@@ -71,7 +71,7 @@
                             </a>
                         </td>
                         <td>
-                            @if (item.IsTeacherChecked==true)
+                            @if (item.IsTeacherChecked == true)
                             {
                                 <a class="btn btn-square btn-info" title="Danışmanınız belgenizi onaylamıştır">
                                     <span class="icon text-white-100">
@@ -88,7 +88,7 @@
                                 </a>
                             }
 
-                            @if (item.IsCompanyChecked==true)
+                            @if (item.IsCompanyChecked == true)
                             {
                                 <a class="btn btn-square btn-info" title="Şirket belgenizi onaylamıştır.">
                                     <span class="icon text-white-100">
@@ -104,17 +104,17 @@
                                     </span>
                                 </a>
                             }
-                            
+
                         <td>
                             <button type="button" id="@item.Id" class="btn btn-outline-success signatureTest">Döküman Seç</button>
                         </td>
                         <td>
-                           @* <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
+                                @* <form asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id" method="post" enctype="multipart/form-data">
 
-                                <button type="submit" class="btn btn-outline-warning">Döküman Sil</button>
-                            </form>*@
+                    <button type="submit" class="btn btn-outline-warning">Döküman Sil</button>
+                    </form>*@
                             <a href="#" data="@item.Id" class="btn btn-outline-danger deleteDocument">Döküman Sil</a>
-                            @*<a class="btn btn-outline-danger deleteDocument" asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id"> Sil</a>*@
+                                @*<a class="btn btn-outline-danger deleteDocument" asp-controller="InternshipDocument" asp-action="DeletePdf" asp-route-documentId="@item.Id"> Sil</a>*@
 
                         </td>
                     </tr>
@@ -131,7 +131,7 @@
 <div style="text-align:center">
     <h1>İmza Oluşturma</h1>
 
-  
+
     <canvas id="signatureCanvas" width="250" height="100"></canvas>
     <br>
 
@@ -150,7 +150,7 @@
             $('#documentList').DataTable();
         });
 
-       
+
 
 
 
@@ -167,9 +167,7 @@
                 .then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-
                             url: `/InternshipDocument/DeletePdf?documentId=${id}`,
-
                             type: 'POST',
                             success: function () {
                                 swal("Silme işlemi başarılı !",

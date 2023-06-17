@@ -22,7 +22,7 @@
                 {
                     <th>İşlemler</th>
                 }
-                
+
             </tr>
         </thead>
         <tbody>
@@ -50,7 +50,7 @@
                                     </span>
                                 </a>
 
-                                <a class="btn btn-square btn-danger" asp-area="Admin" asp-controller="Student" asp-action="DeleteStudentRelation" asp-route-relationId="@student.Id" title="Öğrenci Listemden Kaldır">
+                                <a class="btn btn-square btn-danger studentRelationDelete" rela-id="@student.Id" asp-area="Admin" asp-controller="Student" asp-action="DeleteStudentRelation" asp-route-relationId="@student.Id" title="Öğrenci Listemden Kaldır">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-circle"></i>
                                     </span>
@@ -73,9 +73,40 @@
 
 
 @section Scripts{
-<script>
+    <script>
         $(document).ready(function () {
             $('#studentList').DataTable();
+
+            $('.studentRelationDelete').click(function (e) {
+                e.preventDefault();
+                var reId = $(this).attr('rela-id');
+                swal({
+                    title: "Emin misiniz?",
+                    text: "Sildikten son bu işlem geri alınamaz!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: `/Admin/Student/DeleteStudentRelation?relationId=${reId}`,
+                                type: 'POST',
+                                success: function () {
+                                    swal("Silme işlemi başarılı !",
+                                        {
+                                            icon: "success",
+                                        }
+                                    ).then(function () {
+                                        location.reload();
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("Silme işlemini iptal ettiniz!");
+                        }
+                    });
+            });
         });
-</script>
+    </script>
 }

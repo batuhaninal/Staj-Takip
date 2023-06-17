@@ -69,7 +69,8 @@
 @section Scripts{
     <script>
         $(document).ready(function(){
-            $('#sendboxList').DataTable();
+            var table = $('#sendboxList').DataTable();
+            table.order([0, 'desc']).draw();
         });
     </script>
 }

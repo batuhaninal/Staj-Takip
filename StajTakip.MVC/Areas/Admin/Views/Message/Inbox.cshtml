@@ -104,7 +104,7 @@
                         }
                         <div class="ml-3">
                             <label class="form-check-label" for="flexCheckDisabled">
-                                <a asp-area="Admin" asp-controller="Message" asp-action="Delete" asp-route-messageId="@message.Id"><span class="badge bg-danger">Sil</span></a>
+                                <a class="button-message-delete" mes-id="@message.Id" asp-area="Admin" asp-controller="Message" asp-action="Delete" asp-route-messageId="@message.Id"><span class="badge bg-danger">Sil</span></a>
                             </label>
                         </div>
                     </td>
@@ -134,7 +134,39 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $('#inboxList').DataTable();
+            var table = $('#inboxList').DataTable();
+            table.order([0, 'desc']).draw();
+
+            $('.button-message-delete').click(function (e) {
+                e.preventDefault();
+                var mesId = $(this).attr('mes-id');
+                swal({
+                    title: "Mesajı Silmek İstediğinize Emin misiniz?",
+                    text: "Bu mesaj gelen kutunuzdan kalıcı olarak kaldırılacaktır. Aynı şekilde öğrencinin gönderilen bildirimlerinden de silinecektir. Sildikten son bu işlem geri alınamaz!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: `/Admin/Message/Delete?messageId=${mesId}`,
+                                type: 'POST',
+                                success: function () {
+                                    swal("Mesaj silme işlemi başarılı !",
+                                        {
+                                            icon: "success",
+                                        }
+                                    ).then(function () {
+                                        location.reload();
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("Silme işlemini iptal ettiniz!");
+                        }
+                    });
+            });
         });
     </script>
 }
