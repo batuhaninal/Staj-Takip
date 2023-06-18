@@ -40,6 +40,13 @@ namespace StajTakip.MVC.Controllers
                     
 
                 var operationClaims = _authService.GetClaims(user.Data.Id);
+                foreach (var item in operationClaims.Data)
+                {
+                    if (item.Name.StartsWith("admin"))
+                    {
+                        return Redirect("/Admin/Auth/Login");
+                    }
+                }
                 var studentId = _studentUserService.GetByUserId(user.Data.Id);
                 var claims = new List<Claim>
                 {
