@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Core.Utilities.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajTakip.Business.Abstract;
@@ -140,10 +141,11 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
                         {
                             _notyfService.Error(result.Message ?? "Beklenmeyen bir hata ile karşılaşıldı lütfen daha sonra tekrar deneyiniz!");
                         }
-                        _notyfService.Success(result.Message ?? "Belge başarılı bir şekilde imzalandı!");
+                        
 
                     }
                 }
+                _notyfService.Success("Belge başarılı bir şekilde imzalandı!");
                 return RedirectToAction("Documents", new { studentId = documentS.Data.StudentUserId });
             }
             _notyfService.Error("Beklenmeyen bir hata meydana geldi! Lütfen daha sonra tekrar deneyiniz.");

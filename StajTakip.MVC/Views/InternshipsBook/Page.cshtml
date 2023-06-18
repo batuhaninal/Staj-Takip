@@ -77,6 +77,10 @@
                     <div class="text-center m-3">
                         <button id="btnImageAdd" bookId="@Model.Id" type="button" class="btn btn-info">Resim Ekle</button>
                         <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
+                        @if((int)ViewData["PageCount"] > 19)
+                        {
+                            <a asp-area="" asp-controller="Message" asp-action="Finish" asp-route-studentId="@Model.StudentUserId" class="btn btn-warning">Stajı Bitir</a>
+                        }
                     </div>
                 </form>
                 <div class="part m-1">

@@ -10,6 +10,7 @@ namespace StajTakip.Entities.Concrete
         public virtual User? User { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public bool? IsFinished { get; set; }
 
         //public int AdminUserId { get; set; }
         //public virtual AdminUser? AdminUser { get; set; }

@@ -91,7 +91,7 @@ namespace StajTakip.Business.Concrete
 
             if (userForRegisterDto.IsCompany)
             {
-                if(userForRegisterDto.StudentId != 0)
+                if (userForRegisterDto.StudentId != 0 && userForRegisterDto.StudentId != null)
                 {
                     var relation = new AdminStudentRelation
                     {

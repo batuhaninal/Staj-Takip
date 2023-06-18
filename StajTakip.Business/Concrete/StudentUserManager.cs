@@ -107,5 +107,15 @@ namespace StajTakip.Business.Concrete
 
             return new SuccessDataResult<StudentUser>(user);
         }
+
+        public IDataResult<StudentUser> Update(StudentUser studentUser)
+        {
+            var result = BusinessRules.Run(CheckByStudentUserId(studentUser.Id));
+            if (result != null)
+                return new ErrorDataResult<StudentUser>(result.Message ?? "Beklenmeyen hata meydana geldi!");
+
+            var user = _studentRepo.Update(studentUser);
+            return new SuccessDataResult<StudentUser>(user);
+        }
     }
 }

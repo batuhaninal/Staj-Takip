@@ -55,15 +55,31 @@
                                         <i class="fas fa-circle"></i>
                                     </span>
                                 </a>
-
+                                @if(student.StudentUser.IsFinished != null)
+                                {
+                                    <a class="btn btn-square btn-success" rela-id="@student.Id" asp-area="Admin" asp-controller="Message" asp-action="FinishStudent" asp-route-studentId="@student.StudentUserId" asp-route-finish="true" title="Öğrencinin Bitirme İsteğini Kabul Et">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-square btn-danger" rela-id="@student.Id" asp-area="Admin" asp-controller="Message" asp-action="FinishStudent" asp-route-studentId="@student.StudentUserId" title="Öğrencinin Bitirme İsteğini Reddet">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-poo"></i>
+                                        </span>
+                                    </a>
+                                    @if (student.StudentUser.IsFinished == true)
+                                    {
+                                        <button type="button" class="btn btn-square btn-info" title="Öğrencinin stajı tamamlanmış!" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </button>
+                                    }
+                                }
                             </td>
                         }
                     </tr>
                 }
-            }
-            else
-            {
-                <h1>Henuz Kullanici Kayitli Degil</h1>
             }
 
         </tbody>

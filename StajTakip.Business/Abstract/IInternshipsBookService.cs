@@ -22,5 +22,6 @@ namespace StajTakip.Business.Abstract
         IDataResult<InternshipsBook> GetFirstByUserId(int userId);
         IDataResult<List<InternshipsBook>> GetAll();
         IDataResult<List<InternshipsBook>> GetAllPagesWithImagesAndSignatures(int userId);
+        int GetCount(int userId);
     }
 }

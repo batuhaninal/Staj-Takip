@@ -441,5 +441,96 @@ namespace StajTakip.Business.Concrete
 
             return new SuccessResult();
         }
+
+        public IResult SendFinish(int studentId)
+        {
+            var user = _studentUserService.GetByIdWithUser(studentId);
+            if (!user.Success)
+                return new ErrorResult(user.Message ?? "Beklenmeyen hata!");
+
+            user.Data.IsFinished = false;
+            var updatedUser = _studentUserService.Update(user.Data);
+            if(!updatedUser.Success)
+                return new ErrorResult(updatedUser.Message ?? "Beklenmeyen hata!");
+
+            var relationResult = _adminStudentRelationService.GetAllByStudentIdWithAdmin(studentId);
+            if(!relationResult.Success)
+                return new ErrorResult(relationResult.Message ?? "Beklenmeyen hata!");
+
+            int[] ids = new int[relationResult.Data.Count + 1];
+            int i = 0;
+            string name = user.Data.FirstName + " " + user.Data.LastName;
+            foreach (var relation in relationResult.Data)
+            {
+
+                Message message = Messages.SendFinish(studentId,name);
+                message.SenderUserId = user.Data.UserId;
+                message.ReceiverUserId = relation.AdminUser.UserId;
+                _messageRepo.Add(message);
+                ids[i] = relation.AdminUser.UserId;
+                i++;
+            }
+
+            ids[i] = user.Data.UserId;
+
+            var emails = _userService.GetEmailsByIds(ids);
+
+            if (emails.Success)
+            {
+                var mail = new EmailSendDto
+                {
+                    Subject = Messages.SendFinish(studentId, name).Subject,
+                    Message = Messages.SendFinish(studentId, name).MessageDetail,
+                    SenderMail = emails.Data[0],
+                    ReceiverMail = emails.Data
+                };
+
+                var sendMail = _mailService.Send(mail);
+            }
+
+            return new SuccessResult();
+
+
+        }
+
+        public IResult ReplyFinish(int adminId, int studentId, bool? finish)
+        {
+            var admin = _adminUserService.GetByAdminUserIdWithUser(adminId);
+            var studentUser = _studentUserService.GetByIdWithUser(studentId);
+
+            if (!admin.Success || !studentUser.Success)
+                return new ErrorResult($"{admin.Message} {studentUser.Message}");
+
+            studentUser.Data.IsFinished = finish;
+            var updatedStudentUser = _studentUserService.Update(studentUser.Data);
+            if(!updatedStudentUser.Success)
+                return new ErrorResult(updatedStudentUser.Message ?? "Beklenmeyen Hata!");
+
+            var adminName = $"{admin.Data.FirstName} {admin.Data.LastName}";
+            var studentName = $"{studentUser.Data.FirstName} {studentUser.Data.LastName}";
+
+            Message message;
+            if (finish.HasValue)
+                message = Messages.AcceptFinish(studentName, adminName);
+            else
+                message = Messages.RejectFinish(studentName, adminName);
+
+            message.SenderUserId = admin.Data.UserId;
+            message.ReceiverUserId = studentUser.Data.UserId;
+            _messageRepo.Add(message);
+
+            string[] emails = { studentUser.Data.User.Email, admin.Data.User.Email };
+            var mail = new EmailSendDto
+            {
+                Subject = message.Subject,
+                Message = message.MessageDetail,
+                SenderMail = admin.Data.User.Email,
+                ReceiverMail = emails
+            };
+
+            var mailResult = _mailService.Send(mail);
+
+            return new SuccessResult();
+        }
     }
 }

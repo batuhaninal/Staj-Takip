@@ -86,6 +86,11 @@ namespace StajTakip.Business.Concrete
             throw new NotImplementedException();
         }
 
+        public int GetCount(int userId)
+        {
+            return _repository.Count(x=>x.StudentUserId == userId);
+        }
+
         public IDataResult<InternshipsBook> GetFirstByUserId(int userId)
         {
             throw new NotImplementedException();
