@@ -8,14 +8,18 @@
 @model InternshipsBook
 
 
+<div id="placeHolderParent">
+    <div id="modalPlaceHolder" aria-hidden="true"></div>
+</div>s
+
 <div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
+    <div class="row g-4 text-center">
         <div class="col-sm-12 col-lg-3">
             @await Component.InvokeAsync("InternshipsBookPages",new {studentId = ViewBag.studentId})
         </div>
         <div class="col-sm-12 col-lg-9">
             <div class="bg-light rounded h-100 p-4">
-                @if (Model != null)
+                @if (Model.Content != null)
                 {
                     <div class="text-center">
                         @if (User.IsInRole("admin.teacher"))
@@ -32,7 +36,8 @@
                                     Henüz Eğitmen Kontrolü Yapılmadı!
                                 </div>
                             }
-                        } else if (User.IsInRole("admin.company"))
+                        }
+                        else if (User.IsInRole("admin.company"))
                         {
                             @if (Model.IsCompanyChecked)
                             {
@@ -92,8 +97,10 @@
                             }
                         }
 
-                       
+
                     </form>
+                    <div class="part m-1">
+                    </div>
                 }
                 else
                 {
@@ -103,4 +110,42 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+            $(document).ready(function () {
+                var placeHolderDiv = $('#modalPlaceHolder');
+
+                refreshList();
+
+                function refreshList() {
+                    var refreshListUrl = `/InternshipsBook/ImageList?bookId=${@Model.Id}`;
+                    $.get(refreshListUrl).done(function (data) {
+                        var divPart = $('.part');
+                        divPart.html(data);
+                    });
+                }
+
+                function closeModal() {
+                    placeHolderDiv.find('.modal').modal('hide');
+                }
+
+                $(document).on('click', '.close', function () {
+                    closeModal();
+                });
+
+                // Image show popup
+                $(document).on('click', '.btnShowImage', function (event) {
+                    event.preventDefault();
+                    var imageId = $(this).attr('imageId');
+                    const imageUrl = `/Admin/InternshipsBook/ImageShowPopup?imageId=${imageId}`;
+                    $.get(imageUrl).done(function (data) {
+                        placeHolderDiv.html(data);
+                        placeHolderDiv.find('.modal').modal('show');
+                    });   
+                });
+            });
+        
+    </script>
+}
 

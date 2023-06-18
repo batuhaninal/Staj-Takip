@@ -42,6 +42,47 @@ namespace StajTakip.Business.Constants
             };
         }
 
+        public static Message SendFinish(int studentId,string userFirstLastName)
+        {
+            return new Message
+            {
+                MessageDate = DateTime.Now,
+                Subject = $"{userFirstLastName} öğrencisi stajını bitirme isteği gönderdi!",
+                MessageDetail = $"{userFirstLastName} isimli öğrenci stajını bitirme isteği gönderdi! Lütfen  {studentId} id değerine sahip öğrencinin dökümanlarını inceleyip öğrencilerim listesinden kabul ediniz!",
+                IsSolved = false,
+                IsTeacherRead = false,
+                IsCompanyRead = false,
+                IsStudentRead = false
+            };
+        }
+
+        public static Message AcceptFinish( string studentFirstLastName, string adminFirstLastName)
+        {
+            return new Message
+            {
+                MessageDate = DateTime.Now,
+                Subject = $"Tebrikler!",
+                MessageDetail = $"{studentFirstLastName} isimli öğrencinin staj bitirme isteği {adminFirstLastName} tarafından kabul edildi! Stajınız başarıyla tamamlamış bulunmaktasınız!",
+                IsSolved = false,
+                IsTeacherRead = false,
+                IsCompanyRead = false,
+                IsStudentRead = false
+            };
+        }
+        public static Message RejectFinish(string studentFirstLastName, string adminFirstLastName)
+        {
+            return new Message
+            {
+                MessageDate = DateTime.Now,
+                Subject = $"{studentFirstLastName} öğrencisinin staj bitirme isteği reddedildi!",
+                MessageDetail = $"{studentFirstLastName} isimli öğrencinin staj bitirme isteği {adminFirstLastName} tarafından ret edildi ! Lütfen  dökümanlarınızı inceleyip danışmanınız ile irtibata geçiniz!",
+                IsSolved = false,
+                IsTeacherRead = false,
+                IsCompanyRead = false,
+                IsStudentRead = false
+            };
+        }
+
 
         public static Message RejectDocument(string studentFirstLastName, string adminFirstLastName, int documentId, string documentName)
         {

@@ -93,5 +93,17 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             _notyfService.Error(result.Message ?? "Bir hata oluştu! Lütfen daha sonra tekrar deneyiniz!");
             return RedirectToAction("Sendbox");
         }
+
+        public IActionResult FinishStudent(int studentId, bool? finish)
+        {
+            var result = _messageService.ReplyFinish(int.Parse(User.Identity.Name),studentId, finish);
+            if (!result.Success)
+            {
+                _notyfService.Error(result.Message ?? "Bir hata oluştu! Lütfen daha sonra tekrar deneyiniz!");
+                return RedirectToAction("StudentList", "Student");
+            }
+            _notyfService.Success(result.Message ?? "İşlem başarılı!");
+            return RedirectToAction("StudentList","Student");
+        }
     }
 }

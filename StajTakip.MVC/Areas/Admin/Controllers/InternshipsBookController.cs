@@ -13,12 +13,14 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
     public class InternshipsBookController : Controller
     {
         private readonly IInternshipsBookService _internshipsBookService;
+        private readonly IBookImageService _bookImageService;
         private readonly INotyfService _notyfService;
 
-        public InternshipsBookController(IInternshipsBookService internshipsBookService, INotyfService notyfService)
+        public InternshipsBookController(IInternshipsBookService internshipsBookService, INotyfService notyfService, IBookImageService bookImageService)
         {
             _internshipsBookService = internshipsBookService;
             _notyfService = notyfService;
+            _bookImageService = bookImageService;
         }
 
         public IActionResult Index()
@@ -29,12 +31,13 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult BookPage(int studentId,int bookId)
         {
-            var data = _internshipsBookService.Get(bookId);
+            var data = _internshipsBookService.GetWithImages(bookId);
             
             if (!data.Success)
             {
                 ViewBag.studentId = studentId;
-                return View();
+                var s = new InternshipsBook();
+                return View(s);
             }
             else
             {
@@ -60,6 +63,20 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             }
             _notyfService.Error("Lütfen daha sonra tekrar deneyiniz!");
             return RedirectToAction("BookPage", new { bookId = model.Id });
+        }
+
+        [HttpGet]
+        public IActionResult ImageShowPopup(int imageId)
+        {
+            var image = _bookImageService.Get(imageId);
+            if (image.Success)
+            {
+                var base64String = Convert.ToBase64String(image.Data.Data);
+                string src = string.Format("data:image/png;base64,{0}", base64String);
+                ViewBag.ImageUrl = src;
+                return PartialView("ImageShowPopup", image.Data);
+            }
+            return PartialView("ImageShowPopup", new BookImage());
         }
     }
 }

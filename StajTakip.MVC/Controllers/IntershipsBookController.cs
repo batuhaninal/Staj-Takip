@@ -62,7 +62,9 @@ namespace StajTakip.MVC.Controllers
             var page = _bookRepository.GetWithImages(pageId);
             if (page.Success)
             {
+                ViewData["PageCount"] = _bookRepository.GetCount(page.Data.StudentUserId);
                 _notyfService.Information("Sayfa başarıyla yüklendi!");
+      
                 return View(page.Data);
             }
             _notyfService.Error(page.Message);
@@ -161,6 +163,7 @@ namespace StajTakip.MVC.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ImageList(int bookId)
         {
             return ViewComponent("ImageList", new {bookId=bookId});

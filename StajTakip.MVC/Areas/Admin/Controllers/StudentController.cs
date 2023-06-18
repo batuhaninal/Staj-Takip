@@ -14,15 +14,13 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
     {
         private readonly IStudentUserService _studentUserService;
         private readonly IAdminStudentRelationService _adminStudentRelationService;
-        private readonly IAdminUserService _adminUserService;
         private readonly INotyfService _notyfService;
 
-        public StudentController(IStudentUserService studentUserService, INotyfService notyfService, IAdminStudentRelationService adminStudentRelationService, IAdminUserService adminUserService)
+        public StudentController(IStudentUserService studentUserService, INotyfService notyfService, IAdminStudentRelationService adminStudentRelationService)
         {
             _studentUserService = studentUserService;
             _notyfService = notyfService;
             _adminStudentRelationService = adminStudentRelationService;
-            _adminUserService = adminUserService;
         }
 
         public IActionResult Index()
@@ -53,6 +51,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
             var data = _studentUserService.GetAllWithEmail();
             return View(data.Data);
         }
+
 
         [Authorize(Roles = "admin.teacher")]
         public IActionResult AddStudentRelation(int studentId)

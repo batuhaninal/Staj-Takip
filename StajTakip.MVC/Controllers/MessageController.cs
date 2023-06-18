@@ -79,6 +79,18 @@ namespace StajTakip.MVC.Controllers
             return RedirectToAction("Sendbox");
         }
 
+        public IActionResult Finish(int studentId) 
+        {
+            var result = _messageService.SendFinish(studentId);
+            if(!result.Success)
+            {
+                _notyfService.Error(result.Message);
+                return RedirectToAction("Sendbox");
+            }
+            _notyfService.Success(result.Message ?? "Bitirme isteği gönderildi!");
+            return RedirectToAction("Sendbox");
+        }
+
        
     }
 }
