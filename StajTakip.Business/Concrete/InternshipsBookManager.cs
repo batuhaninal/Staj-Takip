@@ -32,6 +32,9 @@ namespace StajTakip.Business.Concrete
         public IResult Add(InternshipsBookPageAddDto entity)
         {
             var mappedModel = _mapper.Map<InternshipsBook>(entity);
+            var result = BusinessRules.Run(CheckBookCountByStudentId(mappedModel.StudentUserId));
+            if (result != null)
+                return new ErrorResult(result.Message ?? "Beklenmeyen hata!");
             _repository.Add(mappedModel);
             return new SuccessResult("Ekleme işlemi başarılı!");
         }
@@ -163,6 +166,15 @@ namespace StajTakip.Business.Concrete
                 return new SuccessResult();
             }
             return new ErrorResult(Messages.IsExist);
+        }
+
+        private IResult CheckBookCountByStudentId(int studentId)
+        {
+            var result = _repository.Count(x=>x.StudentUserId == studentId);
+            if (result >= 40)
+                return new ErrorResult($"Maksimum 40 sayfa ekleyebilirsiniz!");
+
+            return new SuccessResult();
         }
     }
 }

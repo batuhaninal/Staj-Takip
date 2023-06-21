@@ -16,6 +16,7 @@
             <tr>
                 <th>#</th>
                 <th>Ad Soyad</th>
+                <th>Öğrenci Numarası</th>
                 <th>Staj Evrakları</th>
                 <th>Staj Defteri</th>
                 @if (User.IsInRole("admin.teacher"))
@@ -34,6 +35,16 @@
                         <th>@student.StudentUserId</th>
                         <td>
                             @student.StudentUser.FirstName @student.StudentUser.LastName
+                        </td>
+                        <td>
+                            @if(student.StudentUser.StudentNumber != null)
+                            {
+                                @student.StudentUser.StudentNumber
+                            }
+                            else
+                            {
+                                <label>Girilmemiş</label>
+                            }
                         </td>
                         <td>
                             <a asp-area="Admin" asp-controller="InternshipDocument" asp-action="Documents" asp-route-studentId="@student.StudentUserId">Öğrencinin Staj Belgelerine Git</a>
@@ -81,7 +92,6 @@
                     </tr>
                 }
             }
-
         </tbody>
     </table>
 </div>

@@ -53,6 +53,8 @@ namespace StajTakip.MVC.Controllers
                 return RedirectToAction("Index");
             }
             _notyfService.Error("Lütfen alanları kontrol ediniz!");
+            var template = _bookTemplateService.GetCurrent();
+            ViewBag.Template = template.Data.Template;
             return View();
         }
 

@@ -11,6 +11,7 @@ namespace StajTakip.Entities.Concrete
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public bool? IsFinished { get; set; }
+        public string? StudentNumber { get; set; }
 
         //public int AdminUserId { get; set; }
         //public virtual AdminUser? AdminUser { get; set; }

@@ -69,7 +69,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
                     }
                 }
 
-                return query.AsNoTracking().SingleOrDefault();
+                return query.AsNoTracking().FirstOrDefault();
             }
         }
 

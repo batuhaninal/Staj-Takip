@@ -128,6 +128,7 @@ namespace StajTakip.Business.Concrete
                 UserId = addedUser.Data.Id,
                 FirstName = userForRegisterDto.FirstName,
                 LastName = userForRegisterDto.LastName,
+                StudentNumber = userForRegisterDto.StudentNumber
             };
             
             _studentUserService.Add(studentInfo);

@@ -11,13 +11,11 @@ namespace StajTakip.MVC.Controllers
     public class InternshipDocumentController : Controller
     {
         private readonly IInternshipDocumentService _internshipDocumentService;
-        private readonly ISignatureService _signatureService;
         private readonly INotyfService _notyfService;
 
-        public InternshipDocumentController(IInternshipDocumentService internshipDocumentService, ISignatureService signatureService, INotyfService notyfService)
+        public InternshipDocumentController(IInternshipDocumentService internshipDocumentService, INotyfService notyfService)
         {
             _internshipDocumentService = internshipDocumentService;
-            _signatureService = signatureService;
             _notyfService = notyfService;
         }
 
