@@ -22,21 +22,41 @@
                 @if (Model.Content != null)
                 {
                     <div class="text-center">
+
                         @if (User.IsInRole("admin.teacher"))
                         {
-                            @if (Model.IsTeacherChecked)
-                            {
-                                <div class="alert alert-success">
-                                    Kontrol Edildi!
+                            <div class="row">
+                                <div class="col-6">
+                                    @if (Model.IsTeacherChecked)
+                                    {
+                                        <div class="alert alert-success">
+                                            Eğitmen Tarafından Kontrol Edildi!
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-danger">
+                                            Henüz Eğitmen Kontrolü Yapılmadı!
+                                        </div>
+                                    }
                                 </div>
-                            }
-                            else
-                            {
-                                <div class="alert alert-danger">
-                                    Henüz Eğitmen Kontrolü Yapılmadı!
-                                </div>
-                            }
+                                <div class="col-6">
+                                    @if (Model.IsCompanyChecked)
+                                    {
+                                        <div class="alert alert-success">
+                                            Şirket Tarafından Kontrol Edildi!
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-danger">
+                                            Henüz Şirket Kontrolü Yapılmadı!
+                                        </div>
+                                    }
+                                </div>                                                           
+                            </div>
                         }
+
                         else if (User.IsInRole("admin.company"))
                         {
                             @if (Model.IsCompanyChecked)
@@ -113,39 +133,39 @@
 
 @section Scripts{
     <script>
-            $(document).ready(function () {
-                var placeHolderDiv = $('#modalPlaceHolder');
+        $(document).ready(function () {
+            var placeHolderDiv = $('#modalPlaceHolder');
 
-                refreshList();
+            refreshList();
 
-                function refreshList() {
-                    var refreshListUrl = `/InternshipsBook/ImageList?bookId=${@Model.Id}`;
-                    $.get(refreshListUrl).done(function (data) {
-                        var divPart = $('.part');
-                        divPart.html(data);
-                    });
-                }
-
-                function closeModal() {
-                    placeHolderDiv.find('.modal').modal('hide');
-                }
-
-                $(document).on('click', '.close', function () {
-                    closeModal();
+            function refreshList() {
+                var refreshListUrl = `/InternshipsBook/ImageList?bookId=${@Model.Id}`;
+                $.get(refreshListUrl).done(function (data) {
+                    var divPart = $('.part');
+                    divPart.html(data);
                 });
+            }
 
-                // Image show popup
-                $(document).on('click', '.btnShowImage', function (event) {
-                    event.preventDefault();
-                    var imageId = $(this).attr('imageId');
-                    const imageUrl = `/Admin/InternshipsBook/ImageShowPopup?imageId=${imageId}`;
-                    $.get(imageUrl).done(function (data) {
-                        placeHolderDiv.html(data);
-                        placeHolderDiv.find('.modal').modal('show');
-                    });   
+            function closeModal() {
+                placeHolderDiv.find('.modal').modal('hide');
+            }
+
+            $(document).on('click', '.close', function () {
+                closeModal();
+            });
+
+            // Image show popup
+            $(document).on('click', '.btnShowImage', function (event) {
+                event.preventDefault();
+                var imageId = $(this).attr('imageId');
+                const imageUrl = `/Admin/InternshipsBook/ImageShowPopup?imageId=${imageId}`;
+                $.get(imageUrl).done(function (data) {
+                    placeHolderDiv.html(data);
+                    placeHolderDiv.find('.modal').modal('show');
                 });
             });
-        
+        });
+
     </script>
 }
 
