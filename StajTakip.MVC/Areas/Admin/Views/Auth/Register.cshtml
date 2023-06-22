@@ -65,22 +65,33 @@
                             <div class="form-floating mb-3">
                                 <input asp-for="FirstName" type="text" class="form-control" id="fName">
                                 <label for="fName">Adınız</label>
+                                <span class="text-danger" asp-validation-for="FirstName"></span>
                             </div>
                             <div class="form-floating mb-3">
                                 <input asp-for="LastName" type="text" class="form-control" id="lName">
                                 <label for="lName">Soyadınız</label>
+                                <span class="text-danger" asp-validation-for="LastName"></span>
                             </div>
                             <div class="form-floating mb-4">
                                 <input asp-for="Username" type="text" class="form-control" id="uName">
                                 <label for="uName">Kullanıcı Adınız</label>
+                                <span class="text-danger" asp-validation-for="Username"></span>
                             </div>
                             <div class="form-floating mb-4">
                                 <input asp-for="Email" type="text" class="form-control" id="eMail">
                                 <label for="eMail">Mail Adresiniz</label>
+                                <span class="text-danger" asp-validation-for="Email"></span>
                             </div>
                             <div class="form-floating mb-4">
                                 <input asp-for="Password" type="password" class="form-control" id="psw">
                                 <label for="psw">Şifreniz</label>
+                                <span class="text-danger" asp-validation-for="Password"></span>
+                            </div>
+
+                            <div class="form-floating mb-4">
+                                <input asp-for="RepeatPassword" type="password" class="form-control" id="rpsw">
+                                <label for="rpsw">Şifre Tekrarı</label>
+                                <span class="text-danger" asp-validation-for="RepeatPassword"></span>
                             </div>
                             <div asp-validation-summary="ModelOnly" class="text-primary"></div>
                             <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Üye Ol</button>

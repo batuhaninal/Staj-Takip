@@ -34,6 +34,7 @@ namespace StajTakip.Business.Concrete
 
         public IResult AddForCompany(AdminStudentRelation entity)
         {
+            entity.IsCompany = true;
             var result = BusinessRules.Run(CheckEntity(entity), CheckEntityDuplicate(entity), CheckStudentHasCompanyRelation(entity.StudentUserId.Value));
             if (result != null)
             {
@@ -45,6 +46,7 @@ namespace StajTakip.Business.Concrete
 
         public IResult AddForTeacher(AdminStudentRelation entity)
         {
+            entity.IsCompany = false;
             var result = BusinessRules.Run(CheckEntity(entity), CheckEntityDuplicate(entity), CheckStudenHasTeacherRelation(entity.StudentUserId.Value));
             if (result != null)
             {
@@ -165,9 +167,9 @@ namespace StajTakip.Business.Concrete
 
         private IResult CheckStudentHasCompanyRelation(int studentUserId)
         {
-            var result = _repo.Get(x => x.StudentUserId == studentUserId && x.IsCompany == true);
+            var result = _repo.Get(x => x.StudentUserId == studentUserId && x.IsCompany == true, x=>x.AdminUser);
             if (result != null)
-                return new ErrorResult($"Öğrenci {result.AdminUserId} id değerine sahip başka bir şirkete kayıtlı! Lütfen şirketinden çıkartıp yeniden deneyiniz!");
+                return new ErrorResult($"Öğrenci {result.AdminUserId} id değerine {result.AdminUser.FirstName} {result.AdminUser.LastName} sahip başka bir şirkete kayıtlı! Lütfen şirketinden çıkartıp yeniden deneyiniz!");
 
 
             return new SuccessResult();

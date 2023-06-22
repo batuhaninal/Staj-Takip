@@ -16,7 +16,14 @@ namespace StajTakip.Entities.DTOs
 
         [DisplayName("Şifre")]
         [Required(ErrorMessage = "{0} alanı zorunludur.")]
+        [MinLength(7, ErrorMessage = "{0} alanı minimum {1} karakter olmalıdır!")]
         public string Password { get; set; }
+
+        [DisplayName("Şifre Tekrarı")]
+        [Required(ErrorMessage = "{0} alanı zorunludur.")]
+        [MinLength(7, ErrorMessage = "{0} alanı minimum {1} karakter olmalıdır!")]
+        [Compare("Password", ErrorMessage = "Şifreler uyuşmamaktadır!")]
+        public string RepeatPassword { get; set; }
 
         public string? FirstName { get; set; }
 

@@ -141,7 +141,7 @@ namespace StajTakip.Business.Concrete
             var user = _adminUserService.GetByAdminUserId(receiverId);
             if (!user.Success)
                 return new ErrorDataResult<List<Message>>("Beklenmeyen bir hata meydana geldi!");
-            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId && !x.IsTeacherRead, x => x.SenderUser).TakeLast(5).ToList();
+            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId && !x.IsTeacherRead, x => x.SenderUser).OrderBy(x=>x.MessageDate).TakeLast(5).ToList();
             if (messages == null)
                 return new ErrorDataResult<List<Message>>("Mesaj kutusu boş");
 
@@ -153,7 +153,7 @@ namespace StajTakip.Business.Concrete
             var user = _adminUserService.GetByAdminUserId(receiverId);
             if (!user.Success)
                 return new ErrorDataResult<List<Message>>("Beklenmeyen bir hata meydana geldi!");
-            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId && !x.IsCompanyRead, x => x.SenderUser).TakeLast(5).ToList();
+            var messages = _messageRepo.GetAll(x => x.ReceiverUserId == user.Data.UserId && !x.IsCompanyRead, x => x.SenderUser).OrderBy(x=>x.MessageDate).TakeLast(5).ToList();
             if (messages == null)
                 return new ErrorDataResult<List<Message>>("Mesaj kutusu boş");
 
@@ -161,7 +161,7 @@ namespace StajTakip.Business.Concrete
         }
         public IResult SendDocumentAdded(int studentUserId, int documentId, string documentName)
         {
-            var user = _studentUserService.GetById(studentUserId);
+            var user = _studentUserService.GetByIdWithUser(studentUserId);
             if (!user.Success)
                 return new ErrorResult(user.Message);
 
@@ -173,10 +173,11 @@ namespace StajTakip.Business.Concrete
             int[] ids = new int[relationResult.Data.Count+1];
             int i = 0;
             string name = user.Data.FirstName + " " + user.Data.LastName;
+            string studentNumber = user.Data.StudentNumber;
             foreach (var relation in relationResult.Data)
             {
 
-                Message message = Messages.StudentAddedDocument(name,documentId,documentName);
+                Message message = Messages.StudentAddedDocument(name,documentId,documentName, studentNumber);
                 message.SenderUserId = user.Data.UserId;
                 message.ReceiverUserId = relation.AdminUser.UserId;
                 _messageRepo.Add(message);
@@ -192,9 +193,9 @@ namespace StajTakip.Business.Concrete
             {
                 var mail = new EmailSendDto
                 {
-                    Subject = Messages.StudentAddedDocument(name, documentId, documentName).Subject,
-                    Message = Messages.StudentAddedDocument(name, documentId, documentName).MessageDetail,
-                    SenderMail = emails.Data[0],
+                    Subject = Messages.StudentAddedDocument(name, documentId, documentName, studentNumber).Subject,
+                    Message = Messages.StudentAddedDocument(name, documentId, documentName, studentNumber).MessageDetail,
+                    SenderMail = user.Data.User.Email,
                     ReceiverMail = emails.Data
                 };
 
@@ -214,7 +215,7 @@ namespace StajTakip.Business.Concrete
             if(!adminUser.Success)
                 return new ErrorResult(adminUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
 
-            var message = Messages.RejectDocument($"{studentUser.Data.FirstName} {studentUser.Data.LastName}", $"{adminUser.Data.FirstName} {adminUser.Data.LastName}", documentId, documentName);
+            var message = Messages.RejectDocument($"{studentUser.Data.FirstName} {studentUser.Data.LastName}", $"{adminUser.Data.FirstName} {adminUser.Data.LastName}", documentId, documentName, studentUser.Data.StudentNumber);
 
             message.SenderUserId = adminUser.Data.UserId;
             message.ReceiverUserId = studentUser.Data.UserId;
@@ -234,7 +235,7 @@ namespace StajTakip.Business.Concrete
             if (!adminUser.Success)
                 return new ErrorResult(adminUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
 
-            var message = Messages.AcceptDocument($"{adminUser.Data.FirstName} {adminUser.Data.LastName}", documentId, documentName);
+            var message = Messages.AcceptDocument($"{adminUser.Data.FirstName} {adminUser.Data.LastName}", documentId, documentName, studentUser.Data.StudentNumber);
 
             message.SenderUserId = adminUser.Data.UserId;
             message.ReceiverUserId = studentUser.Data.UserId;
@@ -392,7 +393,7 @@ namespace StajTakip.Business.Concrete
 
         public IResult AddRelation(int teacherId, int studentId, int companyId)
         {
-            var relationResult = _adminStudentRelationService.Add(new AdminStudentRelation
+            var relationResult = _adminStudentRelationService.AddForCompany(new AdminStudentRelation
             {
                 StudentUserId = studentId,
                 AdminUserId = companyId,
@@ -460,10 +461,11 @@ namespace StajTakip.Business.Concrete
             int[] ids = new int[relationResult.Data.Count + 1];
             int i = 0;
             string name = user.Data.FirstName + " " + user.Data.LastName;
+            string studentNumber = user.Data.StudentNumber;
             foreach (var relation in relationResult.Data)
             {
 
-                Message message = Messages.SendFinish(studentId,name);
+                Message message = Messages.SendFinish(studentId,name, studentNumber);
                 message.SenderUserId = user.Data.UserId;
                 message.ReceiverUserId = relation.AdminUser.UserId;
                 _messageRepo.Add(message);
@@ -479,8 +481,8 @@ namespace StajTakip.Business.Concrete
             {
                 var mail = new EmailSendDto
                 {
-                    Subject = Messages.SendFinish(studentId, name).Subject,
-                    Message = Messages.SendFinish(studentId, name).MessageDetail,
+                    Subject = Messages.SendFinish(studentId, name, studentNumber).Subject,
+                    Message = Messages.SendFinish(studentId, name, studentNumber).MessageDetail,
                     SenderMail = emails.Data[0],
                     ReceiverMail = emails.Data
                 };

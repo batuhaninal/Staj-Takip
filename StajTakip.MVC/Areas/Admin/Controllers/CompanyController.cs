@@ -36,7 +36,7 @@ namespace StajTakip.MVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult StudentListModal(int companyId)
         {
-            var model = _studentUserService.GetAll();
+            var model = _adminStudentRelationService.GetAllByAdminIdWithStudent(int.Parse(User.Identity.Name));
             ViewBag.CompanyId = companyId;
             return PartialView("_AddCompanyRelationPartial", model.Data);
         }

@@ -67,7 +67,30 @@
         fetch("/Admin/InternshipDocument/UploadSignature", {
             method: "POST",
             body: formData
-        }).then((response) => location.reload());
+        }).then(function () {
+            swal({
+                title: 'İmzalama İşlemi Başarılı!',
+                text: 'Bu bildirimi kapatabilirsiniz!',
+                type: 'success',
+                icon: "success",
+                buttons: {
+                    ok: {
+                        text: "Ok",
+                        value: "ok",
+                    },
+                }
+            })
+                .then((value) => {
+                    switch (value) {
+                        case "ok":
+                            location.reload();
+                            break;
+
+                        default:
+                            swal("Got away safely!");
+                    }
+                });
+        });
 
     });
 };

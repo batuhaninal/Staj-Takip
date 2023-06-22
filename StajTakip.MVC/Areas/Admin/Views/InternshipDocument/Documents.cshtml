@@ -15,8 +15,9 @@
             <tr>
                 <th>#</th>
                 <th>Evrak Adı</th>
+                <th>Kabul Edildi mi?</th>
                 <th>İşlemler</th>
-                <th>Secili</th>
+                <th>Seçili</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,33 @@
                         <td>@document.Id</td>
                         <td>
                             @document.DocumentName
+                        </td>
+                        <td>
+                            @if (User.IsInRole("admin.teacher"))
+                            {
+                                @if (document.IsTeacherChecked)
+                                {
+                                    <label class="text-success">Kabul Edildi!</label>
+                                }
+                                else
+                                {
+                                    <label class="text-danger">Kabul Edilmedi!</label>
+                                }
+                            }else if(User.IsInRole("admin.company"))
+                            {
+                                @if (document.IsCompanyChecked == false || document.IsCompanyChecked == null)
+                                {
+                                    <label class="text-danger">Kabul Edilmedi!</label>
+                                }
+                                else
+                                {
+                                    <label class="text-success">Kabul Edildi!</label>  
+                                }
+                            }
+                            else
+                            {
+                                <label>Henüz İşlem Yapılmamış</label>
+                            }
                         </td>
                         <td>
                             <div class="d-flex justify-content-around">

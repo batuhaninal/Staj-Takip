@@ -28,12 +28,12 @@ namespace StajTakip.Business.Constants
             };
         }
 
-        public static Message StudentAddedDocument(string userFirstLastName, int documentId, string documentName)
+        public static Message StudentAddedDocument(string userFirstLastName, int documentId, string documentName, string studentNumber)
         {
             return new Message
             {
                 MessageDate = DateTime.Now,
-                Subject = $"{userFirstLastName} öğrencisi {documentId} id değerine sahip {documentName} isimli yeni döküman ekledi!",
+                Subject = $"{studentNumber} numaralı {userFirstLastName} öğrencisi {documentId} id değerine sahip {documentName} isimli yeni döküman ekledi!",
                 MessageDetail = $"Lütfen eklenen {documentId} id değerine sahip dökümanı inceleyip gerekli işlemleri yapınız!",
                 IsSolved = false,
                 IsTeacherRead = false,
@@ -42,13 +42,13 @@ namespace StajTakip.Business.Constants
             };
         }
 
-        public static Message SendFinish(int studentId,string userFirstLastName)
+        public static Message SendFinish(int studentId,string userFirstLastName, string studentNumber)
         {
             return new Message
             {
                 MessageDate = DateTime.Now,
                 Subject = $"{userFirstLastName} öğrencisi stajını bitirme isteği gönderdi!",
-                MessageDetail = $"{userFirstLastName} isimli öğrenci stajını bitirme isteği gönderdi! Lütfen  {studentId} id değerine sahip öğrencinin dökümanlarını inceleyip öğrencilerim listesinden kabul ediniz!",
+                MessageDetail = $"{studentNumber} numaralı {userFirstLastName} isimli öğrenci stajını bitirme isteği gönderdi! Lütfen  {studentId} id değerine sahip öğrencinin dökümanlarını inceleyip öğrencilerim listesinden kabul ediniz!",
                 IsSolved = false,
                 IsTeacherRead = false,
                 IsCompanyRead = false,
@@ -84,13 +84,13 @@ namespace StajTakip.Business.Constants
         }
 
 
-        public static Message RejectDocument(string studentFirstLastName, string adminFirstLastName, int documentId, string documentName)
+        public static Message RejectDocument(string studentFirstLastName, string adminFirstLastName, int documentId, string documentName, string studentNumber)
         {
             return new Message
             {
                 MessageDate = DateTime.Now,
                 Subject = $"{documentName} adlı dökümanınız ret edildi!",
-                MessageDetail = $"<label>{studentFirstLastName} öğrencisi tarafından eklenen {documentId} id değerine sahip {documentName} isimli yeni döküman {adminFirstLastName} tarafından ret edildi!</label> <strong>Dökümanı silebilirsiniz!</strong>",
+                MessageDetail = $"<label>{studentNumber} numaralı {studentFirstLastName} öğrencisi tarafından eklenen {documentId} id değerine sahip {documentName} isimli yeni döküman {adminFirstLastName} tarafından ret edildi!</label> <strong>Dökümanı silebilirsiniz!</strong>",
                 IsSolved = true,
                 IsTeacherRead = false,
                 IsCompanyRead = false,
@@ -98,13 +98,13 @@ namespace StajTakip.Business.Constants
             };
         }
 
-        public static Message AcceptDocument(string adminFirstLastName, int documentId, string documentName)
+        public static Message AcceptDocument(string adminFirstLastName, int documentId, string documentName, string studentNumber)
         {
             return new Message
             {
                 MessageDate = DateTime.Now,
                 Subject = $"{documentName} adlı dökümanınız kabul edildi!",
-                MessageDetail = $"{documentName} isimli {documentId} id değerine sahip dökümanınız {adminFirstLastName} tarafından kabul edildi! Belgelerim kısmından kontrol ediniz!",
+                MessageDetail = $"{studentNumber} numaralı {documentName} isimli {documentId} id değerine sahip dökümanınız {adminFirstLastName} tarafından kabul edildi! Belgelerim kısmından kontrol ediniz!",
                 IsSolved = true,
                 IsTeacherRead = false,
                 IsCompanyRead = false,

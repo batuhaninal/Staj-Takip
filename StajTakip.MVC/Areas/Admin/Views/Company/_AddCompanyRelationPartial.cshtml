@@ -3,7 +3,7 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model List<StudentUser>
+@model List<AdminStudentRelation>
 
 
 <!-- Modal -->
@@ -14,27 +14,17 @@
                 <h5 class="modal-title" id="exampleModalLongTitle">Öğrenci Listesi</h5>
             </div>
             <div class="modal-body">
-@*                <ul>*@
                     @foreach (var student in Model)
                     {
-                        @*<li>*@
+
                             <div class="d-flex justify-content-between m-1">
                                 <label>@student.Id</label>
-                                <label>@student.FirstName @student.LastName</label>
-                                <a asp-area="Admin" asp-controller="Company" asp-action="AddStudentForCompany" asp-route-StudentUserId="@student.Id" asp-route-AdminUserId="@ViewBag.CompanyId" asp-route-IsCompany="true">
-                                    <span title="@student.FirstName @student.LastName öğrencisini ekle!" class="badge bg-success">Ekle</span>
+                                <label>@student.StudentUser.FirstName @student.StudentUser.LastName</label>
+                                <a asp-area="Admin" asp-controller="Company" asp-action="AddStudentForCompany" asp-route-StudentUserId="@student.StudentUserId" asp-route-AdminUserId="@ViewBag.CompanyId" asp-route-IsCompany="true">
+                                    <span title="@student.StudentUser.FirstName @student.StudentUser.LastName öğrencisini ekle!" class="badge bg-success">Ekle</span>
                                 </a>
                             </div>
-                                
-                            
-                              @*  <a asp-area="Admin" asp-controller="Company" asp-action="AddStudentForCompany" asp-route-StudentUserId="@student.Id" asp-route-AdminUserId="@ViewBag.CompanyId" asp-route-IsCompany="true" class="btn btn-square btn-success align-content-end">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-building"></i>
-                                    </span>
-                            </a>*@
-                        @*</li>*@
                     }
-                @*</ul>*@
             </div>
             <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary close" data-dismiss="modal">Kapat</button>

@@ -48,7 +48,7 @@
                                                     {
                                                         <li>
                                                             <div class="d-flex justify-content-between">
-
+                                                                <label>@relation.StudentUserId</label>
                                                                 <label>@relation.StudentUser.FirstName @relation.StudentUser.LastName</label>
                                                                 <a class="button-relation-delete" rela-id="@relation.Id" asp-area="Admin" asp-controller="Company" asp-action="DeleteStudentRelation" asp-route-relationId="@relation.Id">
                                                                     <span title="@relation.StudentUser.FirstName @relation.StudentUser.LastName öğrencisini çıkart!" class="badge bg-danger">Çıkart</span>
