@@ -5,7 +5,9 @@ using Autofac.Extensions.DependencyInjection;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
 using StajTakip.Business.Abstract;
+using StajTakip.Business.BackgroundServices;
 using StajTakip.Business.Concrete;
 
 using StajTakip.Business.DependencyResolvers.Autofac;
@@ -58,6 +60,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
+
+
 builder.Services.AddAutoMapper(typeof(InternshipsBookProfile));
 
 builder.Services.AddNotyf(config =>
@@ -66,6 +70,17 @@ builder.Services.AddNotyf(config =>
     config.DurationInSeconds = 10;
     config.IsDismissable = true;
 });
+
+builder.Services.AddSingleton(sp => new ConnectionFactory()
+{
+    Uri = new Uri(builder.Configuration.GetConnectionString("RabbitMQ")),
+    DispatchConsumersAsync = true
+});
+
+builder.Services.AddSingleton<RabbitMQClientService>();
+builder.Services.AddSingleton<RabbitMQPublisher>();
+builder.Services.AddHostedService<MailSenderBackgroundService>();
+builder.Services.AddHostedService<MessageSenderBackgroundService>();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
@@ -88,7 +103,7 @@ app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseStatusCodePagesWithReExecute("/Auth/NotFound/", "?code={0}");
+//app.UseStatusCodePagesWithReExecute("/Auth/NotFound/", "?code={0}");
 
 app.UseRouting();
 

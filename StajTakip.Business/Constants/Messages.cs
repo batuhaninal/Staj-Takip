@@ -28,17 +28,26 @@ namespace StajTakip.Business.Constants
             };
         }
 
-        public static Message StudentAddedDocument(string userFirstLastName, int documentId, string documentName, string studentNumber)
+        //public static Message StudentAddedDocument(string userFirstLastName, int documentId, string documentName, string studentNumber)
+        //{
+        //    return new Message
+        //    {
+        //        MessageDate = DateTime.Now,
+        //        Subject = $"{studentNumber} numaralı {userFirstLastName} öğrencisi {documentId} id değerine sahip {documentName} isimli yeni döküman ekledi!",
+        //        MessageDetail = $"Lütfen eklenen {documentId} id değerine sahip dökümanı inceleyip gerekli işlemleri yapınız!",
+        //        IsSolved = false,
+        //        IsTeacherRead = false,
+        //        IsCompanyRead = false,
+        //        IsStudentRead = false
+        //    };
+        //}
+
+        public static CreatedMessageMessage StudentAddedDocument(string userFirstLastName, int documentId, string documentName, string studentNumber)
         {
-            return new Message
+            return new CreatedMessageMessage
             {
-                MessageDate = DateTime.Now,
                 Subject = $"{studentNumber} numaralı {userFirstLastName} öğrencisi {documentId} id değerine sahip {documentName} isimli yeni döküman ekledi!",
                 MessageDetail = $"Lütfen eklenen {documentId} id değerine sahip dökümanı inceleyip gerekli işlemleri yapınız!",
-                IsSolved = false,
-                IsTeacherRead = false,
-                IsCompanyRead = false,
-                IsStudentRead = false
             };
         }
 
@@ -98,17 +107,26 @@ namespace StajTakip.Business.Constants
             };
         }
 
-        public static Message AcceptDocument(string adminFirstLastName, int documentId, string documentName, string studentNumber)
+        //public static Message AcceptDocument(string adminFirstLastName, int documentId, string documentName, string studentNumber)
+        //{
+        //    return new Message
+        //    {
+        //        MessageDate = DateTime.Now,
+        //        Subject = $"{documentName} adlı dökümanınız kabul edildi!",
+        //        MessageDetail = $"{studentNumber} numaralı {documentName} isimli {documentId} id değerine sahip dökümanınız {adminFirstLastName} tarafından kabul edildi! Belgelerim kısmından kontrol ediniz!",
+        //        IsSolved = true,
+        //        IsTeacherRead = false,
+        //        IsCompanyRead = false,
+        //        IsStudentRead = false
+        //    };
+        //}
+
+        public static CreatedMessageMessage AcceptDocument(string adminFirstLastName, int documentId, string documentName, string studentNumber)
         {
-            return new Message
+            return new CreatedMessageMessage
             {
-                MessageDate = DateTime.Now,
                 Subject = $"{documentName} adlı dökümanınız kabul edildi!",
                 MessageDetail = $"{studentNumber} numaralı {documentName} isimli {documentId} id değerine sahip dökümanınız {adminFirstLastName} tarafından kabul edildi! Belgelerim kısmından kontrol ediniz!",
-                IsSolved = true,
-                IsTeacherRead = false,
-                IsCompanyRead = false,
-                IsStudentRead = false
             };
         }
 
