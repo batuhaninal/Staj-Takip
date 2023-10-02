@@ -21,7 +21,7 @@ namespace StajTakip.Business.Abstract
         IResult DeleteRelation(int relationId,int teacherId);
         IResult AddRelation(int teacherId, int studentId, int companyId);
         IResult RejectDocument(int studentId, int adminId, int documentId, string documentName);
-        IResult AcceptDocument(int studentId, int adminId, int documentId, string documentName);
+        IResult AcceptDocument(int documentId, string documentName, string adminFullName, string studentNumber, int senderId, int receiverId);
         IResult Delete(int id);
         IResult Update(Message message);
         IDataResult<Message> GetByMessageId(int messageId);

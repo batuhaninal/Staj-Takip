@@ -44,7 +44,6 @@ namespace StajTakip.Business.DependencyResolvers.Autofac
             builder.RegisterType<BookImageManager>().As<IBookImageService>().InstancePerLifetimeScope();
             builder.RegisterType<EFBookImageRepository>().As<IBookImageRepository>().InstancePerLifetimeScope();
 
-
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
 
 

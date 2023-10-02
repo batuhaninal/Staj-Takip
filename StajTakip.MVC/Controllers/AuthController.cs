@@ -27,7 +27,7 @@ namespace StajTakip.MVC.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(UserForLoginDto model)
+        public async Task<IActionResult> Login([FromForm]UserForLoginDto model)
         {
             if (ModelState.IsValid)
             {

@@ -25,8 +25,9 @@ namespace StajTakip.Business.Concrete
         private readonly IAdminStudentRelationService _adminStudentRelationService;
         private readonly IAdminUserService _adminUserService;
         private readonly IUserService _userService;
+        private readonly RabbitMQPublisher _rabbitMQPublisher;
 
-        public MessageManager(IMessageRepository messageRepo, IMailService mailService, IUserService userService, IStudentUserService studentUserService, IAdminStudentRelationService adminStudentRelationService, IAdminUserService adminUserService)
+        public MessageManager(IMessageRepository messageRepo, IMailService mailService, IUserService userService, IStudentUserService studentUserService, IAdminStudentRelationService adminStudentRelationService, IAdminUserService adminUserService, RabbitMQPublisher rabbitMQPublisher)
         {
             _messageRepo = messageRepo;
             _mailService = mailService;
@@ -34,6 +35,7 @@ namespace StajTakip.Business.Concrete
             _adminStudentRelationService = adminStudentRelationService;
             _adminUserService = adminUserService;
             _userService = userService;
+            _rabbitMQPublisher = rabbitMQPublisher;
         }
 
         public IResult Delete(int id)
@@ -177,10 +179,11 @@ namespace StajTakip.Business.Concrete
             foreach (var relation in relationResult.Data)
             {
 
-                Message message = Messages.StudentAddedDocument(name,documentId,documentName, studentNumber);
+                var message = Messages.StudentAddedDocument(name,documentId,documentName, studentNumber);
                 message.SenderUserId = user.Data.UserId;
                 message.ReceiverUserId = relation.AdminUser.UserId;
-                _messageRepo.Add(message);
+                //_messageRepo.Add(message);
+                _rabbitMQPublisher.Publish(message);
                 ids[i] = relation.AdminUser.UserId;
                 i++;
             }
@@ -191,15 +194,17 @@ namespace StajTakip.Business.Concrete
 
             if (emails.Success)
             {
-                var mail = new EmailSendDto
+                var mail = new CreatedMailMessage
                 {
                     Subject = Messages.StudentAddedDocument(name, documentId, documentName, studentNumber).Subject,
-                    Message = Messages.StudentAddedDocument(name, documentId, documentName, studentNumber).MessageDetail,
+                    MessageBody = Messages.StudentAddedDocument(name, documentId, documentName, studentNumber).MessageDetail,
                     SenderMail = user.Data.User.Email,
                     ReceiverMail = emails.Data
                 };
 
-                var sendMail = _mailService.Send(mail);
+                //var sendMail = _mailService.Send(mail);
+
+                _rabbitMQPublisher.Publish(mail);
             }
 
             return new SuccessResult();
@@ -225,22 +230,23 @@ namespace StajTakip.Business.Concrete
         }
 
 
-        public IResult AcceptDocument(int studentId, int adminId, int documentId, string documentName)
+        public IResult AcceptDocument(int documentId, string documentName, string adminFullName, string studentNumber, int senderId, int receiverId)
         {
-            var studentUser = _studentUserService.GetById(studentId);
-            var adminUser = _adminUserService.GetByAdminUserId(adminId);
-            if (!studentUser.Success)
-                return new ErrorResult(studentUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
+            //var studentUser = _studentUserService.GetById(studentId);
+            //var adminUser = _adminUserService.GetByAdminUserId(adminId);
+            //if (!studentUser.Success)
+            //    return new ErrorResult(studentUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
 
-            if (!adminUser.Success)
-                return new ErrorResult(adminUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
+            //if (!adminUser.Success)
+            //    return new ErrorResult(adminUser.Message ?? "Beklenmeyen bir hata meydana geldi!");
 
-            var message = Messages.AcceptDocument($"{adminUser.Data.FirstName} {adminUser.Data.LastName}", documentId, documentName, studentUser.Data.StudentNumber);
+            var message = Messages.AcceptDocument($"{adminFullName}", documentId, documentName, studentNumber);
 
-            message.SenderUserId = adminUser.Data.UserId;
-            message.ReceiverUserId = studentUser.Data.UserId;
+            message.SenderUserId = senderId;
+            message.ReceiverUserId = receiverId;
 
-            _messageRepo.Add(message);
+            //_messageRepo.Add(message);
+            _rabbitMQPublisher.Publish(message);
             return new SuccessResult();
         }
 

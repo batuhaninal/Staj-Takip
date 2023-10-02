@@ -16,7 +16,7 @@ namespace StajTakip.MVC.Controllers
             _notyfService = notyfService;
         }
 
-
+        [HttpGet]
         public IActionResult Inbox()
         {
             var messages = _messageService.GetInboxListByUser(int.Parse(User.Claims

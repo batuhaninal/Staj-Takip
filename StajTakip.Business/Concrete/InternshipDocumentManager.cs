@@ -11,6 +11,8 @@ namespace StajTakip.Business.Concrete
     public class InternshipDocumentManager : IInternshipDocumentService
     {
         private readonly IInternshipDocumentRepository _internshipDocumentRepository;
+        private readonly IAdminUserService _adminUserService;
+        private readonly IStudentUserService _studentUserService;
         private readonly IMessageService _messageService;
 
         public InternshipDocumentManager(IInternshipDocumentRepository internshipDocumentRepository, IMessageService messageService)
@@ -26,8 +28,12 @@ namespace StajTakip.Business.Concrete
             {
                 var data = _internshipDocumentRepository.Update(entity);
 
-                var messageResult = _messageService.AcceptDocument(data.StudentUserId, adminUserId, data.Id, data.DocumentName);
-                if(!messageResult.Success)
+                var admin = _adminUserService.GetByAdminUserId(adminUserId);
+
+                var student = _studentUserService.GetById(entity.StudentUserId);
+
+                var messageResult = _messageService.AcceptDocument(entity.Id, entity.DocumentName,$"{admin.Data.FirstName} {admin.Data.LastName}",student.Data.StudentNumber,adminUserId, student.Data.UserId);
+                if (!messageResult.Success)
                     return new SuccessDataResult<InternshipDocument>(data, messageResult.Message ?? "Bildirim gönderilemedi fakat döküman onaylandı!");
 
                 return new SuccessDataResult<InternshipDocument>(data);
