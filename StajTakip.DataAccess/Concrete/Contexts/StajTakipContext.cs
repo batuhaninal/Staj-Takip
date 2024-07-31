@@ -8,7 +8,7 @@ namespace StajTakip.DataAccess.Concrete.Contexts
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString: @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=StajTakipTempDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+            optionsBuilder.UseSqlServer(connectionString: @"Server=localhost,1433; Initial Catalog=sozlukappdb; TrustServerCertificate=True; User ID =sa; Password=Unr4vel!;");
         }
 
         public DbSet<InternshipsBook> InternshipsBooks { get; set; }

@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  mssql:
+    container_name: stajtakip-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    #image: mcr.microsoft.com/mssql/server:2017-CU11-ubuntu
+    restart: always
+    networks:
+        - app-network
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Unr4vel!"
+    ports:
+      - 1433:1433
+    volumes:
+      - stajtakip-volume:/var/opt/mssql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: stajtakip-message-broker
+    environment:
+        - RABBITMQ_DEFAULT_USER=Unravel
+        - RABBITMQ_DEFAULT_PASS=Unr4vel!
+    restart: on-failure
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+    networks:
+        - app-network
+    volumes:
+        - "rabbitmq-volume:/etc/rabbitmq/rabbitmq-volume"
+
+volumes:
+  stajtakip-volume:
+  rabbitmq-volume:
+  
+networks:
+  app-network:
+    driver: bridge

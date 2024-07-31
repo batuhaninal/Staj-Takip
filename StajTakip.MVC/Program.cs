@@ -73,7 +73,10 @@ builder.Services.AddNotyf(config =>
 
 builder.Services.AddSingleton(sp => new ConnectionFactory()
 {
-    Uri = new Uri(builder.Configuration.GetConnectionString("RabbitMQ")),
+    HostName = builder.Configuration["RabbitMQOptions:Host"],
+    Port = int.Parse(builder.Configuration["RabbitMQOptions:Port"]),
+    UserName = builder.Configuration["RabbitMQOptions:UserName"],
+    Password = builder.Configuration["RabbitMQOptions:Password"],
     DispatchConsumersAsync = true
 });
 
