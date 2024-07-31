@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StajTakip.DataAccess.Concrete.Contexts;
 
@@ -11,9 +12,10 @@ using StajTakip.DataAccess.Concrete.Contexts;
 namespace StajTakip.DataAccess.Migrations
 {
     [DbContext(typeof(StajTakipContext))]
-    partial class StajTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20240731191118_update_rolename_mig")]
+    partial class update_rolename_mig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,21 +45,6 @@ namespace StajTakip.DataAccess.Migrations
                         {
                             Id = 1,
                             Name = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "admin.teacher"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "admin.company"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "student"
                         });
                 });
 
@@ -117,15 +104,15 @@ namespace StajTakip.DataAccess.Migrations
                         {
                             Id = 1,
                             CreatedByName = "Initial",
-                            CreatedDate = new DateTime(2024, 7, 31, 22, 21, 7, 537, DateTimeKind.Local).AddTicks(5099),
+                            CreatedDate = new DateTime(2024, 7, 31, 22, 11, 18, 114, DateTimeKind.Local).AddTicks(1854),
                             Email = "admin@admin.com",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "Initial",
-                            ModifiedDate = new DateTime(2024, 7, 31, 22, 21, 7, 537, DateTimeKind.Local).AddTicks(5101),
+                            ModifiedDate = new DateTime(2024, 7, 31, 22, 11, 18, 114, DateTimeKind.Local).AddTicks(1857),
                             Note = "Initial",
-                            PasswordHash = new byte[] { 194, 179, 166, 174, 46, 136, 234, 145, 228, 251, 43, 101, 231, 149, 86, 114, 57, 87, 55, 22, 202, 50, 103, 11, 153, 228, 15, 217, 92, 110, 73, 249 },
-                            PasswordSalt = new byte[] { 223, 228, 154, 191, 208, 89, 61, 90, 60, 211, 7, 214, 145, 199, 177, 178, 204, 112, 219, 45, 85, 235, 146, 222, 46, 6, 221, 146, 58, 93, 77, 241, 73, 190, 242, 158, 173, 158, 177, 79, 140, 53, 168, 213, 24, 106, 115, 253, 41, 190, 138, 226, 179, 108, 117, 36, 162, 233, 54, 82, 243, 41, 206, 103 },
+                            PasswordHash = new byte[] { 52, 196, 242, 7, 74, 61, 240, 230, 14, 152, 199, 210, 174, 255, 105, 60, 243, 134, 122, 170, 15, 3, 52, 129, 106, 202, 185, 44, 65, 161, 205, 24 },
+                            PasswordSalt = new byte[] { 240, 233, 87, 126, 155, 92, 97, 89, 0, 105, 224, 81, 84, 183, 55, 191, 130, 96, 33, 187, 143, 76, 69, 110, 128, 240, 43, 50, 50, 241, 84, 54, 211, 96, 203, 158, 231, 254, 5, 158, 129, 7, 143, 216, 184, 147, 46, 44, 233, 114, 196, 126, 125, 164, 68, 118, 190, 210, 138, 103, 139, 229, 70, 193 },
                             Username = "adminuser"
                         });
                 });
@@ -152,7 +139,7 @@ namespace StajTakip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            OperationClaimId = 2,
+                            OperationClaimId = 1,
                             UserId = 1
                         });
                 });

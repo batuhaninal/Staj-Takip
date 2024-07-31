@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StajTakip.DataAccess.Concrete.Contexts;
 
@@ -11,9 +12,10 @@ using StajTakip.DataAccess.Concrete.Contexts;
 namespace StajTakip.DataAccess.Migrations
 {
     [DbContext(typeof(StajTakipContext))]
-    partial class StajTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20240731190659_seed_user_data_mig")]
+    partial class seed_user_data_mig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,22 +44,7 @@ namespace StajTakip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "admin.teacher"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "admin.company"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "student"
+                            Name = "Admin"
                         });
                 });
 
@@ -117,15 +104,15 @@ namespace StajTakip.DataAccess.Migrations
                         {
                             Id = 1,
                             CreatedByName = "Initial",
-                            CreatedDate = new DateTime(2024, 7, 31, 22, 21, 7, 537, DateTimeKind.Local).AddTicks(5099),
+                            CreatedDate = new DateTime(2024, 7, 31, 22, 6, 58, 891, DateTimeKind.Local).AddTicks(9880),
                             Email = "admin@admin.com",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "Initial",
-                            ModifiedDate = new DateTime(2024, 7, 31, 22, 21, 7, 537, DateTimeKind.Local).AddTicks(5101),
+                            ModifiedDate = new DateTime(2024, 7, 31, 22, 6, 58, 891, DateTimeKind.Local).AddTicks(9881),
                             Note = "Initial",
-                            PasswordHash = new byte[] { 194, 179, 166, 174, 46, 136, 234, 145, 228, 251, 43, 101, 231, 149, 86, 114, 57, 87, 55, 22, 202, 50, 103, 11, 153, 228, 15, 217, 92, 110, 73, 249 },
-                            PasswordSalt = new byte[] { 223, 228, 154, 191, 208, 89, 61, 90, 60, 211, 7, 214, 145, 199, 177, 178, 204, 112, 219, 45, 85, 235, 146, 222, 46, 6, 221, 146, 58, 93, 77, 241, 73, 190, 242, 158, 173, 158, 177, 79, 140, 53, 168, 213, 24, 106, 115, 253, 41, 190, 138, 226, 179, 108, 117, 36, 162, 233, 54, 82, 243, 41, 206, 103 },
+                            PasswordHash = new byte[] { 59, 145, 160, 153, 215, 50, 194, 69, 163, 130, 252, 245, 156, 23, 103, 58, 50, 189, 163, 75, 201, 165, 70, 147, 35, 230, 134, 41, 195, 249, 121, 240 },
+                            PasswordSalt = new byte[] { 7, 158, 242, 74, 12, 7, 222, 2, 164, 58, 54, 29, 168, 196, 51, 174, 158, 164, 148, 136, 92, 118, 221, 11, 217, 255, 151, 73, 191, 123, 240, 85, 54, 38, 120, 140, 16, 29, 44, 106, 76, 224, 25, 25, 193, 237, 158, 155, 207, 61, 133, 98, 152, 93, 248, 39, 2, 203, 27, 133, 146, 172, 234, 45 },
                             Username = "adminuser"
                         });
                 });
@@ -152,7 +139,7 @@ namespace StajTakip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            OperationClaimId = 2,
+                            OperationClaimId = 1,
                             UserId = 1
                         });
                 });
