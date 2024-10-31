@@ -1,13 +1,12 @@
-version: '3.3'
+version: '3.8'
 
 services:
   mssql:
     container_name: stajtakip-db
     image: mcr.microsoft.com/mssql/server:2019-latest
-    #image: mcr.microsoft.com/mssql/server:2017-CU11-ubuntu
     restart: always
     networks:
-        - app-network
+      - app-network
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Unr4vel!"
@@ -20,21 +19,48 @@ services:
     image: rabbitmq:3-management
     container_name: stajtakip-message-broker
     environment:
-        - RABBITMQ_DEFAULT_USER=Unravel
-        - RABBITMQ_DEFAULT_PASS=Unr4vel!
+      - RABBITMQ_DEFAULT_USER=Unravel
+      - RABBITMQ_DEFAULT_PASS=Unr4vel!
     restart: on-failure
     ports:
-        - "5672:5672"
-        - "15672:15672"
+      - "5672:5672"
+      - "15672:15672"
     networks:
-        - app-network
+      - app-network
     volumes:
-        - "rabbitmq-volume:/etc/rabbitmq/rabbitmq-volume"
+      - rabbitmq-volume:/var/lib/rabbitmq
+
+  # stajtakip.mvc:
+  #   container_name: stajtakip.mvc
+  #   build:
+  #     context: .
+  #     dockerfile: StajTakip.MVC/Dockerfile
+  #   restart: on-failure
+  #   environment: 
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - "ConnectionStrings:Mssql=mssql,1433; Initial Catalog=StajTakipDb; TrustServerCertificate=True; User ID =sa; Password=Unr4vel!;"
+  #     - SmtpSettings:Server=smtp.office365.com
+  #     - SmtpSettings:Port=587
+  #     - SmtpSettings:SenderName=Staj-Takip
+  #     - SmtpSettings:SenderEmail=staj_takip@outlook.com
+  #     - SmtpSettings:Username=staj_takip@outlook.com
+  #     - SmtpSettings:Password=*********
+  #     - RabbitMQOptions:Host=rabbitmq
+  #     - RabbitMQOptions:Port=5672
+  #     - RabbitMQOptions:UserName=Unravel
+  #     - RabbitMQOptions:Password=Unr4vel!
+  #   ports:
+  #     - 5117:8080
+  #   depends_on:
+  #     - mssql
+  #     - rabbitmq
+  #   networks:
+  #     - app-network
 
 volumes:
   stajtakip-volume:
   rabbitmq-volume:
-  
+
 networks:
   app-network:
     driver: bridge
